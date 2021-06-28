@@ -1,0 +1,629 @@
+# Copyright (C) 2021 Maarten Menten
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: My Events 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/my-events\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-06-28T22:36:27+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.5.0\n"
+"X-Domain: my-events\n"
+
+#. Plugin Name of the plugin
+msgid "My Events"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/mmaarten/my-events"
+msgstr ""
+
+#. Author of the plugin
+msgid "Maarten Menten"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://profiles.wordpress.org/maartenm/"
+msgstr ""
+
+#: src/AdminColumns.php:36
+msgid "Time of day"
+msgstr ""
+
+#: src/AdminColumns.php:37
+#: src/Fields.php:82
+msgid "Organisers"
+msgstr ""
+
+#: src/AdminColumns.php:38
+msgid "Participants"
+msgstr ""
+
+#: src/AdminColumns.php:39
+msgid "Number of participants"
+msgstr ""
+
+#: src/AdminColumns.php:40
+#: src/Fields.php:187
+msgid "Location"
+msgstr ""
+
+#: src/AdminColumns.php:41
+msgid "Over"
+msgstr ""
+
+#: src/AdminColumns.php:79
+msgid "yes"
+msgstr ""
+
+#: src/AdminColumns.php:79
+msgid "no"
+msgstr ""
+
+#: src/AdminColumns.php:89
+#: src/Fields.php:298
+msgid "Event"
+msgstr ""
+
+#: src/AdminColumns.php:90
+#: src/Fields.php:312
+msgid "User"
+msgstr ""
+
+#: src/AdminColumns.php:91
+#: src/Fields.php:325
+msgid "Status"
+msgstr ""
+
+#: src/AdminColumns.php:122
+#: src/Fields.php:356
+msgid "Address"
+msgstr ""
+
+#: src/AdminColumns.php:148
+#: src/Fields.php:95
+#: src/Fields.php:256
+#: src/Fields.php:384
+msgid "Invitees"
+msgstr ""
+
+#: src/AdminMenu.php:18
+msgid "Events"
+msgstr ""
+
+#: src/Events.php:258
+msgid "This event is over."
+msgstr ""
+
+#: src/Events.php:347
+msgid "accepted"
+msgstr ""
+
+#: src/Events.php:357
+msgid "pending"
+msgstr ""
+
+#: src/Events.php:367
+msgid "declined"
+msgstr ""
+
+#: src/Fields.php:24
+#: src/Fields.php:283
+#: src/Fields.php:341
+#: src/Fields.php:369
+msgid "Settings"
+msgstr ""
+
+#: src/Fields.php:39
+msgid "Description"
+msgstr ""
+
+#: src/Fields.php:52
+msgid "Start"
+msgstr ""
+
+#: src/Fields.php:67
+msgid "End"
+msgstr ""
+
+#: src/Fields.php:100
+msgid "Individual"
+msgstr ""
+
+#: src/Fields.php:101
+msgid "Choose from a group"
+msgstr ""
+
+#: src/Fields.php:110
+msgid "Individual invitees"
+msgstr ""
+
+#: src/Fields.php:132
+msgid "Group of invitees"
+msgstr ""
+
+#: src/Fields.php:155
+msgid "Limit the amount of subscriptions"
+msgstr ""
+
+#: src/Fields.php:166
+msgid "Amount"
+msgstr ""
+
+#: src/Fields.php:192
+#: src/Fields.php:202
+msgid "Custom"
+msgstr ""
+
+#: src/Fields.php:193
+msgid "Choose from a list"
+msgstr ""
+
+#: src/Fields.php:203
+#: src/Fields.php:357
+msgid "The geographical location."
+msgstr ""
+
+#: src/Fields.php:222
+msgid "List"
+msgstr ""
+
+#: src/Fields.php:245
+msgid "Private"
+msgstr ""
+
+#: src/Fields.php:246
+msgid "Only organisers and participants of this event have access to this event."
+msgstr ""
+
+#: src/Helpers.php:72
+msgid "Pending"
+msgstr ""
+
+#: src/Helpers.php:73
+msgid "Accepted"
+msgstr ""
+
+#: src/Helpers.php:74
+msgid "Declined"
+msgstr ""
+
+#. translators: %1$s: User display name. %2$s Event name.
+#: src/Notifications.php:31
+msgid "%1$s accepted your invitation for \"%2$s\"."
+msgstr ""
+
+#. translators: %1$s: User display name. %2$s Event name.
+#: src/Notifications.php:61
+msgid "%1$s declined your invitation for \"%2$s\"."
+msgstr ""
+
+#: src/Posts/Event.php:91
+msgid "%1$s from %2$s until %3$s"
+msgstr ""
+
+#: src/Posts/Event.php:97
+msgid "from %1$s until %2$s"
+msgstr ""
+
+#: src/Posts/Event.php:278
+msgid "Untitled"
+msgstr ""
+
+#: src/PostTypes.php:22
+msgctxt "Post type general name"
+msgid "Events"
+msgstr ""
+
+#: src/PostTypes.php:23
+msgctxt "Post type singular name"
+msgid "Event"
+msgstr ""
+
+#: src/PostTypes.php:24
+msgctxt "Admin Menu text"
+msgid "Events"
+msgstr ""
+
+#: src/PostTypes.php:25
+msgctxt "Add New on Toolbar"
+msgid "Event"
+msgstr ""
+
+#: src/PostTypes.php:26
+#: src/PostTypes.php:69
+#: src/PostTypes.php:112
+#: src/PostTypes.php:155
+msgid "Add New"
+msgstr ""
+
+#: src/PostTypes.php:27
+msgid "Add New event"
+msgstr ""
+
+#: src/PostTypes.php:28
+msgid "New event"
+msgstr ""
+
+#: src/PostTypes.php:29
+msgid "Edit event"
+msgstr ""
+
+#: src/PostTypes.php:30
+msgid "View event"
+msgstr ""
+
+#: src/PostTypes.php:31
+msgid "All events"
+msgstr ""
+
+#: src/PostTypes.php:32
+msgid "Search events"
+msgstr ""
+
+#: src/PostTypes.php:33
+msgid "Parent events:"
+msgstr ""
+
+#: src/PostTypes.php:34
+msgid "No events found."
+msgstr ""
+
+#: src/PostTypes.php:35
+msgid "No events found in Trash."
+msgstr ""
+
+#: src/PostTypes.php:36
+msgctxt "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
+msgid "Event Cover Image"
+msgstr ""
+
+#: src/PostTypes.php:37
+#: src/PostTypes.php:80
+#: src/PostTypes.php:123
+#: src/PostTypes.php:166
+msgctxt "Overrides the “Set featured image” phrase for this post type. Added in 4.3"
+msgid "Set cover image"
+msgstr ""
+
+#: src/PostTypes.php:38
+#: src/PostTypes.php:81
+#: src/PostTypes.php:124
+#: src/PostTypes.php:167
+msgctxt "Overrides the “Remove featured image” phrase for this post type. Added in 4.3"
+msgid "Remove cover image"
+msgstr ""
+
+#: src/PostTypes.php:39
+#: src/PostTypes.php:82
+#: src/PostTypes.php:125
+#: src/PostTypes.php:168
+msgctxt "Overrides the “Use as featured image” phrase for this post type. Added in 4.3"
+msgid "Use as cover image"
+msgstr ""
+
+#: src/PostTypes.php:40
+msgctxt "The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4"
+msgid "Event archives"
+msgstr ""
+
+#: src/PostTypes.php:41
+msgctxt "Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4"
+msgid "Insert into event"
+msgstr ""
+
+#: src/PostTypes.php:42
+msgctxt "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4"
+msgid "Uploaded to this event"
+msgstr ""
+
+#: src/PostTypes.php:43
+msgctxt "Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
+msgid "Filter events list"
+msgstr ""
+
+#: src/PostTypes.php:44
+msgctxt "Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
+msgid "Events list navigation"
+msgstr ""
+
+#: src/PostTypes.php:45
+msgctxt "Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4"
+msgid "Events list"
+msgstr ""
+
+#: src/PostTypes.php:65
+msgctxt "Post type general name"
+msgid "Invitees"
+msgstr ""
+
+#: src/PostTypes.php:66
+msgctxt "Post type singular name"
+msgid "Invitee"
+msgstr ""
+
+#: src/PostTypes.php:67
+msgctxt "Admin Menu text"
+msgid "Invitees"
+msgstr ""
+
+#: src/PostTypes.php:68
+msgctxt "Add New on Toolbar"
+msgid "Invitee"
+msgstr ""
+
+#: src/PostTypes.php:70
+msgid "Add New invitee"
+msgstr ""
+
+#: src/PostTypes.php:71
+msgid "New invitee"
+msgstr ""
+
+#: src/PostTypes.php:72
+msgid "Edit invitee"
+msgstr ""
+
+#: src/PostTypes.php:73
+msgid "View invitee"
+msgstr ""
+
+#: src/PostTypes.php:74
+msgid "All invitees"
+msgstr ""
+
+#: src/PostTypes.php:75
+msgid "Search invitees"
+msgstr ""
+
+#: src/PostTypes.php:76
+msgid "Parent invitees:"
+msgstr ""
+
+#: src/PostTypes.php:77
+msgid "No invitees found."
+msgstr ""
+
+#: src/PostTypes.php:78
+msgid "No invitees found in Trash."
+msgstr ""
+
+#: src/PostTypes.php:79
+msgctxt "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
+msgid "Invitee Cover Image"
+msgstr ""
+
+#: src/PostTypes.php:83
+msgctxt "The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4"
+msgid "Invitee archives"
+msgstr ""
+
+#: src/PostTypes.php:84
+msgctxt "Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4"
+msgid "Insert into invitee"
+msgstr ""
+
+#: src/PostTypes.php:85
+msgctxt "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4"
+msgid "Uploaded to this invitee"
+msgstr ""
+
+#: src/PostTypes.php:86
+msgctxt "Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
+msgid "Filter invitees list"
+msgstr ""
+
+#: src/PostTypes.php:87
+msgctxt "Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
+msgid "Invitees list navigation"
+msgstr ""
+
+#: src/PostTypes.php:88
+msgctxt "Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4"
+msgid "Invitees list"
+msgstr ""
+
+#: src/PostTypes.php:108
+msgctxt "Post type general name"
+msgid "Invitee groups"
+msgstr ""
+
+#: src/PostTypes.php:109
+msgctxt "Post type singular name"
+msgid "Invitee group"
+msgstr ""
+
+#: src/PostTypes.php:110
+msgctxt "Admin Menu text"
+msgid "Invitee groups"
+msgstr ""
+
+#: src/PostTypes.php:111
+msgctxt "Add New on Toolbar"
+msgid "Invitee group"
+msgstr ""
+
+#: src/PostTypes.php:113
+msgid "Add New invitee group"
+msgstr ""
+
+#: src/PostTypes.php:114
+msgid "New invitee group"
+msgstr ""
+
+#: src/PostTypes.php:115
+msgid "Edit invitee group"
+msgstr ""
+
+#: src/PostTypes.php:116
+msgid "View invitee group"
+msgstr ""
+
+#: src/PostTypes.php:117
+msgid "All invitee groups"
+msgstr ""
+
+#: src/PostTypes.php:118
+msgid "Search invitee groups"
+msgstr ""
+
+#: src/PostTypes.php:119
+msgid "Parent invitee groups:"
+msgstr ""
+
+#: src/PostTypes.php:120
+msgid "No invitee groups found."
+msgstr ""
+
+#: src/PostTypes.php:121
+msgid "No invitee groups found in Trash."
+msgstr ""
+
+#: src/PostTypes.php:122
+msgctxt "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
+msgid "Invitee group Cover Image"
+msgstr ""
+
+#: src/PostTypes.php:126
+msgctxt "The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4"
+msgid "Invitee group archives"
+msgstr ""
+
+#: src/PostTypes.php:127
+msgctxt "Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4"
+msgid "Insert into invitee group"
+msgstr ""
+
+#: src/PostTypes.php:128
+msgctxt "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4"
+msgid "Uploaded to this invitee group"
+msgstr ""
+
+#: src/PostTypes.php:129
+msgctxt "Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
+msgid "Filter invitee groups list"
+msgstr ""
+
+#: src/PostTypes.php:130
+msgctxt "Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
+msgid "Invitee groups list navigation"
+msgstr ""
+
+#: src/PostTypes.php:131
+msgctxt "Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4"
+msgid "Invitee groups list"
+msgstr ""
+
+#: src/PostTypes.php:151
+msgctxt "Post type general name"
+msgid "Event locations"
+msgstr ""
+
+#: src/PostTypes.php:152
+msgctxt "Post type singular name"
+msgid "Event location"
+msgstr ""
+
+#: src/PostTypes.php:153
+msgctxt "Admin Menu text"
+msgid "Event locations"
+msgstr ""
+
+#: src/PostTypes.php:154
+msgctxt "Add New on Toolbar"
+msgid "Event location"
+msgstr ""
+
+#: src/PostTypes.php:156
+msgid "Add New event location"
+msgstr ""
+
+#: src/PostTypes.php:157
+msgid "New event location"
+msgstr ""
+
+#: src/PostTypes.php:158
+msgid "Edit event location"
+msgstr ""
+
+#: src/PostTypes.php:159
+msgid "View event location"
+msgstr ""
+
+#: src/PostTypes.php:160
+msgid "All event locations"
+msgstr ""
+
+#: src/PostTypes.php:161
+msgid "Search event locations"
+msgstr ""
+
+#: src/PostTypes.php:162
+msgid "Parent event locations:"
+msgstr ""
+
+#: src/PostTypes.php:163
+msgid "No event locations found."
+msgstr ""
+
+#: src/PostTypes.php:164
+msgid "No event locations found in Trash."
+msgstr ""
+
+#: src/PostTypes.php:165
+msgctxt "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
+msgid "Event location Cover Image"
+msgstr ""
+
+#: src/PostTypes.php:169
+msgctxt "The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4"
+msgid "Event location archives"
+msgstr ""
+
+#: src/PostTypes.php:170
+msgctxt "Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4"
+msgid "Insert into event location"
+msgstr ""
+
+#: src/PostTypes.php:171
+msgctxt "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4"
+msgid "Uploaded to this event location"
+msgstr ""
+
+#: src/PostTypes.php:172
+msgctxt "Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
+msgid "Filter event locations list"
+msgstr ""
+
+#: src/PostTypes.php:173
+msgctxt "Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
+msgid "Event locations list navigation"
+msgstr ""
+
+#: src/PostTypes.php:174
+msgctxt "Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4"
+msgid "Event locations list"
+msgstr ""
+
+#: src/Subscriptions.php:12
+#: src/Subscriptions.php:45
+msgid "Event is over."
+msgstr ""
+
+#: src/Subscriptions.php:16
+#: src/Subscriptions.php:49
+msgid "Access denied."
+msgstr ""
+
+#: src/Subscriptions.php:22
+#: src/Subscriptions.php:55
+msgid "You are not invited."
+msgstr ""
+
+#: src/Subscriptions.php:30
+msgid "Max number of subscriptions reached."
+msgstr ""
