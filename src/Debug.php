@@ -12,7 +12,7 @@ class Debug
             return;
         }
 
-        add_action('acf/save_post', [__CLASS__, 'savePost'], 0);
+        add_action('save_post', [__CLASS__, 'savePost'], 0);
         add_action('wp_trash_post', [__CLASS__, 'trashPost'], 0);
         add_action('before_delete_post', [__CLASS__, 'beforeDeletePost'], 0);
         add_action('delete_post', [__CLASS__, 'deletePost'], 0, 2);

@@ -30,7 +30,7 @@ class Event extends Post
         return $this->updateMeta('start', $value);
     }
 
-    public function getEndTime()
+    public function getEndTime($format = null)
     {
         if (! $format) {
             $format = get_option('date_format') . ' ' . get_option('time_format');
@@ -44,8 +44,21 @@ class Event extends Post
         return $this->updateMeta('end', $value);
     }
 
-    public static function getTimeFromUntil()
+    public function getTimeFromUntil()
     {
+        $start_date = $this->getStartTime(get_option('date_format'));
+        $end_date   = $this->getEndTime(get_option('date_format'));
+
+        if ($start_date === $end_date) {
+            return sprintf(
+                __('%1$s from %2$s until %3$s', 'my-events'),
+                $start_date,
+                $this->getStartTime(get_option('time_format')),
+                $this->getEndTime(get_option('time_format'))
+            );
+        }
+
+        return sprintf(__('from %1$s until %2$s', 'my-events'), $this->getStartTime(), $this->getEndTime());
     }
 
     public function getOrganisers($args = [])
@@ -122,6 +135,7 @@ class Event extends Post
         $user_ids = [];
 
         foreach ($invitees as $invitee) {
+            $invitee = new Invitee($invitee);
             $user_ids[] = $invitee->getUser();
         }
 
@@ -209,7 +223,7 @@ class Event extends Post
     {
         $processed = [];
 
-        foreach ($users_ids as $user_id) {
+        foreach ($user_ids as $user_id) {
             $invitee = $this->getInviteeByUser($user_id);
 
             if ($invitee) {
@@ -226,8 +240,7 @@ class Event extends Post
         ]);
 
         foreach ($delete as $invitee) {
-            $user = $this->getInviteeUser($invitee->ID);
-            $this->removeInvitee($user->ID);
+            $this->removeInvitee($invitee->ID);
         }
     }
 
@@ -244,5 +257,39 @@ class Event extends Post
     public function setLocation($value)
     {
         return $this->updateMeta('location', $value);
+    }
+
+    public function isOver()
+    {
+        return strtotime($this->getEndTime('Y-m-d H:i:s')) < time();
+    }
+
+    public function isOrganiser($user_id)
+    {
+        return in_array($user_id, $this->getOrganisers(['fields' => 'ID']));
+    }
+
+    public function isInvitee($user_id)
+    {
+        return $this->getInviteeByUser($user_id) ? true : false;
+    }
+
+    public function isParticipant($user_id)
+    {
+        return in_array($user_id, $this->getParticipants(['fields' => 'ID']));
+    }
+
+    public function isPrivate()
+    {
+        return $this->getMeta('is_private') ? true : false;
+    }
+
+    public function hasAccess($user_id)
+    {
+        if ($this->isPrivate()) {
+            return $this->isOrganiser($user_id) || $this->isInvitee($user_id);
+        }
+
+        return true;
     }
 }
