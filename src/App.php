@@ -15,6 +15,8 @@ class App
             'AdminMenu',
             'AdminColumns',
             'Events',
+            'Subscriptions',
+            'Notifications',
         ]);
     }
 }

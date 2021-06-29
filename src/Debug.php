@@ -14,7 +14,7 @@ class Debug
             return;
         }
 
-        self::$post_types = ['event', 'invitee', 'invitees_group', 'event_location'];
+        self::$post_types = ['event', 'invitee', 'invitees_group', 'event_location', 'event_group'];
 
         add_action('save_post', [__CLASS__, 'savePost'], 0);
         add_action('wp_trash_post', [__CLASS__, 'trashPost'], 0);
@@ -23,6 +23,22 @@ class Debug
         add_action('transition_post_status', [__CLASS__, 'transitionPostStatus'], 0, 3);
         add_action('updated_post_meta', [__CLASS__, 'updatedPostMeta'], 0, 4);
         add_action('delete_user', [__CLASS__, 'beforeDeleteUser'], 0, 3);
+        add_filter('pre_wp_mail', [__CLASS__, 'preWPMail'], 0, 2);
+    }
+
+    public static function preWPMail($return, $args)
+    {
+        if (did_action('wp_mail_content_type', ['\My\Events\Notifications', 'mailContentType'])) {
+            self::log(
+                sprintf(
+                    'Send email to %1$s: "%2$s".',
+                    implode(', ', (array) $args['to']),
+                    $args['subject']
+                )
+            );
+        }
+
+        return $return;
     }
 
     public static function savePost($post_id)

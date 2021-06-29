@@ -49,6 +49,27 @@ class Events
         ] + $args);
     }
 
+    public static function getEventsByTime($start, $end, $args = [])
+    {
+        return self::getEvents([
+            'relation' => 'AND',
+            'meta_query' => [
+                [
+                    'key'     => 'start',
+                    'compare' => '=',
+                    'value'   => $start,
+                    'type'    => 'DATETIME',
+                ],
+                [
+                    'key'     => 'end',
+                    'compare' => '=',
+                    'value'   => $end,
+                    'type'    => 'DATETIME',
+                ],
+            ],
+        ] + $args);
+    }
+
     public static function getEventsByInviteesGroup($group_id, $args = [])
     {
         return Events::getEvents([
@@ -85,36 +106,40 @@ class Events
         ] + $args);
     }
 
+    public static function updateEventFromFields($post_id)
+    {
+        $event = new Event($post_id);
+
+        // Get invitees from settings field
+
+        $invitees_type = $event->getMeta('invitees_type', true);
+
+        $invitees = [];
+
+        if ($invitees_type === 'individual') {
+            $invitees = $event->getMeta('invitees_individual', true);
+        }
+
+        if ($invitees_type === 'group') {
+            $group_id = $event->getMeta('invitees_group', true);
+            if ($group_id && get_post_type($group_id)) {
+                $group = new Post($group_id);
+                $invitees = $group->getMeta('users', true);
+            }
+        }
+
+        // Create/delete invitees.
+        $event->setInvitees($invitees);
+
+        // Empty settings field.
+        $event->updateMeta('invitees_individual', []);
+    }
+
     public static function savePost($post_id)
     {
         // Check post type.
         if (get_post_type($post_id) === 'event') {
-            // Get event.
-            $event = new Event($post_id);
-
-            // Get invitees from settings field
-
-            $invitees_type = $event->getMeta('invitees_type', true);
-
-            $invitees = [];
-
-            if ($invitees_type === 'individual') {
-                $invitees = $event->getMeta('invitees_individual', true);
-            }
-
-            if ($invitees_type === 'group') {
-                $group_id = $event->getMeta('invitees_group', true);
-                if ($group_id && get_post_type($group_id)) {
-                    $group = new Post($group_id);
-                    $invitees = $group->getMeta('users', true);
-                }
-            }
-
-            // Create/delete invitees.
-            $event->setInvitees($invitees);
-
-            // Empty settings field.
-            $event->updateMeta('invitees_individual', []);
+            self::updateEventFromFields($post_id);
         }
 
         if (get_post_type($post_id) === 'invitees_group') {
@@ -159,6 +184,64 @@ class Events
             }
 
             $group->updateMeta('prev_users', $curr_users);
+        }
+
+        if (get_post_type($post_id) === 'event_group') {
+
+            $group = new Post($post_id);
+
+            $start      = $group->getMeta('start', true);
+            $end        = $group->getMeta('end', true);
+            $repeat     = $group->getMeta('repeat', true);
+            $repeat_end = $group->getMeta('repeat_end', true);
+
+            $times = Helpers::repeatDates($start, $end, $repeat_end, $repeat);
+
+            $processed = [];
+
+            foreach ($times as $time) {
+
+                $event = current(self::getEventsByTime($time['start'], $time['end'], [
+                    'meta_key'     => 'group',
+                    'meta_compare' => '=',
+                    'meta_value'   => $group->ID,
+                ]));
+
+                $postdata = [
+                    'post_title'   => $group->post_title,
+                    'post_content' => '',
+                    'post_status'  => $group->post_status,
+                    'post_type'    => 'event',
+                ];
+
+                if ($event) {
+                    $postdata['ID'] = $event->ID;
+                }
+
+                $post_id = wp_insert_post($postdata);
+
+                $event = new Event($post_id);
+                $event->updateMeta('start', $time['start']);
+                $event->updateMeta('end', $time['end']);
+                $event->updateMeta('description', $group->getMeta('description', true));
+                $event->updateMeta('organisers', $group->getMeta('organisers', true));
+                $event->updateMeta('invitees_type', $group->getMeta('invitees_type', true));
+                $event->updateMeta('invitees_individual', $group->getMeta('invitees_individual', true));
+                $event->updateMeta('invitees_group', $group->getMeta('invitees_group', true));
+                $event->updateMeta('limit_participants', $group->getMeta('limit_participants', true));
+                $event->updateMeta('max_participants', $group->getMeta('max_participants', true));
+                $event->updateMeta('location_type', $group->getMeta('location_type', true));
+                $event->updateMeta('location_input', $group->getMeta('location_input', true));
+                $event->updateMeta('location_id', $group->getMeta('location_id', true));
+                $event->updateMeta('is_private', $group->getMeta('is_private', true));
+                $event->updateMeta('group', $group->ID);
+
+                self::updateEventFromFields($event->ID);
+
+                $processed[$post_id] = true;
+            }
+
+            error_log(print_r($times, true));
         }
     }
 

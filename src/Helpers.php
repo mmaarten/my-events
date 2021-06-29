@@ -27,4 +27,25 @@ class Helpers
             esc_html($message)
         );
     }
+
+    public static function repeatDates($start, $end, $repeat_end, $modifier)
+    {
+        $start      = new \DateTime($start);
+        $end        = new \DateTime($end);
+        $repeat_end = new \DateTime($repeat_end);
+
+        $times = [];
+
+        while ($start->format('U') < $repeat_end->format('U')) {
+            $times[] = [
+                'start' => $start->format('Y-m-d H:i:s'),
+                'end'   => $end->format('Y-m-d H:i:s'),
+            ];
+
+            $start = $start->modify($modifier);
+            $end   = $end->modify($modifier);
+        }
+
+        return $times;
+    }
 }

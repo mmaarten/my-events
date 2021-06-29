@@ -333,17 +333,17 @@ class Event extends Post
     public function acceptInvitation($user_id)
     {
         if (! $this->hasAccess($user_id)) {
-            return new WP_Error(__FILE__, __('You have no access to this event.', 'my-events'));
+            return new \WP_Error(__FILE__, __('You have no access to this event.', 'my-events'));
         }
 
         if ($this->isOver()) {
-            return new WP_Error(__FILE__, __('The event is over.', 'my-events'));
+            return new \WP_Error(__FILE__, __('The event is over.', 'my-events'));
         }
 
         $invitee = $this->getInviteeByUser($user_id);
 
         if (! $invitee) {
-            return new WP_Error(__FILE__, __('You are not invited to this event', 'my-events'));
+            return new \WP_Error(__FILE__, __('You are not invited to this event', 'my-events'));
         }
 
         if ($invitee->getStatus() === 'accepted') {
@@ -351,7 +351,7 @@ class Event extends Post
         }
 
         if ($this->isLimitedParticipants() && count($this->getParticipants()) >= $this->getMaxParticipants()) {
-            return new WP_Error(__FILE__, __('The maximum amount of participants is reached', 'my-events'));
+            return new \WP_Error(__FILE__, __('The maximum amount of participants is reached', 'my-events'));
         }
 
         $invitee->setStatus('accepted');
@@ -362,17 +362,17 @@ class Event extends Post
     public function declineInvitation($user_id)
     {
         if (! $this->hasAccess($user_id)) {
-            return new WP_Error(__FILE__, __('You have no access to this event.', 'my-events'));
+            return new \WP_Error(__FILE__, __('You have no access to this event.', 'my-events'));
         }
 
         if ($this->isOver()) {
-            return new WP_Error(__FILE__, __('The event is over.', 'my-events'));
+            return new \WP_Error(__FILE__, __('The event is over.', 'my-events'));
         }
 
         $invitee = $this->getInviteeByUser($user_id);
 
         if (! $invitee) {
-            return new WP_Error(__FILE__, __('You are not invited to this event', 'my-events'));
+            return new \WP_Error(__FILE__, __('You are not invited to this event', 'my-events'));
         }
 
         if ($invitee->getStatus() === 'declined') {

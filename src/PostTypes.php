@@ -51,6 +51,46 @@ class PostTypes
             'supports'           => ['title'],
         ]);
 
+        register_post_type('event_group', [
+            'labels'             => [
+                'name'                  => _x('Event groups', 'Post type general name', 'my-events'),
+                'singular_name'         => _x('Event group', 'Post type singular name', 'my-events'),
+                'menu_name'             => _x('Event groups', 'Admin Menu text', 'my-events'),
+                'name_admin_bar'        => _x('Event group', 'Add New on Toolbar', 'my-events'),
+                'add_new'               => __('Add New', 'my-events'),
+                'add_new_item'          => __('Add New Event group', 'my-events'),
+                'new_item'              => __('New Event group', 'my-events'),
+                'edit_item'             => __('Edit Event group', 'my-events'),
+                'view_item'             => __('View Event group', 'my-events'),
+                'all_items'             => __('Event groups', 'my-events'),
+                'search_items'          => __('Search Event groups', 'my-events'),
+                'parent_item_colon'     => __('Parent Event groups:', 'my-events'),
+                'not_found'             => __('No event groups found.', 'my-events'),
+                'not_found_in_trash'    => __('No event groups found in Trash.', 'my-events'),
+                'featured_image'        => _x('Event group Cover Image', 'Overrides the “Featured Image” phrase for this post type. Added in 4.3', 'my-events'),
+                'set_featured_image'    => _x('Set cover image', 'Overrides the “Set featured image” phrase for this post type. Added in 4.3', 'my-events'),
+                'remove_featured_image' => _x('Remove cover image', 'Overrides the “Remove featured image” phrase for this post type. Added in 4.3', 'my-events'),
+                'use_featured_image'    => _x('Use as cover image', 'Overrides the “Use as featured image” phrase for this post type. Added in 4.3', 'my-events'),
+                'archives'              => _x('Event group archives', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', 'my-events'),
+                'insert_into_item'      => _x('Insert into event group', 'Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4', 'my-events'),
+                'uploaded_to_this_item' => _x('Uploaded to this event group', 'Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4', 'my-events'),
+                'filter_items_list'     => _x('Filter event groups list', 'Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4', 'my-events'),
+                'items_list_navigation' => _x('Event groups list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'my-events'),
+                'items_list'            => _x('Event groups list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'my-events'),
+            ],
+            'public'             => true,
+            'publicly_queryable' => true,
+            'show_ui'            => true,
+            'show_in_menu'       => 'my-events',
+            'query_var'          => true,
+            'rewrite'            => ['slug' => 'event-group'],
+            'capability_type'    => 'post',
+            'has_archive'        => true,
+            'hierarchical'       => false,
+            'menu_position'      => null,
+            'supports'           => ['title'],
+        ]);
+
         register_post_type('invitee', [
             'labels'             => [
                 'name'                  => _x('Invitees', 'Post type general name', 'my-events'),
