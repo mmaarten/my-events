@@ -17,4 +17,14 @@ class Helpers
             'declined' => __('Declined', 'my-events'),
         ];
     }
+
+    public static function adminNotice($message, $type = 'info', $inline = false)
+    {
+        printf(
+            '<div class="notice notice-%1$s %2$s"><p>%3$s</p></div>',
+            sanitize_html_class($type),
+            $inline ? 'inline' : '',
+            esc_html($message)
+        );
+    }
 }

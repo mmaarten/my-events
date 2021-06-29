@@ -21,14 +21,15 @@ class AdminColumns
     public static function addEventColumns($columns)
     {
         return [
-            'cb'           => $columns['cb'],
-            'title'        => $columns['title'],
-            'time'         => __('Time of day', 'my-events'),
-            'organisers'   => __('Organisers', 'my-events'),
-            'participants' => __('Participants', 'my-events'),
-            'location'     => __('Location', 'my-events'),
-            'private'      => __('Private', 'my-events'),
-            'over'         => __('Over', 'my-events'),
+            'cb'               => $columns['cb'],
+            'title'            => $columns['title'],
+            'time'             => __('Time of day', 'my-events'),
+            'organisers'       => __('Organisers', 'my-events'),
+            'participants'     => __('Participants', 'my-events'),
+            'participants_num' => __('Number of participants', 'my-events'),
+            'location'         => __('Location', 'my-events'),
+            'private'          => __('Private', 'my-events'),
+            'over'             => __('Over', 'my-events'),
         ] + $columns;
     }
 
@@ -50,6 +51,13 @@ class AdminColumns
                 break;
             case 'participants':
                 echo $participants ? $participants : esc_html(self::NO_VALUE);
+                break;
+            case 'participants_num':
+                if ($event->isLimitedParticipants()) {
+                    printf('%1$d/%2$d', count($event->getParticipants()), $event->getMaxParticipants());
+                } else {
+                    echo count($event->getParticipants());
+                }
                 break;
             case 'location':
                 if ($location) {
