@@ -4,13 +4,13 @@ namespace My\Events;
 
 class Helpers
 {
-    public static function adminNotice($message, $type = 'info', $inline = false)
+    public static function adminNotice($message, $type = 'info', $inline = false, $html = false)
     {
         printf(
             '<div class="notice notice-%1$s %2$s"><p>%3$s</p></div>',
             sanitize_html_class($type),
             $inline ? 'inline' : '',
-            esc_html($message)
+            $html ? $message : esc_html($message)
         );
     }
 
@@ -72,7 +72,7 @@ class Helpers
         $return = [];
 
         foreach ((array) $post_ids as $post_id) {
-            $post = get_post($post_id);
+            $post = $post_id ? get_post($post_id) : null;
             if ($post) {
                 $return[] = sprintf(
                     '<a href="%1$s">%2$s</a>',

@@ -1,13 +1,33 @@
+#acf-my_events_event_group .acf-field[data-name="invitees_individual"],
+#acf-my_events_event_group .acf-field[data-name="invitees_group"],
+#acf-my_events_event_group .acf-field[data-name="location_id"],
+#acf-my_events_event_group .acf-field[data-name="location_input"],
+#acf-my_events_event_group .acf-field[data-name="max_subscriptions"] {
+  border-top: none;
+  padding-top: 0;
+}
+
+#acf-my_events_event_group .acf-field[data-name="invitees_individual"] .acf-label,
+#acf-my_events_event_group .acf-field[data-name="invitees_group"] .acf-label,
+#acf-my_events_event_group .acf-field[data-name="location_id"] .acf-label,
+#acf-my_events_event_group .acf-field[data-name="location_input"] .acf-label {
+  display: none;
+}
+
+#acf-my_events_event_group .acf-field[data-name="max_subscriptions"] .acf-label label {
+  font-weight: normal;
+}
+
 
 /**
  * 'Invitees' meta box on event edit screen.
  */
 
-.acf-field[data-key="field_60daf8ac12fca"] .acf-label {
+#acf-my_events_event_invitees_group .acf-field[data-key="my_events_event_invitees_list"] .acf-label {
   display: none;
 }
 
-.acf-field[data-key="field_60daf8ac12fca"] ul {
+#acf-my_events_event_invitees_group .acf-field[data-key="my_events_event_invitees_list"] ul {
   margin: 0;
 }
 

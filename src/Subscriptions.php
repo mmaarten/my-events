@@ -12,19 +12,6 @@ class Subscriptions
     public static function init()
     {
         add_action('template_redirect', [__CLASS__, 'process']);
-
-        add_filter('the_content', function ($content) {
-
-            if (is_singular('event')) {
-                ob_start();
-
-                self::form();
-
-                $content .= ob_get_clean();
-            }
-
-            return $content;
-        });
     }
 
     public static function form($post = null)
@@ -41,6 +28,11 @@ class Subscriptions
 
         $user_id = get_current_user_id();
 
+        if (! $event->hasAccess($user_id)) {
+            printf('<div class="alert alert-info" role="alert">%s</div>', esc_html__('You have no access to this event.', 'my-events'));
+            return;
+        }
+
         if ($event->isOver()) {
             printf('<div class="alert alert-info" role="alert">%s</div>', esc_html__('The event is over.', 'my-events'));
             return;
@@ -53,8 +45,14 @@ class Subscriptions
             return;
         }
 
+        $max_reached = $event->isLimitedParticipants() && count($event->getParticipants()) >= $event->getMaxParticipants();
+
         $can_accept  = $invitee->getStatus() == 'pending' || $invitee->getStatus() == 'declined';
         $can_decline = $invitee->getStatus() == 'pending' || $invitee->getStatus() == 'accepted';
+
+        if ($max_reached) {
+            $can_accept = false;
+        }
 
         ?>
 
@@ -65,7 +63,11 @@ class Subscriptions
             // Messages
 
             if (self::$message) {
-                printf('<div class="alert alert-success" role="alert">%s</div>', esc_html(self::$message));
+                printf('<div class="alert alert-danger" role="alert">%s</div>', esc_html(self::$message));
+            }
+
+            if ($invitee->getStatus() !== 'accepted' && $max_reached) {
+                printf('<div class="alert alert-warning" role="alert">%s</div>', esc_html__('The maximum amount of participants is reached.', 'my-events'));
             }
 
             if ($invitee->getStatus() === 'accepted') {

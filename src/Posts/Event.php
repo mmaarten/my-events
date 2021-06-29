@@ -137,25 +137,38 @@ class Event extends Post
         return in_array($user_id, $this->getOrganisers(['fields' => 'ID']));
     }
 
-    /**
-     * Get location
-     *
-     * @return string
-     */
     public function getLocation()
     {
-        return $this->getMeta('location', true);
+        $type = $this->getMeta('location_type', true);
+
+        if ($type === 'input') {
+            return $this->getMeta('location_input', true);
+        }
+
+        if ($type === 'id') {
+            $location_id = $this->getMeta('location_id', true);
+            $location = new Post($location_id);
+            return $location->getMeta('address', true);
+        }
+
+        return false;
     }
 
-    /**
-     * Set location
-     *
-     * @param string $value
-     * @return bool
-     */
-    public function setLocation($value)
+    public function setLocation($value, $type = 'input')
     {
-        return $this->updateMeta('location', $value);
+        if (in_array($type, ['input', 'id'])) {
+            if ($type === 'input') {
+                return $this->updateMeta('location_input', $value);
+            }
+
+            if ($type === 'id') {
+                return $this->updateMeta('location_id', $value);
+            }
+
+            $this->updateMeta('location_type', $type);
+        }
+
+        return false;
     }
 
     public function getInvitees($args = [])
@@ -331,8 +344,36 @@ class Event extends Post
         return $this->getEndTime('U') < date_i18n('U');
     }
 
+    public function isPrivate()
+    {
+        return $this->getMeta('is_private', true) ? true : false;
+    }
+
+    public function hasAccess($user_id)
+    {
+        if (! $this->isPrivate()) {
+            return true;
+        }
+
+        return $this->isMember($user_id);
+    }
+
+    public function isLimitedParticipants()
+    {
+        return $this->getMeta('limit_subscriptions', true) ? true : false;
+    }
+
+    public function getMaxParticipants()
+    {
+        return $this->getMeta('max_subscriptions', true);
+    }
+
     public function acceptInvitation($user_id)
     {
+        if (! $event->hasAccess($user_id)) {
+            return new WP_Error(__FUNCTION__, __('You have no access to this event.', 'my-events'));
+        }
+
         if ($this->isOver()) {
             return new WP_Error(__FUNCTION__, __('This event is over.', 'my-events'));
         }
@@ -347,6 +388,10 @@ class Event extends Post
             return true;
         }
 
+        if ($this->isLimitedParticipants() && count($this->getParticipants()) >= $this->getMaxParticipants()) {
+            return new \WP_Error(__FILE__, __('The maximum amount of participants is reached', 'my-events'));
+        }
+
         $invitee->setStatus('accepted');
 
         do_action('my_events/invitee_accepted_invitation', $invitee, $invitee->getUser(), $this);
@@ -356,6 +401,10 @@ class Event extends Post
 
     public function declineInvitation($user_id)
     {
+        if (! $event->hasAccess($user_id)) {
+            return new WP_Error(__FUNCTION__, __('You have no access to this event.', 'my-events'));
+        }
+
         if ($this->isOver()) {
             return new WP_Error(__FUNCTION__, __('This event is over.', 'my-events'));
         }

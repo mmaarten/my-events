@@ -30,5 +30,6 @@ if (!is_readable($autoloader)) {
 require $autoloader;
 
 define('MY_EVENTS_PLUGIN_FILE', __FILE__);
+define('MY_EVENTS_NONCE_NAME', 'my_events_nonce');
 
 add_action('plugins_loaded', ['My\Events\App', 'init']);

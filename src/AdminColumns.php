@@ -17,6 +17,12 @@ class AdminColumns
 
         add_filter('manage_invitee_posts_columns', [__CLASS__, 'addInviteeColumns']);
         add_action('manage_invitee_posts_custom_column', [__CLASS__, 'renderInviteeColumns'], 10, 2);
+
+        add_filter('manage_invitee_group_posts_columns', [__CLASS__, 'addInviteeGroupColumns']);
+        add_action('manage_invitee_group_posts_custom_column', [__CLASS__, 'renderInviteeGroupColumns'], 10, 2);
+
+        add_filter('manage_event_location_posts_columns', [__CLASS__, 'addEventLocationColumns']);
+        add_action('manage_event_location_posts_custom_column', [__CLASS__, 'renderEventLocationColumns'], 10, 2);
     }
 
     public static function addEventColumns($columns)
@@ -27,8 +33,10 @@ class AdminColumns
             'time'             => __('Time of day', 'my-events'),
             'organisers'       => __('Organisers', 'my-events'),
             'participants'     => __('Participants', 'my-events'),
+            'participants_num' => __('Number of participants', 'my-events'),
             'location'         => __('Location', 'my-events'),
             'over'             => __('Over', 'my-events'),
+            'private'            => __('Private', 'my-events'),
         ] + $columns;
     }
 
@@ -51,6 +59,13 @@ class AdminColumns
             case 'participants':
                 echo $participants ? $participants : esc_html(self::NO_VALUE);
                 break;
+            case 'participants_num':
+                if ($event->isLimitedParticipants()) {
+                    printf('%1$d/%2$d', count($event->getParticipants()), $event->getMaxParticipants());
+                } else {
+                    echo count($event->getParticipants());
+                }
+                break;
             case 'location':
                 if ($location) {
                     printf(
@@ -64,6 +79,9 @@ class AdminColumns
                 break;
             case 'over':
                 echo Helpers::renderBoolean($event->isOver());
+                break;
+            case 'private':
+                echo Helpers::renderBoolean($event->isPrivate());
                 break;
         }
     }
@@ -101,6 +119,58 @@ class AdminColumns
                 break;
             case 'email_sent':
                 echo Helpers::renderBoolean($invitee->getEmailSent());
+                break;
+        }
+    }
+
+    public static function addInviteeGroupColumns($columns)
+    {
+        return [
+            'cb'    => $columns['cb'],
+            'title' => $columns['title'],
+            'users' => __('Users', 'my-events'),
+        ] + $columns;
+    }
+
+    public static function renderInviteeGroupColumns($column, $post_id)
+    {
+        $post = new Post($post_id);
+
+        $users = Helpers::renderUsers($post->getMeta('users', true));
+
+        switch ($column) {
+            case 'users':
+                echo $users ? $users : esc_html(self::NO_VALUE);
+                break;
+        }
+    }
+
+    public static function addEventLocationColumns($columns)
+    {
+        return [
+            'cb'      => $columns['cb'],
+            'title'   => $columns['title'],
+            'address' => __('Address', 'my-events'),
+        ] + $columns;
+    }
+
+    public static function renderEventLocationColumns($column, $post_id)
+    {
+        $post = new Post($post_id);
+
+        $address = $post->getMeta('address', true);
+
+        switch ($column) {
+            case 'address':
+                if (trim($address)) {
+                    printf(
+                        '<a href="%1$s" target="_blank">%2$s</a>',
+                        esc_url(Helpers::getMapURL($address)),
+                        esc_html($address)
+                    );
+                } else {
+                    echo esc_html(self::NO_VALUE);
+                }
                 break;
         }
     }

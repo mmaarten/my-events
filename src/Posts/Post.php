@@ -39,4 +39,31 @@ class Post
     {
         return delete_post_meta($this->ID, $meta_key, $meta_value = '');
     }
+
+    public function getField($selector, $format_value = true)
+    {
+        if (function_exists('get_field')) {
+            return get_field($selector, $this->ID, $format_value);
+        }
+
+        return null;
+    }
+
+    public function updateField($selector, $value)
+    {
+        if (function_exists('update_field')) {
+            return update_field($selector, $value, $this->ID);
+        }
+
+        return false;
+    }
+
+    public function deleteField($selector)
+    {
+        if (function_exists('delete_field')) {
+            return delete_field($selector, $this->ID);
+        }
+
+        return false;
+    }
 }

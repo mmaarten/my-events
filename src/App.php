@@ -11,6 +11,7 @@ class App
         }, [
             'Debug',
             'PostTypes',
+            'Fields',
             'AdminMenu',
             'AdminColumns',
             'Assets',
