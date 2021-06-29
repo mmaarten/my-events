@@ -18,8 +18,49 @@ class Events
         add_action('before_delete_post', [__CLASS__, 'beforeDeletePost']);
         add_action('admin_notices', [__CLASS__, 'adminNotices']);
         add_action('pre_get_posts', [__CLASS__, 'excludePrivateEvents'], PHP_INT_MAX);
+        add_action('add_meta_boxes', [__CLASS__, 'metaBoxes']);
         add_filter('acf/load_value/key=my_events_event_invitees_individual', [__CLASS__, 'updateInviteesField'], 10, 2);
         add_filter('acf/load_field/key=my_events_event_invitees_list', [__CLASS__, 'renderEventInvitees']);
+        add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
+        add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
+    }
+
+    public static function getEventClasses($post_id)
+    {
+        $event = new Event($post_id);
+
+        $classes = [];
+
+        $classes[] = 'is-event';
+
+        if ($event->isOver()) {
+            $classes[] = 'is-event-over';
+        }
+
+        if ($event->isPrivate()) {
+            $classes[] = 'is-private-event';
+        }
+
+        if (is_user_logged_in()) {
+            $invitee = $event->getInvitee(get_current_user_id());
+            if ($invitee) {
+                $classes[] = 'is-invitee';
+                $classes[] = sprintf('is-invitee-%s', $invitee->getStatus());
+            }
+        }
+
+        if (is_admin() && self::isEditableEvent($event->ID)) {
+            $classes[] = 'is-editable-event';
+        }
+
+        return $classes;
+    }
+
+    public static function isEditableEvent($post_id)
+    {
+        $event = new Event($post_id);
+
+        return apply_filters('my_events/is_editable_event', ! $event->isOver(), $event);
     }
 
     /**
@@ -257,6 +298,10 @@ class Events
         if ($event->isOver()) {
             Helpers::adminNotice(__('This event is over.', 'my-events'), 'error');
         }
+
+        if ($event->isPrivate()) {
+            Helpers::adminNotice(__('This event is only accessible to organisers and invitees of this event.', 'my-events'), 'info');
+        }
     }
 
     /**
@@ -369,5 +414,36 @@ class Events
         $field['message'] = $str;
 
         return $field;
+    }
+
+    public static function adminBodyClass($classes)
+    {
+        $screen = get_current_screen();
+
+        if ($screen->id == 'event') {
+            $classes .= ' ' . implode(' ', self::getEventClasses($_GET['event']));
+        }
+
+        return $classes;
+    }
+
+    public static function postClass($classes, $class, $post_id)
+    {
+        if (get_post_type($post_id) === 'event') {
+            $classes = array_merge($classes, self::getEventClasses($post_id));
+        }
+
+        return $classes;
+    }
+
+    public static function metaBoxes($post_type)
+    {
+        $screen = get_current_screen();
+
+        if ($screen->id === 'event') {
+            if (! self::isEditableEvent($_GET['post'])) {
+                remove_meta_box('submitdiv', 'event', 'side');
+            }
+        }
     }
 }

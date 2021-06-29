@@ -68,7 +68,7 @@ class Debug
                         'Updated post #%1$s meta "%2$s" %3$s.',
                         $object_id,
                         $meta_key,
-                        var_export(get_post_meta($object_id, $meta_key, true))
+                        var_export(get_post_meta($object_id, $meta_key, true), true)
                     )
                 );
             }

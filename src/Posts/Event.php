@@ -151,7 +151,8 @@ class Event extends Post
             $post_id = $this->getMeta('location_id', true);
 
             if ($post_id && get_post_type($post_id)) {
-                return get_the_title($post_id);
+                $post = new Post($post_id);
+                return $post->getMeta('address', true);
             }
         }
 

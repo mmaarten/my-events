@@ -107,7 +107,7 @@ class Fields
 
         acf_add_local_field([
             'key'           => 'my_events_event_invitees_individual',
-            'label'         => __('Individual invitees', 'my-events'),
+            'label'         => __('Individual', 'my-events'),
             'instructions'  => __('', 'my-events'),
             'name'          => 'invitees_individual',
             'type'          => 'user',
@@ -129,7 +129,7 @@ class Fields
 
         acf_add_local_field([
             'key'           => 'my_events_event_invitees_group',
-            'label'         => __('Group of invitees', 'my-events'),
+            'label'         => __('Group', 'my-events'),
             'instructions'  => __('', 'my-events'),
             'name'          => 'invitees_group',
             'type'          => 'post_object',

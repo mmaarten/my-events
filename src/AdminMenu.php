@@ -21,10 +21,7 @@ class AdminMenu
     public static function registerPostTypeArgs($args, $post_type)
     {
         if (in_array($post_type, ['event', 'invitee', 'invitee_group', 'event_location'])) {
-            if ($args['show_in_menu']) {
-                $args['show_in_menu'] = 'my-events';
-                $args['labels']['all_items'] = $args['labels']['name'];
-            }
+            $args['labels']['all_items'] = $args['labels']['name'];
         }
 
         return $args;

@@ -48,7 +48,7 @@ class PostTypes
             'public'             => true,
             'publicly_queryable' => true,
             'show_ui'            => true,
-            'show_in_menu'       => true,
+            'show_in_menu'       => 'my-events',
             'query_var'          => true,
             'rewrite'            => ['slug' => 'event'],
             'capability_type'    => 'post',
@@ -90,8 +90,8 @@ class PostTypes
             'description'        => 'Invitee custom post type.',
             'public'             => false,
             'publicly_queryable' => false,
-            'show_ui'            => true,
-            'show_in_menu'       => false,
+            'show_ui'            => current_user_can('administrator'),
+            'show_in_menu'       => current_user_can('administrator') ? 'my-events' : false,
             'query_var'          => true,
             'rewrite'            => ['slug' => 'invitee'],
             'capability_type'    => 'post',
@@ -107,9 +107,9 @@ class PostTypes
                 'delete_posts'        => 'update_core',
                 'delete_others_posts' => 'update_core',
                 'read_private_posts'  => 'update_core',
-                'edit_post'           => 'edit_posts',
+                'edit_post'           => 'update_core',
                 'delete_post'         => 'update_core',
-                'read_post'           => 'edit_posts',
+                'read_post'           => 'update_core',
             ]
         ]);
 
@@ -143,8 +143,8 @@ class PostTypes
             'description'        => 'Invitee group custom post type.',
             'public'             => false,
             'publicly_queryable' => false,
-            'show_ui'            => true,
-            'show_in_menu'       => 'edit.php?post_type=event',
+            'show_ui'            => current_user_can('administrator'),
+            'show_in_menu'       => current_user_can('administrator') ? 'my-events' : false,
             'query_var'          => true,
             'rewrite'            => ['slug' => 'invitee-group'],
             'capability_type'    => 'post',
@@ -153,7 +153,17 @@ class PostTypes
             'menu_position'      => 20,
             'supports'           => ['title'],
             'taxonomies'         => [],
-            'show_in_rest'       => false
+            'show_in_rest'       => false,
+            'capabilities'       => [
+                'publish_posts'       => 'update_core',
+                'edit_others_posts'   => 'update_core',
+                'delete_posts'        => 'update_core',
+                'delete_others_posts' => 'update_core',
+                'read_private_posts'  => 'update_core',
+                'edit_post'           => 'update_core',
+                'delete_post'         => 'update_core',
+                'read_post'           => 'update_core',
+            ]
         ]);
 
         register_post_type('event_location', [
@@ -186,8 +196,8 @@ class PostTypes
             'description'        => 'Event location custom post type.',
             'public'             => false,
             'publicly_queryable' => false,
-            'show_ui'            => true,
-            'show_in_menu'       => 'edit.php?post_type=event',
+            'show_ui'            => current_user_can('administrator'),
+            'show_in_menu'       => current_user_can('administrator') ? 'my-events' : false,
             'query_var'          => false,
             'rewrite'            => ['slug' => 'event-location'],
             'capability_type'    => 'post',
@@ -196,7 +206,17 @@ class PostTypes
             'menu_position'      => 20,
             'supports'           => ['title'],
             'taxonomies'         => [],
-            'show_in_rest'       => false
+            'show_in_rest'       => false,
+            'capabilities'       => [
+                'publish_posts'       => 'update_core',
+                'edit_others_posts'   => 'update_core',
+                'delete_posts'        => 'update_core',
+                'delete_others_posts' => 'update_core',
+                'read_private_posts'  => 'update_core',
+                'edit_post'           => 'update_core',
+                'delete_post'         => 'update_core',
+                'read_post'           => 'update_core',
+            ]
         ]);
     }
 }
