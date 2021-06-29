@@ -14,7 +14,7 @@ class Events
     public static function init()
     {
         add_action('acf/save_post', [__CLASS__, 'savePost']);
-        add_action('trash_post', [__CLASS__, 'trashPost']);
+        add_action('wp_trash_post', [__CLASS__, 'trashPost']);
         add_action('before_delete_post', [__CLASS__, 'beforeDeletePost']);
         add_action('admin_notices', [__CLASS__, 'adminNotices']);
         add_action('pre_get_posts', [__CLASS__, 'excludePrivateEvents'], PHP_INT_MAX);
@@ -261,6 +261,11 @@ class Events
 
         // Notify
         do_action('my_events/trash_event', $event);
+
+        // TODO : Check if event was published.
+        if (! $event->isOver()) {
+            do_action('my_events/event_cancelled', $event);
+        }
     }
 
     /**
@@ -421,7 +426,7 @@ class Events
         $screen = get_current_screen();
 
         if ($screen->id == 'event') {
-            $classes .= ' ' . implode(' ', self::getEventClasses($_GET['event']));
+            $classes .= ' ' . implode(' ', self::getEventClasses($_GET['post']));
         }
 
         return $classes;

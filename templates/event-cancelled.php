@@ -1,14 +1,11 @@
 <?php
 
-$invitee = $args['invitee'];
-$user    = $args['user'];
-$event   = $args['event'];
+$user  = $args['user'];
+$event = $args['event'];
 
 ?>
 
-<p><?php esc_html_e('Following person declined your invitation:', 'my-events'); ?></p>
-
-<p><?php echo esc_html($user->display_name); ?></p>
+<p><?php esc_html_e('Following event has been cancelled:', 'my-events'); ?></p>
 
 <p><a href="<?php echo esc_url(get_permalink($event->ID)); ?>"><?php echo esc_html($event->post_title); ?></a></p>
 

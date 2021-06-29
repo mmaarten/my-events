@@ -17,7 +17,7 @@ class App
             'Assets',
             'Events',
             'Subscriptions',
-            'Shortcodes',
+            'Notifications',
         ]);
     }
 

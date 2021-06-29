@@ -20,7 +20,7 @@ class Debug
             }
         }, 0);
 
-        add_action('trash_post', function ($post_id) {
+        add_action('wp_trash_post', function ($post_id) {
             if (in_array(get_post_type($post_id), self::$post_types)) {
                 self::log(sprintf('== Trash post #%1$s (%2$s).', $post_id, get_post_type($post_id)));
             }
@@ -75,7 +75,7 @@ class Debug
         }, 0, 4);
 
         add_filter('pre_wp_mail', function ($return, $args) {
-            self::log(sprintf('email (to: %1$s, subject: "%2$s")', implode(', ', (array)$args['to']), $args['subject']));
+            self::log(sprintf('Email to %1$s: "%2$s".', implode(', ', (array)$args['to']), $args['subject']));
             return $return;
         }, 0, 2);
 
@@ -100,6 +100,28 @@ class Debug
                 )
             );
         }, 0, 2);
+
+        add_action('my_events/invitee_accepted_invitation', function ($invitee, $user_id, $event) {
+            self::log(
+                sprintf(
+                    'Invitee #%1$s accepted invitation. (user: #%2$s, event: #%3$s)',
+                    $invitee->ID,
+                    $invitee->getUser(),
+                    $invitee->getEvent()
+                )
+            );
+        }, 0, 3);
+
+        add_action('my_events/invitee_declined_invitation', function ($invitee, $user_id, $event) {
+            self::log(
+                sprintf(
+                    'Invitee #%1$s declined invitation. (user: #%2$s, event: #%3$s)',
+                    $invitee->ID,
+                    $invitee->getUser(),
+                    $invitee->getEvent()
+                )
+            );
+        }, 0, 3);
     }
 
     public static function isEnabled()

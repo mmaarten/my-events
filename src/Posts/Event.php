@@ -289,7 +289,7 @@ class Event extends Post
         $invitee->setUser($user_id);
         $invitee->setStatus($status);
 
-        do_action('my_events/invitee_added', $invitee, $this);
+        do_action('my_events/invitee_added', $invitee, $invitee->getUser(), $this);
 
         return $post_id;
     }
@@ -320,7 +320,7 @@ class Event extends Post
         $invitee = $this->getInvitee($user_id);
 
         if ($invitee) {
-            do_action('my_events/invitee_removed', $invitee, $this);
+            do_action('my_events/invitee_removed', $invitee, $invitee->getUser(), $this);
             wp_delete_post($invitee->ID, true);
         }
 

@@ -6,6 +6,8 @@ use My\Events\Posts\Event;
 
 class Subscriptions
 {
+    protected static $message = '';
+
     public static function init()
     {
         add_action('template_redirect', [__CLASS__, 'maybeSubscribe']);
@@ -39,7 +41,7 @@ class Subscriptions
         }
 
         if (is_wp_error($result)) {
-
+            self::$message = $result->get_error_message();
         }
     }
 
@@ -57,6 +59,10 @@ class Subscriptions
 
         if (! $invitee) {
             return;
+        }
+
+        if (self::$message) {
+            printf('<p>%s</p>', esc_html(self::$message));
         }
 
         switch ($invitee->getStatus()) {
@@ -124,7 +130,7 @@ class Subscriptions
         $invitee = $event->getInvitee($user_id);
 
         if (! $invitee) {
-            return new WP_Error(__FUNCTION__, __('You are not invited.', 'my-events'));
+            return new WP_Error(__FUNCTION__, __('You are not invited for this event.', 'my-events'));
         }
 
         if ($invitee->getStatus() === 'accepted') {
