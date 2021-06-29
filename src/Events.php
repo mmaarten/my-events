@@ -198,6 +198,7 @@ class Events
                 $repeat_exclude = wp_list_pluck($repeat_exclude, 'date', 'date');
 
                 $times = Helpers::getTimes($start, $end, $repeat_end, $repeat, $repeat_exclude);
+                $times = array_slice($times, 0, 50);
 
                 $processed = [];
 
