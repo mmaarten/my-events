@@ -1,0 +1,20 @@
+
+/**
+ * 'Invitees' meta box on event edit screen.
+ */
+
+.acf-field[data-key="field_60daf8ac12fca"] .acf-label {
+  display: none;
+}
+
+.acf-field[data-key="field_60daf8ac12fca"] ul {
+  margin: 0;
+}
+
+/**
+ * Admin notices.
+ */
+
+.acf-fields .notice {
+  margin: 14px;
+}

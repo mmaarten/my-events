@@ -17,12 +17,6 @@ class AdminColumns
 
         add_filter('manage_invitee_posts_columns', [__CLASS__, 'addInviteeColumns']);
         add_action('manage_invitee_posts_custom_column', [__CLASS__, 'renderInviteeColumns'], 10, 2);
-
-        add_filter('manage_invitees_group_posts_columns', [__CLASS__, 'addInviteesGroupColumns']);
-        add_action('manage_invitees_group_posts_custom_column', [__CLASS__, 'renderInviteesGroupColumns'], 10, 2);
-
-        add_filter('manage_event_location_posts_columns', [__CLASS__, 'addEventLocationColumns']);
-        add_action('manage_event_location_posts_custom_column', [__CLASS__, 'renderEventLocationColumns'], 10, 2);
     }
 
     public static function addEventColumns($columns)
@@ -33,9 +27,7 @@ class AdminColumns
             'time'             => __('Time of day', 'my-events'),
             'organisers'       => __('Organisers', 'my-events'),
             'participants'     => __('Participants', 'my-events'),
-            'participants_num' => __('Number of participants', 'my-events'),
             'location'         => __('Location', 'my-events'),
-            'private'          => __('Private', 'my-events'),
             'over'             => __('Over', 'my-events'),
         ] + $columns;
     }
@@ -45,8 +37,8 @@ class AdminColumns
         $event = new Event($post_id);
 
         $time         = $event->getTimeFromUntil();
-        $organisers   = self::renderUsers($event->getOrganisers(['fields' => 'ID']));
-        $participants = self::renderUsers($event->getParticipants(['fields' => 'ID']));
+        $organisers   = Helpers::renderUsers($event->getOrganisers(['fields' => 'ID']));
+        $participants = Helpers::renderUsers($event->getParticipants(['fields' => 'ID']));
         $location     = $event->getLocation();
 
         switch ($column) {
@@ -59,13 +51,6 @@ class AdminColumns
             case 'participants':
                 echo $participants ? $participants : esc_html(self::NO_VALUE);
                 break;
-            case 'participants_num':
-                if ($event->isLimitedParticipants()) {
-                    printf('%1$d/%2$d', count($event->getParticipants()), $event->getMaxParticipants());
-                } else {
-                    echo count($event->getParticipants());
-                }
-                break;
             case 'location':
                 if ($location) {
                     printf(
@@ -77,11 +62,8 @@ class AdminColumns
                     echo esc_html(self::NO_VALUE);
                 }
                 break;
-            case 'private':
-                echo self::renderBoolean($event->isPrivate());
-                break;
             case 'over':
-                echo self::renderBoolean($event->isOver());
+                echo Helpers::renderBoolean($event->isOver());
                 break;
         }
     }
@@ -101,8 +83,8 @@ class AdminColumns
     {
         $invitee = new Invitee($post_id);
 
-        $user      = self::renderUsers($invitee->getUser());
-        $event     = self::renderPosts($invitee->getEvent());
+        $user      = Helpers::renderUsers($invitee->getUser());
+        $event     = Helpers::renderPosts($invitee->getEvent());
         $status    = $invitee->getStatus();
         $statusses = Helpers::getInviteeStatusses();
 
@@ -117,98 +99,5 @@ class AdminColumns
                 echo isset($statusses[$status]) ? esc_html($statusses[$status]) : esc_html(self::NO_VALUE);
                 break;
         }
-    }
-
-    public static function addEventLocationColumns($columns)
-    {
-        return [
-            'cb'      => $columns['cb'],
-            'title'   => $columns['title'],
-            'address' => __('Address', 'my-events'),
-        ] + $columns;
-    }
-
-    public static function renderEventLocationColumns($column, $post_id)
-    {
-        $post = new Post($post_id);
-
-        $address = $post->getMeta('address', true);
-
-        switch ($column) {
-            case 'address':
-                if (trim($address)) {
-                    printf(
-                        '<a href="%1$s" target="_blank">%2$s</a>',
-                        esc_url(Helpers::getMapURL($address)),
-                        esc_html($address)
-                    );
-                } else {
-                    echo esc_html(self::NO_VALUE);
-                }
-                break;
-        }
-    }
-
-    public static function addInviteesGroupColumns($columns)
-    {
-        return [
-            'cb'    => $columns['cb'],
-            'title' => $columns['title'],
-            'users' => __('Users', 'my-events'),
-        ] + $columns;
-    }
-
-    public static function renderInviteesGroupColumns($column, $post_id)
-    {
-        $post = new Post($post_id);
-
-        $users = self::renderUsers($post->getMeta('users', true));
-
-        switch ($column) {
-            case 'users':
-                echo $users ? $users : esc_html(self::NO_VALUE);
-                break;
-        }
-    }
-
-    protected static function renderUsers($user_ids, $seperator = ', ')
-    {
-        $return = [];
-
-        foreach ((array) $user_ids as $user_id) {
-            $user = get_userdata($user_id);
-            if ($user) {
-                $return[] = sprintf(
-                    '<a href="%1$s">%2$s</a>',
-                    esc_url(get_edit_user_link($user->ID)),
-                    esc_html($user->display_name)
-                );
-            }
-        }
-
-        return implode($seperator, $return);
-    }
-
-    protected static function renderPosts($post_ids, $seperator = ', ')
-    {
-        $return = [];
-
-        foreach ((array) $post_ids as $post_id) {
-            $post = get_post($post_id);
-            if ($post) {
-                $return[] = sprintf(
-                    '<a href="%1$s">%2$s</a>',
-                    esc_url(get_edit_post_link($post->ID)),
-                    esc_html($post->post_title)
-                );
-            }
-        }
-
-        return implode($seperator, $return);
-    }
-
-    protected static function renderBoolean($value)
-    {
-        return $value ? esc_html__('yes', 'my-events') : esc_html__('no', 'my-events');
     }
 }

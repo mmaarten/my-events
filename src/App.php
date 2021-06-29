@@ -11,12 +11,10 @@ class App
         }, [
             'Debug',
             'PostTypes',
-            'Assets',
             'AdminMenu',
             'AdminColumns',
+            'Assets',
             'Events',
-            'Subscriptions',
-            'Notifications',
         ]);
     }
 }

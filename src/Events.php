@@ -2,9 +2,7 @@
 
 namespace My\Events;
 
-use My\Events\Posts\Post;
 use My\Events\Posts\Event;
-use My\Events\Posts\Invitee;
 
 class Events
 {
@@ -13,78 +11,17 @@ class Events
         add_action('acf/save_post', [__CLASS__, 'savePost']);
         add_action('wp_trash_post', [__CLASS__, 'trashPost']);
         add_action('before_delete_post', [__CLASS__, 'beforeDeletePost']);
-        add_action('delete_user', [__CLASS__, 'beforeDeleteUser'], 10, 3);
-        add_action('pre_get_posts', [__CLASS__, 'excludePrivateEvents']);
-        add_action('admin_enqueue_scripts', [__CLASS__, 'checkAccessEventEdit']);
+        add_action('transition_post_status', [__CLASS__, 'transitionPostStatus'], 10, 3);
 
-        add_filter('acf/load_value/key=field_60dacb8f3a3ca', [__CLASS__, 'updateInviteesField'], 10, 3);
-        add_filter('acf/load_field/key=field_60daf8ac12fca', [__CLASS__, 'renderInvitees']);
+        add_filter('acf/load_value/key=field_60db0c1e15298', [__CLASS__, 'updateInvitiesField'], 10, 3);
+        add_filter('acf/load_field/key=field_60daf8ac12fca', [__CLASS__, 'renderInvities'], 10, 2);
     }
 
     public static function getEvents($args = [])
     {
         return get_posts([
             'post_type'   => 'event',
-            'post_status' => 'publish',
             'numberposts' => 999,
-        ] + $args);
-    }
-
-    public static function getEventsByUser($user_id, $args = [])
-    {
-        $invitees = self::getInviteesByUser($user_id);
-
-        $events = [];
-        foreach ($invitees as $invitee) {
-            $invitee = new Invitee($invitee);
-            $events[] = $invitee->getEvent();
-        }
-
-        if (! $events) {
-            return [];
-        }
-
-        return self::getEvents([
-            'include' => $events,
-        ] + $args);
-    }
-
-    public static function getEventsByTime($start, $end, $args = [])
-    {
-        return self::getEvents([
-            'relation' => 'AND',
-            'meta_query' => [
-                [
-                    'key'     => 'start',
-                    'compare' => '=',
-                    'value'   => $start,
-                    'type'    => 'DATETIME',
-                ],
-                [
-                    'key'     => 'end',
-                    'compare' => '=',
-                    'value'   => $end,
-                    'type'    => 'DATETIME',
-                ],
-            ],
-        ] + $args);
-    }
-
-    public static function getEventsByInviteesGroup($group_id, $args = [])
-    {
-        return Events::getEvents([
-            'meta_key'     => 'invitees_group',
-            'meta_compare' => '=',
-            'meta_value'   => $group_id,
-        ] + $args);
-    }
-
-    public static function getPrivateEvents($args = [])
-    {
-        return self::getEvents([
-            'meta_key'     => 'is_private',
-            'meta_compare' => '=',
-            'meta_value'   => true,
         ] + $args);
     }
 
@@ -92,335 +29,106 @@ class Events
     {
         return get_posts([
             'post_type'   => 'invitee',
-            'post_status' => 'publish',
             'numberposts' => 999,
         ] + $args);
-    }
-
-    public static function getInviteesByUser($user_id, $args = [])
-    {
-        return self::getInvitees([
-            'meta_key'     => 'user',
-            'meta_compare' => '=',
-            'meta_value'   => $user_id,
-        ] + $args);
-    }
-
-    public static function updateEventFromFields($post_id)
-    {
-        $event = new Event($post_id);
-
-        // Get invitees from settings field
-
-        $invitees_type = $event->getMeta('invitees_type', true);
-
-        $invitees = [];
-
-        if ($invitees_type === 'individual') {
-            $invitees = $event->getMeta('invitees_individual', true);
-        }
-
-        if ($invitees_type === 'group') {
-            $group_id = $event->getMeta('invitees_group', true);
-            if ($group_id && get_post_type($group_id)) {
-                $group = new Post($group_id);
-                $invitees = $group->getMeta('users', true);
-            }
-        }
-
-        // Create/delete invitees.
-        $event->setInvitees($invitees);
-
-        // Empty settings field.
-        $event->updateMeta('invitees_individual', []);
     }
 
     public static function savePost($post_id)
     {
         // Check post type.
-        if (get_post_type($post_id) === 'event') {
-            self::updateEventFromFields($post_id);
+        if (get_post_type($post_id) !== 'event') {
+            return;
         }
 
-        if (get_post_type($post_id) === 'invitees_group') {
-
-            $group = new Post($post_id);
-
-            $prev_users = $group->getMeta('prev_users', true);
-
-            if (! is_array($prev_users)) {
-                $prev_users = [];
-            }
-
-            $curr_users = $group->getMeta('users', true);
-
-            if (! is_array($curr_users)) {
-                $curr_users = [];
-            }
-
-            $add_invitees    = array_diff($curr_users, $prev_users);
-            $remove_invitees = array_diff($prev_users, $curr_users);
-
-            if ($add_invitees || $remove_invitees) {
-                $events = self::getEventsByInviteesGroup($group->ID);
-
-                foreach ($add_invitees as $user_id) {
-                    foreach ($events as $event) {
-                        $event = new Event($event);
-                        if (! $event->isOver()) {
-                            $event->addInvitee($user_id);
-                        }
-                    }
-                }
-
-                foreach ($remove_invitees as $user_id) {
-                    foreach ($events as $event) {
-                        $event = new Event($event);
-                        if (! $event->isOver()) {
-                            $event->removeInviteeByUser($user_id);
-                        }
-                    }
-                }
-            }
-
-            $group->updateMeta('prev_users', $curr_users);
-        }
-
-        if (get_post_type($post_id) === 'event_group') {
-
-            $group = new Post($post_id);
-
-            $start      = $group->getMeta('start', true);
-            $end        = $group->getMeta('end', true);
-            $repeat     = $group->getMeta('repeat', true);
-            $repeat_end = $group->getMeta('repeat_end', true);
-
-            $times = Helpers::repeatDates($start, $end, $repeat_end, $repeat);
-
-            $processed = [];
-
-            foreach ($times as $time) {
-
-                $event = current(self::getEventsByTime($time['start'], $time['end'], [
-                    'meta_key'     => 'group',
-                    'meta_compare' => '=',
-                    'meta_value'   => $group->ID,
-                ]));
-
-                $postdata = [
-                    'post_title'   => $group->post_title,
-                    'post_content' => '',
-                    'post_status'  => $group->post_status,
-                    'post_type'    => 'event',
-                ];
-
-                if ($event) {
-                    $postdata['ID'] = $event->ID;
-                }
-
-                $post_id = wp_insert_post($postdata);
-
-                $event = new Event($post_id);
-                $event->updateMeta('start', $time['start']);
-                $event->updateMeta('end', $time['end']);
-                $event->updateMeta('description', $group->getMeta('description', true));
-                $event->updateMeta('organisers', $group->getMeta('organisers', true));
-                $event->updateMeta('invitees_type', $group->getMeta('invitees_type', true));
-                $event->updateMeta('invitees_individual', $group->getMeta('invitees_individual', true));
-                $event->updateMeta('invitees_group', $group->getMeta('invitees_group', true));
-                $event->updateMeta('limit_participants', $group->getMeta('limit_participants', true));
-                $event->updateMeta('max_participants', $group->getMeta('max_participants', true));
-                $event->updateMeta('location_type', $group->getMeta('location_type', true));
-                $event->updateMeta('location_input', $group->getMeta('location_input', true));
-                $event->updateMeta('location_id', $group->getMeta('location_id', true));
-                $event->updateMeta('is_private', $group->getMeta('is_private', true));
-                $event->updateMeta('group', $group->ID);
-
-                self::updateEventFromFields($event->ID);
-
-                $processed[$post_id] = true;
-            }
-
-            error_log(print_r($times, true));
-        }
+        // Update invitees
+        self::updateInvities($post_id);
     }
 
     public static function trashPost($post_id)
     {
         // Check post type.
-        if (get_post_type($post_id) === 'event') {
-            $event = new Event($post_id);
+        if (get_post_type($post_id) !== 'event') {
+            return;
+        }
+
+        $event = new Event($post_id);
+
+        if (! $event->isOver() && $event->getMeta('was_published', true)) {
+            do_action('my_events/event_cancelled', $event);
         }
     }
 
     public static function beforeDeletePost($post_id)
     {
         // Check post type.
-        if (get_post_type($post_id) === 'event') {
-            // Get event.
-            $event = new Event($post_id);
-
-            // Remove all invitees.
-            $event->setInvitees([]);
-        }
-    }
-
-    public static function beforeDeleteUser($user_id, $reassign, $user)
-    {
-        // Get invitees by user.
-        $invitees = self::getInviteesByUser($user_id);
-
-        // Remove invitees.
-        foreach ($invitees as $invitee) {
-            $invitee = new Invitee($invitee);
-            $event_id = $invitee->getEvent();
-            if ($event_id && get_post_type($event_id)) {
-                $event = new Event($event_id);
-                $event->removeInvitee($invitee->ID);
-            } else {
-                wp_delete_post($invitee->ID, true);
-            }
-        }
-    }
-
-    public static function updateInviteesField($value, $post_id, $field)
-    {
-        if (! $value) {
-            // Populates field with invitees comming from our post type.
-            $event = new Event($post_id);
-            return $event->getInviteesUsers(null, ['fields' => 'ID']);
-        }
-
-        // Return.
-        return $value;
-    }
-
-    public static function renderInvitees($field)
-    {
-        $event = new Event($_GET['post']);
-
-        $accepted = $event->getInviteesUsers('accepted');
-        $pending  = $event->getInviteesUsers('pending');
-        $declined = $event->getInviteesUsers('declined');
-
-        if (! $accepted && ! $pending && ! $declined) {
-            Helpers::adminNotice(__('No invitees found.', 'my-events'), 'info', true);
+        if (get_post_type($post_id) !== 'event') {
             return;
         }
 
-        $return = '<ul>';
+        // Get event.
+        $event = new Event($post_id);
 
-        foreach ($accepted as $user) {
-            $invitee = $event->getInviteeByUser($user->ID);
-            $return .= sprintf(
-                '<li><a href="%1$s">%2$s</a> (%3$s)</li>',
-                get_edit_post_link($invitee->ID),
-                esc_html($user->display_name),
-                esc_html__('accepted', 'my-events')
-            );
-        }
-
-        foreach ($pending as $user) {
-            $invitee = $event->getInviteeByUser($user->ID);
-            $return .= sprintf(
-                '<li><a href="%1$s">%2$s</a> (%3$s)</li>',
-                get_edit_post_link($invitee->ID),
-                esc_html($user->display_name),
-                esc_html__('pending', 'my-events')
-            );
-        }
-
-        foreach ($declined as $user) {
-            $invitee = $event->getInviteeByUser($user->ID);
-            $return .= sprintf(
-                '<li><a href="%1$s">%2$s</a> (%3$s)</li>',
-                get_edit_post_link($invitee->ID),
-                esc_html($user->display_name),
-                esc_html__('declined', 'my-events')
-            );
-        }
-
-        $return .= '</ul>';
-
-        $field['message'] = $return;
-
-        return $field;
+        // Remove all invitees.
+        $event->setInvitees([]);
     }
 
-    public static function excludePrivateEvents($query)
+    public static function transitionPostStatus($new_status, $old_status, $post)
     {
-        // Check role
-
-        if (current_user_can('administrator')) {
-            return;
-        }
-
         // Check post type.
-
-        if (! in_array('event', (array) $query->get('post_type'))) {
+        if (get_post_type($post) !== 'event') {
             return;
         }
 
-        remove_action(current_action(), [__CLASS__, __FUNCTION__]);
+        $event = new Event($post);
 
-        $private_events = self::getPrivateEvents(['fields' => 'ids']);
-
-        add_action(current_action(), [__CLASS__, __FUNCTION__]);
-
-        $exclude = $query->get('post__not_in');
-
-        if (! is_array($exclude)) {
-            $exclude = [];
+        if ($new_status === 'publish' || $old_status === 'publish') {
+            $event->updateMeta('was_published', true);
         }
-
-        if (is_user_logged_in()) {
-            $user_id = get_current_user_id();
-            foreach ($private_events as $event_id) {
-                $event = new Event($event_id);
-
-                if (is_admin() && $user_id == $event->post_author) {
-                    continue;
-                }
-
-                if (! $event->hasAccess($user_id)) {
-                    $exclude[] = $event->ID;
-                }
-            }
-        } else {
-            $exclude = $private_events;
-        }
-
-        $query->set('post__not_in', $exclude);
     }
 
-    public static function checkAccessEventEdit()
+    public static function updateInvities($event_id)
+    {
+        // Get event.
+        $event = new Event($event_id);
+
+        // Get user ids from settings field.
+        $user_ids = $event->getMeta('invitees', true);
+
+        // Create invitees
+        $event->setInvitees($user_ids);
+
+        // Remove settings.
+        $event->deleteMeta('invitees');
+    }
+
+    public static function updateInvitiesField($value, $post_id, $field)
+    {
+        // Stop when value. We need to access it on post save.
+        if ($value) {
+            return $value;
+        }
+
+        // Populates field with invitees from our post type.
+
+        $event = new Event($post_id);
+
+        return $event->getInviteesUsers(null, ['fields' => 'ID']);
+    }
+
+    public static function renderInvities($field)
     {
         $screen = get_current_screen();
 
         if ($screen->id !== 'event') {
-            return;
+            return $field;
         }
 
         $event = new Event($_GET['post']);
 
-        if (current_user_can('administrator')) {
-            return;
-        }
+        $field['message'] = Helpers::loadTemplate('event-edit-invitees', [
+            'event' => $event,
+        ], true);
 
-        $user_id = get_current_user_id();
-
-        if ($user_id == $event->post_author) {
-            return;
-        }
-
-        if ($event->hasAccess($user_id)) {
-            return;
-        }
-
-        status_header(403);
-
-        wp_die(__('You are not allowed to access this page', 'my-events'));
-
-        exit;
+        return $field;
     }
 }

@@ -6,16 +6,32 @@ use My\Events\Events;
 
 class Event extends Post
 {
+    /**
+     * Get description
+     *
+     * @return string
+     */
     public function getDescription()
     {
         return $this->getMeta('description', true);
     }
 
+    /**
+     * Set description
+     *
+     * @param string $value
+     * @return bool
+     */
     public function setDescription($value)
     {
         return $this->updateMeta('description', $value);
     }
 
+    /**
+     * Get start time
+     *
+     * @return string
+     */
     public function getStartTime($format = null)
     {
         if (! $format) {
@@ -25,11 +41,22 @@ class Event extends Post
         return date_i18n($format, strtotime($this->getMeta('start', true)));
     }
 
+    /**
+     * Set start time
+     *
+     * @param string $value
+     * @return bool
+     */
     public function setStartTime($value)
     {
         return $this->updateMeta('start', $value);
     }
 
+    /**
+     * Get end time
+     *
+     * @return string
+     */
     public function getEndTime($format = null)
     {
         if (! $format) {
@@ -39,43 +66,96 @@ class Event extends Post
         return date_i18n($format, strtotime($this->getMeta('end', true)));
     }
 
-    public function setEndTime($value)
-    {
-        return $this->updateMeta('end', $value);
-    }
-
+    /**
+     * Get time from until
+     *
+     * @return string
+     */
     public function getTimeFromUntil()
     {
         $start_date = $this->getStartTime(get_option('date_format'));
         $end_date   = $this->getEndTime(get_option('date_format'));
 
-        if ($start_date === $end_date) {
+        if ($start_date == $end_date) {
             return sprintf(
-                __('%1$s from %2$s until %3$s', 'my-events'),
+                __('%1$s from %2$s until %3$s.', 'my-events'),
                 $start_date,
                 $this->getStartTime(get_option('time_format')),
                 $this->getEndTime(get_option('time_format'))
             );
         }
 
-        return sprintf(__('from %1$s until %2$s', 'my-events'), $this->getStartTime(), $this->getEndTime());
+        return sprintf(
+            __('from %1$s until %2$s.', 'my-events'),
+            $this->getStartTime(),
+            $this->getEndTime()
+        );
     }
 
+    /**
+     * Set end time
+     *
+     * @param string $value
+     * @return bool
+     */
+    public function setEndTime($value)
+    {
+        return $this->updateMeta('end', $value);
+    }
+
+    /**
+     * Get organisers
+     *
+     * @return array
+     */
     public function getOrganisers($args = [])
     {
         $user_ids = $this->getMeta('organisers', true);
 
-        if ($user_ids && is_array($user_ids)) {
-            return get_users([
-                'include' => $user_ids,
-            ] + $args);
+        if (! $user_ids || !is_array($user_ids)) {
+            return [];
         }
-        return [];
+
+        return get_users([
+            'include' => $user_ids,
+        ] + $args);
     }
 
+    /**
+     * Set organisers
+     *
+     * @param array $value
+     * @return bool
+     */
     public function setOrganisers($value)
     {
         return $this->updateMeta('organisers', $value);
+    }
+
+    public function isOrganiser($user_id)
+    {
+        return in_array($user_id, $this->getOrganisers(['fields' => 'ID']));
+    }
+
+    /**
+     * Get location
+     *
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->getMeta('location', true);
+    }
+
+    /**
+     * Set location
+     *
+     * @param string $value
+     * @return bool
+     */
+    public function setLocation($value)
+    {
+        return $this->updateMeta('location', $value);
     }
 
     public function getInvitees($args = [])
@@ -113,50 +193,11 @@ class Event extends Post
         ] + $args);
     }
 
-    public function getInviteeByUser($user_id, $args = [])
+    public function getInviteeByUser($user_id)
     {
         $invitee = current($this->getInviteesByUser($user_id));
 
-        if ($invitee) {
-            return new Invitee($invitee);
-        }
-
-        return null;
-    }
-
-    public function getInviteesUsers($status = null, $args = [])
-    {
-        if ($status) {
-            $invitees = $this->getInviteesByStatus($status);
-        } else {
-            $invitees = $this->getInvitees();
-        }
-
-        $user_ids = [];
-
-        foreach ($invitees as $invitee) {
-            $invitee = new Invitee($invitee);
-            $user_ids[] = $invitee->getUser();
-        }
-
-        if ($user_ids) {
-            return get_users([
-                'include' => $user_ids,
-            ] + $args);
-        }
-
-        return [];
-    }
-
-    public function getInviteeUser($user_id)
-    {
-        $invitee = $this->getInviteeByUser($user_id);
-
-        if ($invitee) {
-            return get_userdata($invitee->getUser());
-        }
-
-        return null;
+        return $invitee ? new Invitee($invitee) : null;
     }
 
     public function addInvitee($user_id, $status = 'pending')
@@ -181,7 +222,7 @@ class Event extends Post
 
         do_action('my_events/invitee_added', $invitee, $invitee->getUser(), $this);
 
-        return $post_id;
+        return $invitee->ID;
     }
 
     public function updateInvitee($user_id, $status)
@@ -195,28 +236,22 @@ class Event extends Post
         return false;
     }
 
-    public function removeInviteeByUser($user_id)
+    public function removeInvitee($post_id)
     {
-        $invitee = $this->getInviteeByUser($user_id);
+        $invitee = get_post($post_id);
 
-        if ($invitee) {
-            return $this->removeInvitee($invitee->ID);
+        if ($invitee && get_post_type($invitee) === 'invitee') {
+            $invitee = new Invitee($invitee);
+            do_action('my_events/invitee_removed', $invitee, $invitee->getUser(), $this);
+            return wp_delete_post($invitee->ID, true);
         }
 
         return false;
     }
 
-    public function removeInvitee($post_id)
+    public function isInvitee($user_id)
     {
-        if ($post_id && get_post_type($post_id) === 'invitee') {
-            $invitee = new Invitee($post_id);
-
-            do_action('my_events/invitee_removed', $invitee, $invitee->getUser(), $this);
-
-            return wp_delete_post($invitee->ID, true);
-        }
-
-        return null;
+        return $this->getInviteeByUser($user_id) ? true : false;
     }
 
     public function setInvitees($user_ids, $status = 'pending')
@@ -237,11 +272,43 @@ class Event extends Post
 
         $delete = $this->getInvitees([
             'exclude' => array_keys($processed),
+            'fields'  => 'ids',
         ]);
 
-        foreach ($delete as $invitee) {
-            $this->removeInvitee($invitee->ID);
+        foreach ($delete as $invitee_id) {
+            $this->removeInvitee($invitee_id);
         }
+    }
+
+    public function removeInviteeByUser($user_id)
+    {
+        $invitee = $this->getInviteeByUser($user_id);
+
+        return $this->removeInvitee($invitee->ID);
+    }
+
+    public function getInviteesUsers($status = null, $args = [])
+    {
+        if ($status) {
+            $invitees = $this->getInviteesByStatus($status);
+        } else {
+            $invitees = $this->getInvitees();
+        }
+
+        $user_ids = [];
+
+        foreach ($invitees as $invitee) {
+            $invitee = new Invitee($invitee);
+            $user_ids[] = $invitee->getUser();
+        }
+
+        if (! $user_ids) {
+            return [];
+        }
+
+        return get_users([
+            'include' => $user_ids,
+        ] + $args);
     }
 
     public function getParticipants($args = [])
@@ -249,138 +316,13 @@ class Event extends Post
         return $this->getInviteesUsers('accepted', $args);
     }
 
-    public function getLocation()
+    public function isparticipant($user_id)
     {
-        $type = $this->getMeta('location_type', true);
-
-        if ($type === 'input') {
-            return $this->getMeta('location_input', true);
-        }
-
-        if ($type === 'id') {
-            $post_id = $this->getMeta('location_id', true);
-
-            if ($post_id && get_post_type($post_id)) {
-                $post = new Post($post_id);
-                return $post->getMeta('address', true);
-            }
-        }
-
-        return false;
-    }
-
-    public function setLocation($value, $type = 'input')
-    {
-        if (in_array($type, ['input', 'id'])) {
-            if ($type === 'input') {
-                return $this->updateMeta('location_input', $value);
-            }
-
-            if ($type === 'id') {
-                return $this->updateMeta('location_id', $value);
-            }
-
-            $this->updateMeta('location_type', $type);
-        }
-
-        return false;
+        return in_array($user_id, $this->getParticipants(['fields' => 'ID']));
     }
 
     public function isOver()
     {
         return $this->getEndTime('U') < date_i18n('U');
-    }
-
-    public function isOrganiser($user_id)
-    {
-        return in_array($user_id, $this->getOrganisers(['fields' => 'ID']));
-    }
-
-    public function isInvitee($user_id)
-    {
-        return $this->getInviteeByUser($user_id) ? true : false;
-    }
-
-    public function isParticipant($user_id)
-    {
-        return in_array($user_id, $this->getParticipants(['fields' => 'ID']));
-    }
-
-    public function isPrivate()
-    {
-        return $this->getMeta('is_private') ? true : false;
-    }
-
-    public function hasAccess($user_id)
-    {
-        if ($this->isPrivate()) {
-            return $this->isOrganiser($user_id) || $this->isInvitee($user_id);
-        }
-
-        return true;
-    }
-
-    public function isLimitedParticipants()
-    {
-        return $this->getMeta('limit_participants', true) ? true : false;
-    }
-
-    public function getMaxParticipants()
-    {
-        return $this->getMeta('max_participants', true);
-    }
-
-    public function acceptInvitation($user_id)
-    {
-        if (! $this->hasAccess($user_id)) {
-            return new \WP_Error(__FILE__, __('You have no access to this event.', 'my-events'));
-        }
-
-        if ($this->isOver()) {
-            return new \WP_Error(__FILE__, __('The event is over.', 'my-events'));
-        }
-
-        $invitee = $this->getInviteeByUser($user_id);
-
-        if (! $invitee) {
-            return new \WP_Error(__FILE__, __('You are not invited to this event', 'my-events'));
-        }
-
-        if ($invitee->getStatus() === 'accepted') {
-            return true;
-        }
-
-        if ($this->isLimitedParticipants() && count($this->getParticipants()) >= $this->getMaxParticipants()) {
-            return new \WP_Error(__FILE__, __('The maximum amount of participants is reached', 'my-events'));
-        }
-
-        $invitee->setStatus('accepted');
-
-        do_action('my_events/invitee_accepted_invitation', $invitee, $invitee->getUser(), $this);
-    }
-
-    public function declineInvitation($user_id)
-    {
-        if (! $this->hasAccess($user_id)) {
-            return new \WP_Error(__FILE__, __('You have no access to this event.', 'my-events'));
-        }
-
-        if ($this->isOver()) {
-            return new \WP_Error(__FILE__, __('The event is over.', 'my-events'));
-        }
-
-        $invitee = $this->getInviteeByUser($user_id);
-
-        if (! $invitee) {
-            return new \WP_Error(__FILE__, __('You are not invited to this event', 'my-events'));
-        }
-
-        if ($invitee->getStatus() === 'declined') {
-            return true;
-        }
-
-        $invitee->setStatus('declined');
-
-        do_action('my_events/invitee_declined_invitation', $invitee, $invitee->getUser(), $this);
     }
 }

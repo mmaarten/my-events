@@ -2,8 +2,6 @@
 
 namespace My\Events;
 
-use My\Events\Posts\Event;
-
 class Debug
 {
     protected static $post_types = [];
@@ -14,7 +12,7 @@ class Debug
             return;
         }
 
-        self::$post_types = ['event', 'invitee', 'invitees_group', 'event_location', 'event_group'];
+        self::$post_types = ['event', 'invitee'];
 
         add_action('save_post', [__CLASS__, 'savePost'], 0);
         add_action('wp_trash_post', [__CLASS__, 'trashPost'], 0);
@@ -28,15 +26,13 @@ class Debug
 
     public static function preWPMail($return, $args)
     {
-        if (did_action('wp_mail_content_type', ['\My\Events\Notifications', 'mailContentType'])) {
-            self::log(
-                sprintf(
-                    'Send email to %1$s: "%2$s".',
-                    implode(', ', (array) $args['to']),
-                    $args['subject']
-                )
-            );
-        }
+        self::log(
+            sprintf(
+                'Send email to %1$s: "%2$s".',
+                implode(', ', (array) $args['to']),
+                $args['subject']
+            )
+        );
 
         return $return;
     }
