@@ -15,6 +15,8 @@ class App
             'AdminColumns',
             'Assets',
             'Events',
+            'Notifications',
+            'Subscriptions',
         ]);
     }
 }

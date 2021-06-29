@@ -321,8 +321,59 @@ class Event extends Post
         return in_array($user_id, $this->getParticipants(['fields' => 'ID']));
     }
 
+    public function isMember($user_id)
+    {
+        return $this->isOrganiser($user_id) || $this->isparticipant($user_id);
+    }
+
     public function isOver()
     {
         return $this->getEndTime('U') < date_i18n('U');
+    }
+
+    public function acceptInvitation($user_id)
+    {
+        if ($this->isOver()) {
+            return new WP_Error(__FUNCTION__, __('This event is over.', 'my-events'));
+        }
+
+        $invitee = $this->getInviteeByUser($user_id);
+
+        if (! $invitee) {
+            return new WP_Error(__FUNCTION__, __('You are not invited to this event.', 'my-events'));
+        }
+
+        if ($invitee->getStatus() === 'accepted') {
+            return true;
+        }
+
+        $invitee->setStatus('accepted');
+
+        do_action('my_events/invitee_accepted_invitation', $invitee, $invitee->getUser(), $this);
+
+        return true;
+    }
+
+    public function declineInvitation($user_id)
+    {
+        if ($this->isOver()) {
+            return new WP_Error(__FUNCTION__, __('This event is over.', 'my-events'));
+        }
+
+        $invitee = $this->getInviteeByUser($user_id);
+
+        if (! $invitee) {
+            return new WP_Error(__FUNCTION__, __('You are not invited to this event.', 'my-events'));
+        }
+
+        if ($invitee->getStatus() === 'declined') {
+            return true;
+        }
+
+        $invitee->setStatus('declined');
+
+        do_action('my_events/invitee_declined_invitation', $invitee, $invitee->getUser(), $this);
+
+        return true;
     }
 }
