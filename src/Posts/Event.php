@@ -261,7 +261,7 @@ class Event extends Post
 
     public function isOver()
     {
-        return strtotime($this->getEndTime('Y-m-d H:i:s')) < time();
+        return $this->getEndTime('Y-m-d H:i:s') > date('Y-m-d H:i:s');
     }
 
     public function isOrganiser($user_id)
