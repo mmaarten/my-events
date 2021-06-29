@@ -66,4 +66,25 @@ class Invitee extends Post
     {
         return $this->updateMeta('status', $value);
     }
+
+    /**
+     * Get status
+     *
+     * @return bool
+     */
+    public function getEmailSent()
+    {
+        return $this->getMeta('email_sent', true) ? true : false;
+    }
+
+    /**
+     * Set status
+     *
+     * @param bool $value
+     * @return bool
+     */
+    public function setEmailSent($value)
+    {
+        return $this->updateMeta('email_sent', $value);
+    }
 }

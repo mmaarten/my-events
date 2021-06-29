@@ -71,11 +71,12 @@ class AdminColumns
     public static function addInviteeColumns($columns)
     {
         return [
-            'cb'     => $columns['cb'],
-            'title'  => $columns['title'],
-            'user'   => __('User', 'my-events'),
-            'event'  => __('Event', 'my-events'),
-            'status' => __('Status', 'my-events'),
+            'cb'         => $columns['cb'],
+            'title'      => $columns['title'],
+            'user'       => __('User', 'my-events'),
+            'event'      => __('Event', 'my-events'),
+            'status'     => __('Status', 'my-events'),
+            'email_sent' => __('Email sent', 'my-events'),
         ] + $columns;
     }
 
@@ -97,6 +98,9 @@ class AdminColumns
                 break;
             case 'status':
                 echo isset($statusses[$status]) ? esc_html($statusses[$status]) : esc_html(self::NO_VALUE);
+                break;
+            case 'email_sent':
+                echo Helpers::renderBoolean($invitee->getEmailSent());
                 break;
         }
     }
