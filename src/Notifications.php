@@ -2,15 +2,65 @@
 
 namespace My\Events;
 
+use My\Events\Posts\Event;
+use My\Events\Posts\Invitee;
+
 class Notifications
 {
     public static function init()
     {
         add_action('my_events/invitee_accepted_invitation', [__CLASS__, 'sendInviteeAcceptedNotification'], 10, 3);
         add_action('my_events/invitee_declined_invitation', [__CLASS__, 'sendInviteeDeclinedNotification'], 10, 3);
-        add_action('my_events/invitee_added', [__CLASS__, 'sendInviteeAddedNotification'], 10, 3);
+        //add_action('my_events/invitee_added', [__CLASS__, 'sendInviteeAddedNotification'], 10, 3);
         add_action('my_events/invitee_removed', [__CLASS__, 'sendInviteeRemovedNotification'], 10, 3);
         add_action('my_events/event_cancelled', [__CLASS__, 'sendEventCancelledNotification']);
+
+        add_action('admin_init', [__CLASS__, 'maybeSendInvitationNotification']);
+    }
+
+    public static function maybeSendInvitationNotification()
+    {
+        // Get all invitees with status 'pending' who has not received an email.
+
+        $invitees = Events::getInvitees([
+            'meta_query' => [
+                'relation' => 'AND',
+                [
+                    'relation' => 'OR',
+                    [
+                        'key'     => 'email_sent',
+                        'compare' => '=',
+                        'value'   => false,
+                    ],
+                    [
+                        'key'     => 'email_sent',
+                        'compare' => '!=',
+                        'value'   => true,
+                    ],
+                    [
+                        'key'     => 'email_sent',
+                        'compare' => 'NOT EXISTS',
+                    ],
+                ],
+                [
+                    [
+                        'key'     => 'status',
+                        'compare' => '=',
+                        'value'   => 'pending',
+                    ],
+                ],
+            ],
+        ]);
+
+        foreach ($invitees as $invitee) {
+            $invitee = new Invitee($invitee);
+            $event = new Event($invitee->getEvent());
+            if ($event && $event->post_status === 'publish') {
+                // Send email
+                self::sendInviteeAddedNotification($invitee, $invitee->getUser(), $event);
+                $invitee->setEmailSent(true);
+            }
+        }
     }
 
     public static function sendInviteeAcceptedNotification($invitee, $user_id, $event)
@@ -98,6 +148,8 @@ class Notifications
             'user'    => $user,
             'event'   => $event,
         ], true);
+
+        return self::sendNotification($to, $subject, $message);
     }
 
     public static function sendInviteeRemovedNotification($invitee, $user_id, $event)
@@ -125,6 +177,8 @@ class Notifications
             'user'    => $user,
             'event'   => $event,
         ], true);
+
+        return self::sendNotification($to, $subject, $message);
     }
 
     public static function sendEventCancelledNotification($event)

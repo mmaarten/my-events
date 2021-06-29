@@ -23,6 +23,17 @@ class Events
         add_filter('acf/load_field/key=my_events_event_invitees_list', [__CLASS__, 'renderEventInvitees']);
         add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
         add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
+        add_action('transition_post_status', [__CLASS__, 'transitionPostStatus'], 10, 3);
+    }
+
+    public static function transitionPostStatus($new_status, $old_status, $post)
+    {
+        if ($post->post_type === 'event') {
+            if ($new_status === 'publish') {
+                $event = new Event($post);
+                $event->updateMeta('was_published', true);
+            }
+        }
     }
 
     public static function getEventClasses($post_id)
@@ -263,7 +274,7 @@ class Events
         do_action('my_events/trash_event', $event);
 
         // TODO : Check if event was published.
-        if (! $event->isOver()) {
+        if (! $event->isOver() && $event->getMeta('was_published', true)) {
             do_action('my_events/event_cancelled', $event);
         }
     }

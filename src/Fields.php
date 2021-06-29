@@ -332,6 +332,16 @@ class Fields
             'menu_order'    => 300,
             'parent'        => 'my_events_invitee_group',
         ]);
+
+        acf_add_local_field([
+            'key'           => 'my_events_invitee_email_sent',
+            'label'         => __('Email Sent', 'my-events'),
+            'instructions'  => __('', 'my-events'),
+            'name'          => 'email_sent',
+            'type'          => 'true_false',
+            'required'      => false,
+            'parent'        => 'my_events_invitee_group',
+        ]);
     }
 
     public static function addLocationFields()
