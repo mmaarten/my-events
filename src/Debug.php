@@ -14,7 +14,7 @@ class Debug
             return;
         }
 
-        self::$post_types = ['event', 'invitee'];
+        self::$post_types = ['event', 'invitee', 'invitees_group', 'event_location'];
 
         add_action('save_post', [__CLASS__, 'savePost'], 0);
         add_action('wp_trash_post', [__CLASS__, 'trashPost'], 0);

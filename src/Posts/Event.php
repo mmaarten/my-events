@@ -251,12 +251,39 @@ class Event extends Post
 
     public function getLocation()
     {
-        return $this->getMeta('location', true);
+        $type = $this->getMeta('location_type', true);
+
+        if ($type === 'input') {
+            return $this->getMeta('location_input', true);
+        }
+
+        if ($type === 'id') {
+            $post_id = $this->getMeta('location_id', true);
+
+            if ($post_id && get_post_type($post_id)) {
+                $post = new Post($post_id);
+                return $post->getMeta('address', true);
+            }
+        }
+
+        return false;
     }
 
-    public function setLocation($value)
+    public function setLocation($value, $type = 'input')
     {
-        return $this->updateMeta('location', $value);
+        if (in_array($type, ['input', 'id'])) {
+            if ($type === 'input') {
+                return $this->updateMeta('location_input', $value);
+            }
+
+            if ($type === 'id') {
+                return $this->updateMeta('location_id', $value);
+            }
+
+            $this->updateMeta('location_type', $type);
+        }
+
+        return false;
     }
 
     public function isOver()

@@ -2,6 +2,7 @@
 
 namespace My\Events;
 
+use My\Events\Posts\Post;
 use My\Events\Posts\Event;
 use My\Events\Posts\Invitee;
 
@@ -26,6 +27,34 @@ class Events
             'post_type'   => 'event',
             'post_status' => 'publish',
             'numberposts' => 999,
+        ] + $args);
+    }
+
+    public static function getEventsByUser($user_id, $args = [])
+    {
+        $invitees = self::getInviteesByUser($user_id);
+
+        $events = [];
+        foreach ($invitees as $invitee) {
+            $invitee = new Invitee($invitee);
+            $events[] = $invitee->getEvent();
+        }
+
+        if (! $events) {
+            return [];
+        }
+
+        return self::getEvents([
+            'include' => $events,
+        ] + $args);
+    }
+
+    public static function getEventsByInviteesGroup($group_id, $args = [])
+    {
+        return Events::getEvents([
+            'meta_key'     => 'invitees_group',
+            'meta_compare' => '=',
+            'meta_value'   => $group_id,
         ] + $args);
     }
 
@@ -64,13 +93,72 @@ class Events
             $event = new Event($post_id);
 
             // Get invitees from settings field
-            $invitees = $event->getMeta('invitees', true);
+
+            $invitees_type = $event->getMeta('invitees_type', true);
+
+            $invitees = [];
+
+            if ($invitees_type === 'individual') {
+                $invitees = $event->getMeta('invitees_individual', true);
+            }
+
+            if ($invitees_type === 'group') {
+                $group_id = $event->getMeta('invitees_group', true);
+                if ($group_id && get_post_type($group_id)) {
+                    $group = new Post($group_id);
+                    $invitees = $group->getMeta('users', true);
+                }
+            }
 
             // Create/delete invitees.
             $event->setInvitees($invitees);
 
             // Empty settings field.
-            $event->updateMeta('invitees', []);
+            $event->updateMeta('invitees_individual', []);
+        }
+
+        if (get_post_type($post_id) === 'invitees_group') {
+
+            $group = new Post($post_id);
+
+            $prev_users = $group->getMeta('prev_users', true);
+
+            if (! is_array($prev_users)) {
+                $prev_users = [];
+            }
+
+            $curr_users = $group->getMeta('users', true);
+
+            if (! is_array($curr_users)) {
+                $curr_users = [];
+            }
+
+            $add_invitees    = array_diff($curr_users, $prev_users);
+            $remove_invitees = array_diff($prev_users, $curr_users);
+
+            if ($add_invitees || $remove_invitees) {
+                $events = self::getEventsByInviteesGroup($group->ID);
+
+                foreach ($add_invitees as $user_id) {
+                    foreach ($events as $event) {
+                        $event = new Event($event);
+                        if (! $event->isOver()) {
+                            $event->addInvitee($user_id);
+                        }
+                    }
+                }
+
+                foreach ($remove_invitees as $user_id) {
+                    foreach ($events as $event) {
+                        $event = new Event($event);
+                        if (! $event->isOver()) {
+                            $event->removeInviteeByUser($user_id);
+                        }
+                    }
+                }
+            }
+
+            $group->updateMeta('prev_users', $curr_users);
         }
     }
 

@@ -2,6 +2,7 @@
 
 namespace My\Events;
 
+use My\Events\Posts\Post;
 use My\Events\Posts\Event;
 use My\Events\Posts\Invitee;
 
@@ -16,6 +17,12 @@ class AdminColumns
 
         add_filter('manage_invitee_posts_columns', [__CLASS__, 'addInviteeColumns']);
         add_action('manage_invitee_posts_custom_column', [__CLASS__, 'renderInviteeColumns'], 10, 2);
+
+        add_filter('manage_invitees_group_posts_columns', [__CLASS__, 'addInviteesGroupColumns']);
+        add_action('manage_invitees_group_posts_custom_column', [__CLASS__, 'renderInviteesGroupColumns'], 10, 2);
+
+        add_filter('manage_event_location_posts_columns', [__CLASS__, 'addEventLocationColumns']);
+        add_action('manage_event_location_posts_custom_column', [__CLASS__, 'renderEventLocationColumns'], 10, 2);
     }
 
     public static function addEventColumns($columns)
@@ -108,6 +115,58 @@ class AdminColumns
                 break;
             case 'status':
                 echo isset($statusses[$status]) ? esc_html($statusses[$status]) : esc_html(self::NO_VALUE);
+                break;
+        }
+    }
+
+    public static function addEventLocationColumns($columns)
+    {
+        return [
+            'cb'      => $columns['cb'],
+            'title'   => $columns['title'],
+            'address' => __('Address', 'my-events'),
+        ] + $columns;
+    }
+
+    public static function renderEventLocationColumns($column, $post_id)
+    {
+        $post = new Post($post_id);
+
+        $address = $post->getMeta('address', true);
+
+        switch ($column) {
+            case 'address':
+                if (trim($address)) {
+                    printf(
+                        '<a href="%1$s" target="_blank">%2$s</a>',
+                        esc_url(Helpers::getMapURL($address)),
+                        esc_html($address)
+                    );
+                } else {
+                    echo esc_html(self::NO_VALUE);
+                }
+                break;
+        }
+    }
+
+    public static function addInviteesGroupColumns($columns)
+    {
+        return [
+            'cb'    => $columns['cb'],
+            'title' => $columns['title'],
+            'users' => __('Users', 'my-events'),
+        ] + $columns;
+    }
+
+    public static function renderInviteesGroupColumns($column, $post_id)
+    {
+        $post = new Post($post_id);
+
+        $users = self::renderUsers($post->getMeta('users', true));
+
+        switch ($column) {
+            case 'users':
+                echo $users ? $users : esc_html(self::NO_VALUE);
                 break;
         }
     }
