@@ -18,6 +18,7 @@ class App
             'Events',
             'Notifications',
             'Subscriptions',
+            'Calendar',
         ]);
     }
 }

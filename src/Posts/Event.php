@@ -28,6 +28,27 @@ class Event extends Post
     }
 
     /**
+     * Get group
+     *
+     * @return int
+     */
+    public function getGroup()
+    {
+        return $this->getMeta('group', true);
+    }
+
+    /**
+     * Set group
+     *
+     * @param int $value
+     * @return bool
+     */
+    public function setGroup($value)
+    {
+        return $this->updateMeta('group', $value);
+    }
+
+    /**
      * Get start time
      *
      * @return string

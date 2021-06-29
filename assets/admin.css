@@ -38,3 +38,29 @@
 .acf-fields .notice {
   margin: 14px;
 }
+
+/**
+ * Grouped events
+ */
+
+.post-php.post-type-event.is-grouped-event .acf-input {
+  position: relative;
+  z-index: 100;
+}
+
+.post-php.post-type-event.is-grouped-event .acf-input:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 200;
+  background-color: rgba(255, 255, 255, .5);
+}
+
+.edit-php.post-type-event .posts .is-event-over {
+  opacity: .65;
+}
+
+

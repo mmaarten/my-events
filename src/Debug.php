@@ -12,7 +12,7 @@ class Debug
             return;
         }
 
-        self::$post_types = ['event', 'invitee', 'invitee_group', 'event_location'];
+        self::$post_types = ['event', 'invitee', 'invitee_group', 'event_location', 'event_group'];
 
         add_action('save_post', [__CLASS__, 'savePost'], 0);
         add_action('wp_trash_post', [__CLASS__, 'trashPost'], 0);
@@ -67,7 +67,7 @@ class Debug
 
     public static function transitionPostStatus($new_status, $old_status, $post)
     {
-        if (in_array(get_post_type($post), self::$post_types)) {
+        if (in_array(get_post_type($post), self::$post_types) && $old_status !== $new_status) {
             self::log(
                 sprintf(
                     'Transition %2$s #%1$s status. "%3$s" => "%4$s".',

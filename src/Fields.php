@@ -15,6 +15,114 @@ class Fields
         add_action('acf/init', [__CLASS__, 'addInviteeFields']);
         add_action('acf/init', [__CLASS__, 'addLocationFields']);
         add_action('acf/init', [__CLASS__, 'addInviteeGroupFields']);
+        add_action('acf/init', [__CLASS__, 'addEventGroupFields']);
+    }
+
+    public static function addEventGroupFields()
+    {
+        acf_add_local_field_group(array(
+            'key' => 'group_60db37be51d92',
+            'title' => 'Repeat',
+            'fields' => array(
+                array(
+                    'key' => 'field_60db37cb348ad',
+                    'label' => 'Repeat',
+                    'name' => 'repeat',
+                    'type' => 'select',
+                    'instructions' => '',
+                    'required' => 1,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'choices' => array(
+                        '+1 week' => 'Ever week',
+                        '+2 week' => 'Every 2 weeks',
+                    ),
+                    'default_value' => '+1 week',
+                    'allow_null' => 0,
+                    'multiple' => 0,
+                    'ui' => 0,
+                    'return_format' => 'value',
+                    'ajax' => 0,
+                    'placeholder' => '',
+                ),
+                array(
+                    'key' => 'field_60db380c348ae',
+                    'label' => 'End repeat',
+                    'name' => 'repeat_end',
+                    'type' => 'date_picker',
+                    'instructions' => '',
+                    'required' => 1,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'display_format' => 'd/m/Y',
+                    'return_format' => 'Y-m-d',
+                    'first_day' => 1,
+                ),
+                array(
+                    'key' => 'field_60db3842348af',
+                    'label' => 'Exclude',
+                    'name' => 'repeat_exclude',
+                    'type' => 'repeater',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'collapsed' => '',
+                    'min' => 0,
+                    'max' => 0,
+                    'layout' => 'table',
+                    'button_label' => '',
+                    'sub_fields' => array(
+                        array(
+                            'key' => 'field_60db3850348b0',
+                            'label' => 'Date',
+                            'name' => 'date',
+                            'type' => 'date_picker',
+                            'instructions' => '',
+                            'required' => 1,
+                            'conditional_logic' => 0,
+                            'wrapper' => array(
+                                'width' => '',
+                                'class' => '',
+                                'id' => '',
+                            ),
+                            'display_format' => 'd/m/Y',
+                            'return_format' => 'Y-m-d',
+                            'first_day' => 1,
+                        ),
+                    ),
+                ),
+            ),
+            'location' => array(
+                array(
+                    array(
+                        'param' => 'post_type',
+                        'operator' => '==',
+                        'value' => 'event_group',
+                    ),
+                ),
+            ),
+            'menu_order' => 0,
+            'position' => 'side',
+            'style' => 'default',
+            'label_placement' => 'top',
+            'instruction_placement' => 'label',
+            'hide_on_screen' => '',
+            'active' => true,
+            'description' => '',
+        ));
     }
 
     public static function addEventFields()
@@ -29,6 +137,13 @@ class Fields
                         'param'    => 'post_type',
                         'operator' => '==',
                         'value'    => 'event',
+                    ],
+                ],
+                [
+                    [
+                        'param'    => 'post_type',
+                        'operator' => '==',
+                        'value'    => 'event_group',
                     ],
                 ],
             ],

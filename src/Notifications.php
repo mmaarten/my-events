@@ -13,6 +13,7 @@ class Notifications
         add_action('my_events/invitee_declined_invitation', [__CLASS__, 'sendInviteeDeclinedNotification'], 10, 3);
         //add_action('my_events/invitee_added', [__CLASS__, 'sendInviteeAddedNotification'], 10, 3);
         add_action('my_events/invitee_removed', [__CLASS__, 'sendInviteeRemovedNotification'], 10, 3);
+        add_action('my_events/event_cancelled', [__CLASS__, 'sendEventCancelledNotification'], 10, 3);
         add_action('init', [__CLASS__, 'maybeSendInviteeInvitationEmail']);
     }
 
@@ -167,12 +168,11 @@ class Notifications
         return self::sendNotification($to, $subject, $message);
     }
 
-    public static function eventCancelledNotification($event)
+    public static function sendEventCancelledNotification($event)
     {
         $participants = $event->getParticipants();
 
         foreach ($participants as $user) {
-
             $to = $user->user_email;
 
             $subject = sprintf(

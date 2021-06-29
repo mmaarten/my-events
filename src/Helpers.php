@@ -89,4 +89,46 @@ class Helpers
     {
         return $value ? esc_html__('yes', 'my-events') : esc_html__('no', 'my-events');
     }
+
+    public static function getTimes($start, $end, $repeat_end, $repeat, $repeat_exclude = [])
+    {
+        $start      = new \DateTime($start);
+        $end        = new \DateTime($end);
+        $repeat_end = new \DateTime($repeat_end);
+
+        if ($start === false || $end === false || $repeat_end === false) {
+            return false;
+        }
+
+        $times = [];
+
+        while ($start->format('U') < $repeat_end->format('U')) {
+            $time = [
+                'start' => $start->format('Y-m-d H:i:s'),
+                'end'   => $end->format('Y-m-d H:i:s'),
+            ];
+
+            $exclude = false;
+
+            foreach ($repeat_exclude as $exclude_date) {
+                $a = strtotime(date('Y-m-d', strtotime($time['start'])));
+                $b = strtotime(date('Y-m-d', strtotime($time['end'])));
+                $e = strtotime($exclude_date);
+
+                if ($e >= $a && $e <= $b) {
+                    $exclude = true;
+                    break;
+                }
+            }
+
+            if (! $exclude) {
+                $times[] = $time;
+            }
+
+            $start = $start->modify($repeat);
+            $end   = $end->modify($repeat);
+        }
+
+        return $times;
+    }
 }

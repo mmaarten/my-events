@@ -36,7 +36,8 @@ class AdminColumns
             'participants_num' => __('Number of participants', 'my-events'),
             'location'         => __('Location', 'my-events'),
             'over'             => __('Over', 'my-events'),
-            'private'            => __('Private', 'my-events'),
+            'private'          => __('Private', 'my-events'),
+            'group'            => __('Group', 'my-events'),
         ] + $columns;
     }
 
@@ -82,6 +83,9 @@ class AdminColumns
                 break;
             case 'private':
                 echo Helpers::renderBoolean($event->isPrivate());
+                break;
+            case 'group':
+                echo Helpers::renderPosts($event->getMeta('group', true));
                 break;
         }
     }

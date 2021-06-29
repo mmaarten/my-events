@@ -32,12 +32,12 @@ class Post
 
     public function updateMeta($meta_key, $meta_value, $prev_value = '')
     {
-        return update_post_meta($this->ID, $meta_key, $meta_value, $prev_value = '');
+        return update_post_meta($this->ID, $meta_key, $meta_value, $prev_value);
     }
 
     public function deleteMeta($meta_key, $meta_value = '')
     {
-        return delete_post_meta($this->ID, $meta_key, $meta_value = '');
+        return delete_post_meta($this->ID, $meta_key, $meta_value);
     }
 
     public function getField($selector, $format_value = true)
