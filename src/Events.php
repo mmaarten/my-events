@@ -42,8 +42,24 @@ class Events
         
         $classes = [];
 
+        if ($event->isOver()) {
+            $classes[] = 'is-event-over';
+        }
+
+        if ($event->isPrivate()) {
+            $classes[] = 'is-private-event';
+        }
+
         if ($event->isGrouped()) {
             $classes[] = 'is-grouped-event';
+        }
+
+        if (is_user_logged_in()) {
+            $invitee = $event->getInviteeByUser(get_current_user_id());
+            if ($invitee) {
+                $classes[] = 'is-invitee';
+                $classes[] = sprintf('is-invitee-%s', $invitee->getStatus());
+            }
         }
 
         return apply_filters('my_events/event_class', $classes, $event_id);

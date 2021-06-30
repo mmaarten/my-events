@@ -1,34 +1,46 @@
-#acf-my_events_event_group .acf-field[data-name="invitees_individual"],
-#acf-my_events_event_group .acf-field[data-name="invitees_group"],
-#acf-my_events_event_group .acf-field[data-name="location_id"],
-#acf-my_events_event_group .acf-field[data-name="location_input"],
-#acf-my_events_event_group .acf-field[data-name="max_subscriptions"] {
-  border-top: none;
-  padding-top: 0;
-}
+/**
+ * Event settings
+ */
 
-#acf-my_events_event_group .acf-field[data-name="invitees_individual"] .acf-label,
-#acf-my_events_event_group .acf-field[data-name="invitees_group"] .acf-label,
-#acf-my_events_event_group .acf-field[data-name="location_id"] .acf-label,
-#acf-my_events_event_group .acf-field[data-name="location_input"] .acf-label {
-  display: none;
-}
+#acf-my_events_event_group {
+  .acf-field {
+    &[data-name="invitees_individual"],
+    &[data-name="invitees_group"],
+    &[data-name="location_id"],
+    &[data-name="location_input"],
+    &[data-name="max_subscriptions"] {
+      border-top: none;
+      padding-top: 0;
+    }
 
-#acf-my_events_event_group .acf-field[data-name="max_subscriptions"] .acf-label label {
-  font-weight: normal;
+    &[data-name="invitees_individual"],
+    &[data-name="invitees_group"],
+    &[data-name="location_id"],
+    &[data-name="location_input"] {
+      .acf-label {
+        display: none;
+      }
+    }
+    
+    &[data-name="max_subscriptions"] {
+      .acf-label label {
+        font-weight: normal;
+      }
+    }
+  }
 }
-
 
 /**
  * 'Invitees' meta box on event edit screen.
  */
 
-#acf-my_events_event_invitees_group .acf-field[data-key="my_events_event_invitees_list"] .acf-label {
-  display: none;
-}
-
-#acf-my_events_event_invitees_group .acf-field[data-key="my_events_event_invitees_list"] ul {
-  margin: 0;
+#acf-my_events_event_invitees_group .acf-field[data-key="my_events_event_invitees_list"] {
+  .acf-label {
+    display: none;
+  }
+  ul {
+    margin: 0;
+  }
 }
 
 /**
@@ -43,30 +55,54 @@
  * Event group
  */
 
-.acf-field[data-key="my_events_event_group_events"] .acf-label {
-  display: none;
+
+ #acf-my_events_event_group_group .acf-field[data-key="my_events_event_group_events"] {
+  .acf-label {
+    display: none;
+  }
+  p {
+    margin-top: 0;
+  }
 }
 
-.acf-field[data-key="my_events_event_group_events"] p {
-  margin-top: 0;
-}
 
 /**
  * Grouped events
  */
 
-body.post-php.post-type-event.is-grouped-event .acf-field {
-  position: relative;
-  z-index: 100;
+body.post-php.post-type-event.is-grouped-event {
+  .acf-field {
+    position: relative;
+    z-index: 100;
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 200;
+      background-color: rgba(#ffffff, .5);
+    }
+  } 
 }
 
-body.post-php.post-type-event.is-grouped-event .acf-field:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 200;
-  background-color: rgba(255, 355, 255, .5);
+/**
+ * Events overview screen
+ */
+
+body.edit-php.post-type-event #the-list .hentry.type-event {
+  &.is-event-over {
+    opacity: .5;
+  }
+  &.is-grouped-event {
+    .row-actions {
+      .inline, .trash {
+        display: none;
+      }
+    }
+    .check-column * {
+      display: none;
+    }
+  }
 }
