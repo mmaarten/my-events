@@ -1,0 +1,44 @@
+{
+  "name": "@my/events",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "wp-scripts build",
+    "check-engines": "wp-scripts check-engines",
+    "check-licenses": "wp-scripts check-licenses",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "lint:md:docs": "wp-scripts lint-md-docs",
+    "lint:md:js": "wp-scripts lint-md-js",
+    "lint:pkg-json": "wp-scripts lint-pkg-json",
+    "packages-update": "wp-scripts packages-update",
+    "start": "wp-scripts start",
+    "test:e2e": "wp-scripts test-e2e",
+    "test:unit": "wp-scripts test-unit-js",
+    "bundle": "dir-archiver --src . --dest ../my-events-theme.zip --exclude webpack.config.js .DS_Store .editorconfig .git .gitignore .gitattributes phpcs.xml node_modules composer.json package.json assets"
+  },
+  "keywords": [
+    "wordpress",
+    "theme",
+    "bootstrap"
+  ],
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "@wordpress/scripts": "^16.0.0",
+    "copy-webpack-plugin": "^6.4.1",
+    "dir-archiver": "^1.1.1"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.1",
+    "@fullcalendar/bootstrap": "^5.7.0",
+    "@fullcalendar/core": "^5.7.0",
+    "@fullcalendar/daygrid": "^5.7.0",
+    "@fullcalendar/google-calendar": "^5.7.2",
+    "@fullcalendar/interaction": "^5.7.0",
+    "@fullcalendar/list": "^5.7.0",
+    "@fullcalendar/timegrid": "^5.7.0",
+    "featherlight": "^1.7.14",
+    "fullcalendar": "^5.8.0"
+  }
+}

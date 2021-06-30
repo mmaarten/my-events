@@ -4,6 +4,16 @@ namespace My\Events;
 
 class Helpers
 {
+    public static function getPostByName($post_name, $post_type = 'post')
+    {
+        return current(get_posts([
+            'name'        => $post_name,
+            'post_type'   => $post_type,
+            'post_status' => 'publish',
+            'numberposts' => 1,
+        ]));
+    }
+    
     public static function adminNotice($message, $type = 'info', $inline = false, $html = false)
     {
         printf(
