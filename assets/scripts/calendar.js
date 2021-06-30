@@ -40,6 +40,7 @@ import './components/breakpoints';
       window.addEventListener('hashchange', this.maybeShowEventDetail.bind(this), false);
       jQuery(this).on('MyEventsCalendar.eventsLoaded', this.maybeShowEventDetail.bind(this));
 
+      jQuery.featherlight.defaults.namespace = 'my-events-modal';
       jQuery.featherlight.defaults.afterClose = this.removeWindowLocationHash.bind(this);
     },
 
@@ -150,13 +151,12 @@ import './components/breakpoints';
     },
 
     removeWindowLocationHash : function(event) {
-      // Remove has from window location.
+      // Remove hash from window location.
       var uri = window.location.href.substr(0, window.location.href.indexOf('#'));
       window.history.replaceState({}, document.title, uri);
     },
 
     maybeShowEventDetail : function(event) {
-
       var eventId = this.getEventIdFromWindowLocation();
 
       if (eventId) {
@@ -175,7 +175,8 @@ import './components/breakpoints';
 })(window, document);
 
 (function(){
-
+  
+  // Event subscription form
   jQuery(MyEventsCalendar).on('MyEvents.eventDetailLoaded', function(event, $content, eventId){
     
     var $form = $content.find('#event-subscription-form');

@@ -83,11 +83,6 @@ class Calendar
             true
         );
 
-        wp_enqueue_style(
-            'featherlight',
-            plugins_url('build/featherlight-style.css', MY_EVENTS_PLUGIN_FILE),
-        );
-
         wp_enqueue_script(
             'my-events-calendar-script',
             plugins_url('build/calendar-script.js', MY_EVENTS_PLUGIN_FILE),
