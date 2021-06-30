@@ -40,27 +40,13 @@
 }
 
 /**
- * Grouped events
+ * Event group
  */
 
-.post-php.post-type-event.is-grouped-event .acf-input {
-  position: relative;
-  z-index: 100;
+.acf-field[data-key="my_events_event_group_events"] .acf-label {
+  display: none;
 }
 
-.post-php.post-type-event.is-grouped-event .acf-input:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 200;
-  background-color: rgba(255, 255, 255, .5);
+.acf-field[data-key="my_events_event_group_events"] p {
+  margin-top: 0;
 }
-
-.edit-php.post-type-event .posts .is-event-over {
-  opacity: .65;
-}
-
-
