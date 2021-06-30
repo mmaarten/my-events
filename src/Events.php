@@ -14,25 +14,39 @@ class Events
         add_action('before_delete_post', [__CLASS__, 'beforeDeletePost']);
         add_action('transition_post_status', [__CLASS__, 'transitionPostStatus'], 10, 3);
         add_action('delete_user', [__CLASS__, 'beforeDeleteUser'], 10, 3);
-
         add_action('admin_notices', [__CLASS__, 'adminNotices']);
-       
         add_action('add_meta_boxes', [__CLASS__, 'addMetaBoxes']);
-        add_action('admin_init', [__CLASS__, 'maybeDetachEventFromGroup']);
 
+        add_filter('acf/load_field/key=my_events_event_group_events', [__CLASS__, 'renderEventGroupEvents']);
         add_filter('acf/load_value/key=my_events_event_invitees_individual', [__CLASS__, 'updateInvitiesField'], 10, 3);
         add_filter('acf/load_field/key=my_events_event_invitees_list', [__CLASS__, 'renderInvities'], 10, 2);
+        add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
+        add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
     }
 
-    public static function addMetaBoxes($post_type) {
-        switch ($post_type) {
-            case 'event':
-                $event = new Event($_GET['post']);
-                if ($event->getMeta('group', true)) {
-                    remove_meta_box('submitdiv', $post_type, 'side');
-                }
-                break;
+    public static function addMetaBoxes($post_type)
+    {
+        $screen = get_current_screen();
+
+        if ($screen->id === 'event' && $post_type === 'event') {
+            $event = new Event($_GET['post']);
+            if ($event->isGrouped()) {
+                remove_meta_box('submitdiv', $post_type, 'side');
+            }
         }
+    }
+
+    public static function getEventClasses($event_id)
+    {
+        $event = new Event($event_id);
+        
+        $classes = [];
+
+        if ($event->isGrouped()) {
+            $classes[] = 'is-grouped-event';
+        }
+
+        return apply_filters('my_events/event_class', $classes, $event_id);
     }
 
     public static function savePost($post_id)
@@ -48,10 +62,10 @@ class Events
                 break;
             case 'event_group':
                 $group = new Post($post_id);
-                $start      = $group->getMeta('start', true);
-                $end        = $group->getMeta('end', true);
-                $repeat     = $group->getMeta('repeat', true);
-                $repeat_end = $group->getMeta('repeat_end', true);
+                $start      = $group->getField('start');
+                $end        = $group->getField('end');
+                $repeat     = $group->getField('repeat');
+                $repeat_end = $group->getField('repeat_end');
                 $repeat_exclude = $group->getField('repeat_exclude');
 
                 if (! is_array($repeat_exclude)) {
@@ -79,7 +93,6 @@ class Events
                 foreach ($delete as $event) {
                     wp_delete_post($event->ID, true);
                 }
-
                 break;
         }
     }
@@ -89,7 +102,7 @@ class Events
         switch (get_post_type($post_id)) {
             case 'event':
                 $event = new Event($post_id);
-                if (! $event->isOver() && $event->getMeta('was_published', true)) {
+                if (! $event->isOver() && $event->getField('was_published')) {
                     do_action('my_events/event_cancelled', $event);
                 }
                 break;
@@ -100,23 +113,25 @@ class Events
                     $event = new Event($event);
                     // Set invitee type to 'individual'.
                     // The field 'invitees_individual' is automatically populated. So we dont need to update it.
-                    $event->updateMeta('invitees_type', 'individual');
+                    $event->updateField('invitees_type', 'individual');
                 }
                 break;
             case 'event_location':
                 // Get address setting from location
                 $location = new Post($post_id);
-                $address = $location->getMeta('address', true);
+                $address = $location->getField('address');
                 $events = Model::getEventsByLocation($post_id);
                 foreach ($events as $event) {
                     // Switch to 'input' and save location address.
                     $event = new Event($event);
-                    $event->updateMeta('location_type', 'input');
-                    $event->updateMeta('location_input', $address);
+                    $event->updateField('location_type', 'input');
+                    $event->updateField('location_input', $address);
                 }
                 break;
             case 'event_group':
+                // Get all events related to this post.
                 $events = Model::getEventsByEventGroup($post_id, ['post_status' => 'any']);
+                // Move events to trash.
                 foreach ($events as $event) {
                     wp_trash_post($event->ID);
                 }
@@ -133,7 +148,9 @@ class Events
                 $event->setInvitees([]);
                 break;
             case 'event_group':
+                // Get all events related to this post.
                 $events = Model::getEventsByEventGroup($post_id, ['post_status' => 'any']);
+                // Delete events.
                 foreach ($events as $event) {
                     wp_delete_post($event->ID);
                 }
@@ -147,12 +164,12 @@ class Events
             case 'event':
                 $event = new Event($post);
                 if ($new_status === 'publish' || $old_status === 'publish') {
-                    $event->updateMeta('was_published', true);
+                    $event->updateField('was_published', true);
                 }
                 break;
             case 'event_group':
                 if ($new_status !== 'trash') {
-                    $events = Model::getEventsByEventGroup($post->ID, ['post_status' => 'any']);
+                    $events = Model::getEventsByEventGroup($post->ID, ['post_status' => $old_status]);
                     foreach ($events as $event) {
                         wp_update_post(['ID' => $event->ID, 'post_status' => $new_status]);
                     }
@@ -179,25 +196,85 @@ class Events
         }
     }
 
+    public static function getDetachEventFromGroupURL($event_id)
+    {
+        return add_query_arg([
+            MY_EVENTS_NONCE_NAME => wp_create_nonce('detach_event_from_group'),
+            'event'    => $event_id,
+            'redirect' => get_edit_post_link($event_id),
+        ], get_admin_url());
+    }
+
+    public static function maybeDetachEventFromGroup()
+    {
+        if (empty($_GET[MY_EVENTS_NONCE_NAME])) {
+            return;
+        }
+
+        if (! wp_verify_nonce($_GET[MY_EVENTS_NONCE_NAME], 'detach_event_from_group')) {
+            return;
+        }
+
+        $event_id = $_GET['event'];
+        $redirect = add_query_arg('action', 'edit', $_GET['redirect']);
+
+        self::detachEventFromGroup($event_id);
+
+        wp_safe_redirect($redirect);
+    }
+
+    public static function detachEventFromGroup($event_id)
+    {
+        $event = new Event($event_id);
+
+        if ($event->isOver() || ! $event->isGrouped()) {
+            return false;
+        }
+
+        $group = new Post($event->getGroup());
+
+        $exclude = $event->getStartTime('Y-m-d');
+        $repeat_exclude = $group->getField('repeat_exclude');
+
+        if (! is_array($repeat_exclude)) {
+            $repeat_exclude = [];
+        }
+
+        // Check if already added
+        if (wp_filter_object_list($repeat_exclude, ['date' => $exclude])) {
+            return;
+        }
+
+        $repeat_exclude[] = [
+            'date' => $exclude,
+        ];
+
+        $group->updateField('repeat_exclude', $repeat_exclude);
+
+        $event->updateField('group', '');
+
+        return true;
+    }
+
     public static function setInviteesFromSettingsFields($event_id)
     {
         // Get event.
         $event = new Event($event_id);
 
-        $type = $event->getMeta('invitees_type', true);
+        $type = $event->getField('invitees_type');
 
         $user_ids = [];
 
         // Get user ids from individual invitees field
         if ($type === 'individual') {
-            $user_ids = $event->getMeta('invitees_individual', true);
+            $user_ids = $event->getField('invitees_individual');
         }
 
         // Get user ids from invitees group
         if ($type === 'group') {
-            $group_id = $event->getMeta('invitees_group', true);
+            $group_id = $event->getField('invitees_group');
             $group = new Post($group_id);
-            $user_ids = $group->getMeta('users', true);
+            $user_ids = $group->getField('users');
         }
 
         if (! is_array($user_ids)) {
@@ -208,7 +285,7 @@ class Events
         $event->setInvitees($user_ids);
 
         // Remove settings (will be refilled with invitees from our custom post type).
-        $event->deleteMeta('invitees_individual');
+        $event->deleteField('invitees_individual');
     }
 
     public static function updateInvitiesField($value, $post_id, $field)
@@ -231,7 +308,7 @@ class Events
 
         // Get previous users
 
-        $prev_users = $group->getMeta('prev_users', true);
+        $prev_users = $group->getField('prev_users');
 
         if (! is_array($prev_users)) {
             $prev_users = [];
@@ -239,7 +316,7 @@ class Events
 
         // Get current users
 
-        $current_users = $group->getMeta('users', true);
+        $current_users = $group->getField('users');
 
         if (! is_array($current_users)) {
             $current_users = [];
@@ -280,7 +357,7 @@ class Events
 
         // Save current users
 
-        $group->updateMeta('prev_users', $current_users);
+        $group->updateField('prev_users', $current_users);
     }
 
     public static function renderInvities($field)
@@ -300,6 +377,23 @@ class Events
         return $field;
     }
 
+    public static function renderEventGroupEvents($field)
+    {
+        $screen = get_current_screen();
+
+        if ($screen->id !== 'event_group' || ! isset($_GET['post'])) {
+            return $field;
+        }
+
+        $group_id = $_GET['post'];
+
+        $field['message'] = Helpers::loadTemplate('event-group-edit-events', [
+            'events' => Model::getEventsByEventGroup($group_id),
+        ], true);
+
+        return $field;
+    }
+
     public static function adminNotices()
     {
         $screen = get_current_screen();
@@ -312,8 +406,8 @@ class Events
                     Helpers::adminNotice(__('This event is over.', 'my-events'), 'warning');
                 }
 
-                if ($event->getMeta('group', true)) {
-                    $group = new Post($event->getMeta('group', true));
+                if ($event->isGrouped()) {
+                    $group = new Post($event->getGroup());
 
                     $message = sprintf(
                         esc_html__('This event belongs to the group %s.', 'my-events'),
@@ -321,15 +415,9 @@ class Events
                     );
 
                     if (! $event->isOver()) {
-                        $detach_url = add_query_arg([
-                            MY_EVENTS_NONCE_NAME => wp_create_nonce('detach_event_from_group'),
-                            'event'    => $event->ID,
-                            'redirect' => get_edit_post_link($event->ID),
-                        ], get_admin_url());
-
                         $button = sprintf(
                             '<a href="%1$s">%2$s</a>',
-                            esc_url($detach_url),
+                            esc_url(self::getDetachEventFromGroupURL($event->ID)),
                             esc_html__('here', 'my-events')
                         );
 
@@ -341,59 +429,28 @@ class Events
 
                     Helpers::adminNotice($message, 'warning', false, true);
                 }
-
+                
                 break;
         }
     }
 
-    public static function maybeDetachEventFromGroup()
+    public static function postClass($classes, $class, $post_id)
     {
-        if (empty($_GET[MY_EVENTS_NONCE_NAME])) {
-            return;
+        if (get_post_type($post_id) === 'event') {
+            $classes = array_merge($classes, self::getEventClasses($post_id));
         }
 
-        if (! wp_verify_nonce($_GET[MY_EVENTS_NONCE_NAME], 'detach_event_from_group')) {
-            return;
-        }
-
-        $event_id = $_GET['event'];
-        $redirect = add_query_arg('action', 'edit', $_GET['redirect']);
-
-        self::detachEventFromGroup($event_id);
-
-        wp_safe_redirect($redirect);
+        return $classes;
     }
 
-    public static function detachEventFromGroup($event_id)
+    public static function adminBodyClass($classes)
     {
-        $event = new Event($event_id);
+        $screen = get_current_screen();
 
-        if ($event->isOver() || ! $event->getGroup() || ! get_post_type($event->getGroup())) {
-            return false;
+        if ($screen->id === 'event') {
+            $classes .= ' ' . implode(' ', self::getEventClasses($_GET['post']));
         }
 
-        $group = new Post($event->getGroup());
-
-        $exclude = $event->getStartTime('Y-m-d');
-        $repeat_exclude = $group->getField('repeat_exclude');
-
-        if (! is_array($repeat_exclude)) {
-            $repeat_exclude = [];
-        }
-
-        // Check if already added
-        if (wp_filter_object_list($repeat_exclude, ['date' => $exclude])) {
-            return;
-        }
-
-        $repeat_exclude[] = [
-            'date' => $exclude,
-        ];
-
-        $group->updateField('repeat_exclude', $repeat_exclude);
-
-        $event->updateField('group', '');
-
-        return true;
+        return $classes;
     }
 }

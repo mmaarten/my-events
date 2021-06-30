@@ -81,42 +81,6 @@ class Model
     }
 
     /**
-     * Get events by event group
-     *
-     * @param int   $group_id
-     * @param array $args
-     * @return array
-     */
-    public static function getEventsByEventGroup($group_id, $args = [])
-    {
-        return self::getEvents($args + [
-            'meta_key'     => 'group',
-            'meta_compare' => '=',
-            'meta_value'   => $group_id,
-        ]);
-    }
-
-    /**
-     * Get events by event group and time
-     *
-     * @param int    $group_id
-     * @param string $start
-     * @param string $end
-     * @param array  $args
-     * @return array
-     */
-    public static function getEventsByEventGroupAndTime($group_id, $start, $end, $args = [])
-    {
-        $event_ids = self::getEventsByEventGroup($group_id, ['fields' => 'ids']);
-
-        if ($event_ids) {
-            return self::getEventsByTime($start, $end, $args + ['include' => $event_ids]);
-        }
-
-        return [];
-    }
-
-    /**
      * Get events by invitee group
      *
      * @param int   $group_id
@@ -166,6 +130,42 @@ class Model
                 ],
             ],
         ] + $args);
+    }
+
+    /**
+     * Get events by event group
+     *
+     * @param int   $group_id
+     * @param array $args
+     * @return array
+     */
+    public static function getEventsByEventGroup($group_id, $args = [])
+    {
+        return self::getEvents($args + [
+            'meta_key'     => 'group',
+            'meta_compare' => '=',
+            'meta_value'   => $group_id,
+        ]);
+    }
+
+    /**
+     * Get events by event group and time
+     *
+     * @param int    $group_id
+     * @param string $start
+     * @param string $end
+     * @param array  $args
+     * @return array
+     */
+    public static function getEventsByEventGroupAndTime($group_id, $start, $end, $args = [])
+    {
+        $event_ids = self::getEventsByEventGroup($group_id, ['fields' => 'ids']);
+
+        if ($event_ids) {
+            return self::getEventsByTime($start, $end, $args + ['include' => $event_ids]);
+        }
+
+        return [];
     }
 
     /**
@@ -234,7 +234,7 @@ class Model
     {
         $group = new Post($group_id);
 
-        $event = current(self::getEventsByEventGroupAndTime($group->ID, $start, $end, ['numberposts' => 1]));
+        $event = current(Model::getEventsByEventGroupAndTime($group->ID, $start, $end, ['numberposts' => 1]));
 
         $postdata = [
             'post_title'   => $group->post_title,
@@ -252,16 +252,16 @@ class Model
         $event = new Event($event_id);
 
         // An event group and an event have the same settings.
-        $meta_keys = array_keys(get_field_objects($group->ID));
+        $meta_keys = array_keys(get_field_objects($event->ID));
         foreach ($meta_keys as $meta_key) {
             if (! in_array($meta_key, ['start', 'end'])) {
-                $event->updateMeta($meta_key, $group->getMeta($meta_key, true));
+                $event->updateField($meta_key, $group->getField($meta_key, false));
             }
         }
 
-        $event->updateMeta('start', $start);
-        $event->updateMeta('end', $end);
-        $event->updateMeta('group', $group->ID);
+        $event->updateField('start', $start);
+        $event->updateField('end', $end);
+        $event->updateField('group', $group->ID);
 
         Events::setInviteesFromSettingsFields($event->ID);
 

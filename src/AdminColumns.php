@@ -85,7 +85,7 @@ class AdminColumns
                 echo Helpers::renderBoolean($event->isPrivate());
                 break;
             case 'group':
-                echo Helpers::renderPosts($event->getMeta('group', true));
+                echo Helpers::renderPosts($event->getField('group'));
                 break;
         }
     }
@@ -140,7 +140,7 @@ class AdminColumns
     {
         $post = new Post($post_id);
 
-        $users = Helpers::renderUsers($post->getMeta('users', true));
+        $users = Helpers::renderUsers($post->getField('users'));
 
         switch ($column) {
             case 'users':
@@ -162,7 +162,7 @@ class AdminColumns
     {
         $post = new Post($post_id);
 
-        $address = $post->getMeta('address', true);
+        $address = $post->getField('address');
 
         switch ($column) {
             case 'address':

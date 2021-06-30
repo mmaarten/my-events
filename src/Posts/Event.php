@@ -13,7 +13,7 @@ class Event extends Post
      */
     public function getDescription()
     {
-        return $this->getMeta('description', true);
+        return $this->getField('description');
     }
 
     /**
@@ -24,28 +24,7 @@ class Event extends Post
      */
     public function setDescription($value)
     {
-        return $this->updateMeta('description', $value);
-    }
-
-    /**
-     * Get group
-     *
-     * @return int
-     */
-    public function getGroup()
-    {
-        return $this->getMeta('group', true);
-    }
-
-    /**
-     * Set group
-     *
-     * @param int $value
-     * @return bool
-     */
-    public function setGroup($value)
-    {
-        return $this->updateMeta('group', $value);
+        return $this->updateField('description', $value);
     }
 
     /**
@@ -59,7 +38,7 @@ class Event extends Post
             $format = get_option('date_format') . ' ' . get_option('time_format');
         }
 
-        return date_i18n($format, strtotime($this->getMeta('start', true)));
+        return date_i18n($format, strtotime($this->getField('start')));
     }
 
     /**
@@ -70,7 +49,7 @@ class Event extends Post
      */
     public function setStartTime($value)
     {
-        return $this->updateMeta('start', $value);
+        return $this->updateField('start', $value);
     }
 
     /**
@@ -84,7 +63,7 @@ class Event extends Post
             $format = get_option('date_format') . ' ' . get_option('time_format');
         }
 
-        return date_i18n($format, strtotime($this->getMeta('end', true)));
+        return date_i18n($format, strtotime($this->getField('end')));
     }
 
     /**
@@ -121,7 +100,7 @@ class Event extends Post
      */
     public function setEndTime($value)
     {
-        return $this->updateMeta('end', $value);
+        return $this->updateField('end', $value);
     }
 
     /**
@@ -131,7 +110,7 @@ class Event extends Post
      */
     public function getOrganisers($args = [])
     {
-        $user_ids = $this->getMeta('organisers', true);
+        $user_ids = $this->getField('organisers');
 
         if (! $user_ids || !is_array($user_ids)) {
             return [];
@@ -150,7 +129,7 @@ class Event extends Post
      */
     public function setOrganisers($value)
     {
-        return $this->updateMeta('organisers', $value);
+        return $this->updateField('organisers', $value);
     }
 
     public function isOrganiser($user_id)
@@ -160,16 +139,16 @@ class Event extends Post
 
     public function getLocation()
     {
-        $type = $this->getMeta('location_type', true);
+        $type = $this->getField('location_type');
 
         if ($type === 'input') {
-            return $this->getMeta('location_input', true);
+            return $this->getField('location_input');
         }
 
         if ($type === 'id') {
-            $location_id = $this->getMeta('location_id', true);
+            $location_id = $this->getField('location_id');
             $location = new Post($location_id);
-            return $location->getMeta('address', true);
+            return $location->getField('address');
         }
 
         return false;
@@ -179,14 +158,14 @@ class Event extends Post
     {
         if (in_array($type, ['input', 'id'])) {
             if ($type === 'input') {
-                return $this->updateMeta('location_input', $value);
+                return $this->updateField('location_input', $value);
             }
 
             if ($type === 'id') {
-                return $this->updateMeta('location_id', $value);
+                return $this->updateField('location_id', $value);
             }
 
-            $this->updateMeta('location_type', $type);
+            $this->updateField('location_type', $type);
         }
 
         return false;
@@ -367,7 +346,7 @@ class Event extends Post
 
     public function isPrivate()
     {
-        return $this->getMeta('is_private', true) ? true : false;
+        return $this->getField('is_private') ? true : false;
     }
 
     public function hasAccess($user_id)
@@ -381,12 +360,12 @@ class Event extends Post
 
     public function isLimitedParticipants()
     {
-        return $this->getMeta('limit_subscriptions', true) ? true : false;
+        return $this->getField('limit_subscriptions') ? true : false;
     }
 
     public function getMaxParticipants()
     {
-        return $this->getMeta('max_subscriptions', true);
+        return $this->getField('max_subscriptions');
     }
 
     public function acceptInvitation($user_id)
@@ -445,5 +424,22 @@ class Event extends Post
         do_action('my_events/invitee_declined_invitation', $invitee, $invitee->getUser(), $this);
 
         return true;
+    }
+
+    public function getGroup()
+    {
+        return $this->getField('group');
+    }
+
+    public function setGroup($value)
+    {
+        return $this->updateField('group', $value);
+    }
+
+    public function isGrouped()
+    {
+        $post_id = $this->getGroup();
+
+        return $post_id && get_post_type($post_id) ? true : false;
     }
 }

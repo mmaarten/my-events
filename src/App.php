@@ -16,7 +16,6 @@ class App
             'AdminColumns',
             'Assets',
             'Events',
-            'EventGroups',
             'PrivateEvents',
             'Notifications',
             'Subscriptions',

@@ -50,3 +50,23 @@
 .acf-field[data-key="my_events_event_group_events"] p {
   margin-top: 0;
 }
+
+/**
+ * Grouped events
+ */
+
+body.post-php.post-type-event.is-grouped-event .acf-field {
+  position: relative;
+  z-index: 100;
+}
+
+body.post-php.post-type-event.is-grouped-event .acf-field:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 200;
+  background-color: rgba(255, 355, 255, .5);
+}

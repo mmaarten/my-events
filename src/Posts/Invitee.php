@@ -11,7 +11,7 @@ class Invitee extends Post
      */
     public function getUser()
     {
-        return $this->getMeta('user', true);
+        return $this->getField('user');
     }
 
     /**
@@ -22,7 +22,7 @@ class Invitee extends Post
      */
     public function setUser($value)
     {
-        return $this->updateMeta('user', $value);
+        return $this->updateField('user', $value);
     }
 
     /**
@@ -32,7 +32,7 @@ class Invitee extends Post
      */
     public function getEvent()
     {
-        return $this->getMeta('event', true);
+        return $this->getField('event');
     }
 
     /**
@@ -43,7 +43,7 @@ class Invitee extends Post
      */
     public function setEvent($value)
     {
-        return $this->updateMeta('event', $value);
+        return $this->updateField('event', $value);
     }
 
     /**
@@ -53,7 +53,7 @@ class Invitee extends Post
      */
     public function getStatus()
     {
-        return $this->getMeta('status', true);
+        return $this->getField('status');
     }
 
     /**
@@ -64,7 +64,7 @@ class Invitee extends Post
      */
     public function setStatus($value)
     {
-        return $this->updateMeta('status', $value);
+        return $this->updateField('status', $value);
     }
 
     /**
@@ -74,7 +74,7 @@ class Invitee extends Post
      */
     public function getEmailSent()
     {
-        return $this->getMeta('email_sent', true) ? true : false;
+        return $this->getField('email_sent') ? true : false;
     }
 
     /**
@@ -85,6 +85,6 @@ class Invitee extends Post
      */
     public function setEmailSent($value)
     {
-        return $this->updateMeta('email_sent', $value);
+        return $this->updateField('email_sent', $value);
     }
 }

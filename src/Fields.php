@@ -123,6 +123,31 @@ class Fields
             'active' => true,
             'description' => '',
         ));
+
+        acf_add_local_field_group([
+            'key'      => 'my_events_event_group_group',
+            'title'    => __('Events', 'my-events'),
+            'position' => 'side',
+            'fields'   => [],
+            'location' => [
+                [
+                    [
+                        'param'    => 'post_type',
+                        'operator' => '==',
+                        'value'    => 'event_group',
+                    ],
+                ],
+            ],
+        ]);
+
+        acf_add_local_field([
+            'key'           => 'my_events_event_group_events',
+            'label'         => __('', 'my-events'),
+            'instructions'  => __('', 'my-events'),
+            'type'          => 'message',
+            'menu_order'    => 100,
+            'parent'        => 'my_events_event_group_group',
+        ]);
     }
 
     public static function addEventFields()
@@ -152,7 +177,7 @@ class Fields
         acf_add_local_field([
             'key'          => 'my_events_event_description',
             'label'        => __('Description', 'my-events'),
-            'instructions' => '',
+            'instructions' => __('A brief description of this event.', 'my-events'),
             'name'         => 'description',
             'type'         => 'textarea',
             'rows'         => 3,
@@ -165,7 +190,7 @@ class Fields
         acf_add_local_field([
             'key'          => 'my_events_event_start',
             'label'        => __('Start', 'my-events'),
-            'instructions'   => __('', 'my-events'),
+            'instructions'   => __('The time when the event starts.', 'my-events'),
             'name'           => 'start',
             'type'           => 'date_time_picker',
             'display_format' => get_option('date_format') . ' ' . get_option('time_format'),
@@ -180,7 +205,7 @@ class Fields
         acf_add_local_field([
             'key'            => 'my_events_event_end',
             'label'          => __('End', 'my-events'),
-            'instructions'   => __('', 'my-events'),
+            'instructions'   => __('The time when the event ends.', 'my-events'),
             'name'           => 'end',
             'type'           => 'date_time_picker',
             'display_format' => get_option('date_format') . ' ' . get_option('time_format'),
@@ -195,7 +220,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_organisers',
             'label'         => __('Organisers', 'my-events'),
-            'instructions'  => __('', 'my-events'),
+            'instructions'  => __('The organizers receive an email when an invitee accepts or declines an invitation.', 'my-events'),
             'name'          => 'organisers',
             'type'          => 'user',
             'multiple'      => 1,
@@ -208,7 +233,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_invitees_type',
             'label'         => __('Invitees', 'my-events'),
-            'instructions'  => __('', 'my-events'),
+            'instructions'  => __('The invitees will receive an email about the event when published. They can accept or decline the invitation.', 'my-events'),
             'name'          => 'invitees_type',
             'type'         => 'select',
             'choices'      => [
@@ -223,7 +248,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_invitees_individual',
             'label'         => __('Individual', 'my-events'),
-            'instructions'  => __('', 'my-events'),
+            'instructions'  => __('A list of people you want to invite.', 'my-events'),
             'name'          => 'invitees_individual',
             'type'          => 'user',
             'multiple'      => true,
@@ -245,7 +270,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_invitees_group',
             'label'         => __('Group', 'my-events'),
-            'instructions'  => __('', 'my-events'),
+            'instructions'  => __('A group of people you like to invite.', 'my-events'),
             'name'          => 'invitees_group',
             'type'          => 'post_object',
             'post_type'     => 'invitee_group',
@@ -267,8 +292,8 @@ class Fields
 
         acf_add_local_field([
             'key'           => 'my_events_event_limit_subscriptions',
-            'label'         => __('Limit the amount of subscriptions', 'my-events'),
-            'instructions'  => __('', 'my-events'),
+            'label'         => __('Limited subscriptions', 'my-events'),
+            'instructions'  => __('Limit the amount of people who can subscribe.', 'my-events'),
             'name'          => 'limit_subscriptions',
             'type'         => 'true_false',
             'required'      => false,
@@ -300,7 +325,7 @@ class Fields
         acf_add_local_field([
             'key'          => 'my_events_event_location_type',
             'label'        => __('Location', 'my-events'),
-            'instructions' => __('', 'my-events'),
+            'instructions' => __('The geographical location of the event.', 'my-events'),
             'name'         => 'location_type',
             'type'         => 'select',
             'choices'      => [
@@ -315,7 +340,7 @@ class Fields
         acf_add_local_field([
             'key'          => 'my_events_event_location_input',
             'label'        => __('Custom', 'my-events'),
-            'instructions' => __('The geographical location.', 'my-events'),
+            'instructions' => __('', 'my-events'),
             'name'         => 'location_input',
             'type'         => 'text',
             'required'     => true,
