@@ -117,8 +117,6 @@ class Calendar
             return;
         }
 
-        error_log(__FUNCTION__);
-
         $start = $_POST['start'];
         $end   = $_POST['end'];
 

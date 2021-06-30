@@ -16,7 +16,6 @@ import './components/breakpoints';
 
     init : function() {
       this.$elem = jQuery('#calendar');
-      
       this.options = jQuery.extend({
         plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin, bootstrapPlugin, googleCalendarPlugin ],
         themeSystem: 'bootstrap',
@@ -36,11 +35,12 @@ import './components/breakpoints';
       this.calendar.render();
 
       this.$elem.on('click', '.fc-timeGridWeek-view .fc-col-header-cell-cushion', this.onWeekDayClick.bind(this));
-      //this.$modal.on('hidden.bs.modal', this.onModalClose.bind(this));
       jQuery(document).on('myEvents.breakpointChange', this.breakpointChange.bind(this));
       window.addEventListener('DOMContentLoaded', this.maybeShowEventDetail.bind(this));
       window.addEventListener('hashchange', this.maybeShowEventDetail.bind(this), false);
       jQuery(this).on('MyEventsCalendar.eventsLoaded', this.maybeShowEventDetail.bind(this));
+
+      jQuery.featherlight.defaults.afterClose = this.removeWindowLocationHash.bind(this);
     },
 
     getEventIdFromWindowLocation : function() {
@@ -123,32 +123,36 @@ import './components/breakpoints';
       }.bind(this));
     },
 
-    showEventDetail : function(eventId) {
-      this.eventShown = eventId;
-
+    loadEventDetail : function(eventId, callback) {
+      this.eventDetailLoaded = eventId;
       var data = { action: 'my_events_render_calendar_event_detail', event: eventId };
-
-      //this.$modal.addClass('is-loading').modal('show');
-
-      jQuery.post(MyEvents.ajaxurl, data, function(response){
-        console.log(response);
-        // this.$modal.removeClass('is-loading')
-        // this.$modal.find('.modal-title').html(response.title);
-        // this.$modal.find('.modal-body').html(response.content);
-        jQuery.featherlight(jQuery(response));
-        jQuery(this).trigger('MyEvents.eventDetailLoaded', [this]);
-      }.bind(this));
+      jQuery.post(MyEvents.ajaxurl, data, callback);
     },
 
-    onModalClose : function(event) {
-      this.$modal.find('.modal-title').html('');
-      this.$modal.find('.modal-body').html('');
+    showEventDetail : function(eventId) {
+      var modal = jQuery.featherlight.current();
 
+      if (modal) {
+        modal.close();
+      }
+
+      jQuery.featherlight('<div></div>', {
+        afterContent: function () {
+          var modal = this;
+          modal.$content.addClass('is-loading');
+          App.loadEventDetail(eventId, function(content){
+            modal.$content.removeClass('is-loading');
+            modal.$content.html(content);
+            jQuery(App).trigger('MyEvents.eventDetailLoaded', [modal.$content, eventId]);
+          });
+        },
+      });
+    },
+
+    removeWindowLocationHash : function(event) {
       // Remove has from window location.
       var uri = window.location.href.substr(0, window.location.href.indexOf('#'));
       window.history.replaceState({}, document.title, uri);
-
-      this.eventShown = undefined;
     },
 
     maybeShowEventDetail : function(event) {
@@ -169,3 +173,29 @@ import './components/breakpoints';
   window.addEventListener('DOMContentLoaded', App.init.bind(App));
 
 })(window, document);
+
+(function(){
+
+  jQuery(MyEventsCalendar).on('MyEvents.eventDetailLoaded', function(event, $content, eventId){
+    
+    var $form = $content.find('#event-subscription-form');
+
+    $form.on('change', ':input[name="request"]', function (event){
+      $form.trigger('submit');
+    });
+
+    $form.on('submit', function(event) {
+      event.preventDefault();
+      jQuery.post(MyEvents.ajaxurl, jQuery(this).serialize(), function(response){
+        console.log(response);
+        MyEventsCalendar.loadEventDetail(eventId, function(content){
+          $content.html(content);
+          jQuery(MyEventsCalendar).trigger('MyEvents.eventDetailLoaded', [$content, eventId]);
+          $form.off();
+        });
+      });
+    });
+
+  });
+
+})();

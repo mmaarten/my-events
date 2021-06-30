@@ -370,7 +370,7 @@ class Event extends Post
 
     public function acceptInvitation($user_id)
     {
-        if (! $event->hasAccess($user_id)) {
+        if (! $this->hasAccess($user_id)) {
             return new WP_Error(__FUNCTION__, __('You have no access to this event.', 'my-events'));
         }
 
@@ -401,7 +401,7 @@ class Event extends Post
 
     public function declineInvitation($user_id)
     {
-        if (! $event->hasAccess($user_id)) {
+        if (! $this->hasAccess($user_id)) {
             return new WP_Error(__FUNCTION__, __('You have no access to this event.', 'my-events'));
         }
 
