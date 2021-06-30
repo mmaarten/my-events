@@ -25,11 +25,17 @@ class Fields
             'title' => 'Repeat',
             'fields' => array(
                 array(
+                    'key' => 'my_events_event_group_repeat_message',
+                    'label' => __('', 'my-events'),
+                    'type' => 'message',
+                    'message' => esc_html__('Create events based on the following settings:', 'my-events'),
+                ),
+                array(
                     'key' => 'field_60db37cb348ad',
-                    'label' => 'Repeat',
+                    'label' => __('Repeat', 'my-events'),
                     'name' => 'repeat',
                     'type' => 'select',
-                    'instructions' => '',
+                    'instructions' => __('Repeat the start and end time.', 'my-events'),
                     'required' => 1,
                     'conditional_logic' => 0,
                     'wrapper' => array(
@@ -38,7 +44,7 @@ class Fields
                         'id' => '',
                     ),
                     'choices' => array(
-                        '+1 week' => 'Ever week',
+                        '+1 week' => 'Every week',
                         '+2 week' => 'Every 2 weeks',
                     ),
                     'default_value' => '+1 week',
@@ -51,10 +57,10 @@ class Fields
                 ),
                 array(
                     'key' => 'field_60db380c348ae',
-                    'label' => 'End repeat',
+                    'label' => __('End repeat', 'my-events'),
                     'name' => 'repeat_end',
                     'type' => 'date_picker',
-                    'instructions' => '',
+                    'instructions' => __('', 'my-events'),
                     'required' => 1,
                     'conditional_logic' => 0,
                     'wrapper' => array(
@@ -68,10 +74,10 @@ class Fields
                 ),
                 array(
                     'key' => 'field_60db3842348af',
-                    'label' => 'Exclude',
+                    'label' => __('Exclude', 'my-events'),
                     'name' => 'repeat_exclude',
                     'type' => 'repeater',
-                    'instructions' => '',
+                    'instructions' => __('Exclude days from repeat settings.', 'my-events'),
                     'required' => 0,
                     'conditional_logic' => 0,
                     'wrapper' => array(
@@ -83,11 +89,11 @@ class Fields
                     'min' => 0,
                     'max' => 0,
                     'layout' => 'table',
-                    'button_label' => '',
+                    'button_label' => __('Add day', 'my-events'),
                     'sub_fields' => array(
                         array(
                             'key' => 'field_60db3850348b0',
-                            'label' => 'Date',
+                            'label' => __('Date', 'my-events'),
                             'name' => 'date',
                             'type' => 'date_picker',
                             'instructions' => '',
@@ -293,7 +299,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_limit_subscriptions',
             'label'         => __('Limited subscriptions', 'my-events'),
-            'instructions'  => __('Limit the amount of people who can subscribe.', 'my-events'),
+            'instructions'  => __('Limit the amount of invitees who can subscribe.', 'my-events'),
             'name'          => 'limit_subscriptions',
             'type'         => 'true_false',
             'required'      => false,

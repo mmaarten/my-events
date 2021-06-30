@@ -138,6 +138,14 @@ class Notifications
             return false;
         }
 
+        if ($event->isOver()) {
+            return false;
+        }
+
+        if ($invitee->getStatus() !== 'accepted') {
+            return;
+        }
+
         $to = wp_list_pluck($event->getOrganisers(), 'user_email');
 
         $subject = sprintf(
@@ -161,6 +169,14 @@ class Notifications
 
         if (! $user) {
             return false;
+        }
+
+        if ($event->isOver()) {
+            return false;
+        }
+
+        if ($invitee->getStatus() !== 'declined') {
+            return;
         }
 
         $to = wp_list_pluck($event->getOrganisers(), 'user_email');
@@ -224,6 +240,10 @@ class Notifications
             return false;
         }
 
+        if ($invitee->getStatus() === 'declined') {
+            return false;
+        }
+
         $to = $user->user_email;
 
         $subject = sprintf(
@@ -242,6 +262,10 @@ class Notifications
 
     public static function sendEventCancelledNotification($event)
     {
+        if ($event->isOver()) {
+            return false;
+        }
+
         $participants = $event->getParticipants();
 
         foreach ($participants as $user) {

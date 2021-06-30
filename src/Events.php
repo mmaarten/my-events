@@ -16,6 +16,7 @@ class Events
         add_action('delete_user', [__CLASS__, 'beforeDeleteUser'], 10, 3);
         add_action('admin_notices', [__CLASS__, 'adminNotices']);
         add_action('add_meta_boxes', [__CLASS__, 'addMetaBoxes']);
+        add_action('admin_init', [__CLASS__, 'maybeDetachEventFromGroup']);
 
         add_filter('acf/load_field/key=my_events_event_group_events', [__CLASS__, 'renderEventGroupEvents']);
         add_filter('acf/load_value/key=my_events_event_invitees_individual', [__CLASS__, 'updateInvitiesField'], 10, 3);
