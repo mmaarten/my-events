@@ -2,7 +2,7 @@
 
 namespace My\Events\Posts;
 
-use My\Events\Events;
+use My\Events\Model;
 
 class Event extends Post
 {
@@ -99,7 +99,7 @@ class Event extends Post
 
         if ($start_date == $end_date) {
             return sprintf(
-                __('%1$s from %2$s until %3$s.', 'my-events'),
+                __('%1$s from %2$s until %3$s', 'my-events'),
                 $start_date,
                 $this->getStartTime(get_option('time_format')),
                 $this->getEndTime(get_option('time_format'))
@@ -107,7 +107,7 @@ class Event extends Post
         }
 
         return sprintf(
-            __('from %1$s until %2$s.', 'my-events'),
+            __('from %1$s until %2$s', 'my-events'),
             $this->getStartTime(),
             $this->getEndTime()
         );
@@ -194,7 +194,7 @@ class Event extends Post
 
     public function getInvitees($args = [])
     {
-        return Events::getInvitees([
+        return Model::getInvitees([
             'meta_key'     => 'event',
             'meta_compare' => '=',
             'meta_value'   => $this->ID,

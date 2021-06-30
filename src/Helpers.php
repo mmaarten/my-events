@@ -90,43 +90,48 @@ class Helpers
         return $value ? esc_html__('yes', 'my-events') : esc_html__('no', 'my-events');
     }
 
-    public static function getTimes($start, $end, $repeat_end, $repeat, $repeat_exclude = [])
+    public static function isDateInbetween($date, $start, $end)
+    {
+        $dates = is_array($date) ? $date : (array) $date;
+        
+        $start = strtotime(date('Y-m-d', strtotime($start)));
+        $end   = strtotime(date('Y-m-d', strtotime($end)));
+
+        foreach ($dates as $date) {
+            $date = strtotime($date);
+            if ($start <= $date && $date <= $end) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static function getTimesRepeat($start, $end, $end_repeat, $modifier, $exclude = [])
     {
         $start      = new \DateTime($start);
         $end        = new \DateTime($end);
-        $repeat_end = new \DateTime($repeat_end);
+        $end_repeat = new \DateTime($end_repeat);
 
-        if ($start === false || $end === false || $repeat_end === false) {
-            return false;
+        // Check for valid dates and modifier.
+        if (! $start || ! $end || ! $end_repeat) {
+            return [];
         }
 
         $times = [];
 
-        while ($start->format('U') < $repeat_end->format('U')) {
+        while ($start->format('U') < $end_repeat->format('U') && $start && $end) {
             $time = [
                 'start' => $start->format('Y-m-d H:i:s'),
                 'end'   => $end->format('Y-m-d H:i:s'),
             ];
 
-            $exclude = false;
-
-            foreach ($repeat_exclude as $exclude_date) {
-                $a = strtotime(date('Y-m-d', strtotime($time['start'])));
-                $b = strtotime(date('Y-m-d', strtotime($time['end'])));
-                $e = strtotime($exclude_date);
-
-                if ($e >= $a && $e <= $b) {
-                    $exclude = true;
-                    break;
-                }
-            }
-
-            if (! $exclude) {
+            if (! self::isDateInbetween($exclude, $time['start'], $time['end'])) {
                 $times[] = $time;
             }
 
-            $start = $start->modify($repeat);
-            $end   = $end->modify($repeat);
+            $start->modify($modifier);
+            $end->modify($modifier);
         }
 
         return $times;

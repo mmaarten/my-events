@@ -11,17 +11,85 @@ class Notifications
     {
         add_action('my_events/invitee_accepted_invitation', [__CLASS__, 'sendInviteeAcceptedNotification'], 10, 3);
         add_action('my_events/invitee_declined_invitation', [__CLASS__, 'sendInviteeDeclinedNotification'], 10, 3);
-        //add_action('my_events/invitee_added', [__CLASS__, 'sendInviteeAddedNotification'], 10, 3);
+        add_action('my_events/invitee_added', [__CLASS__, 'sendInviteeAddedNotification'], 10, 3);
         add_action('my_events/invitee_removed', [__CLASS__, 'sendInviteeRemovedNotification'], 10, 3);
         add_action('my_events/event_cancelled', [__CLASS__, 'sendEventCancelledNotification'], 10, 3);
-        add_action('init', [__CLASS__, 'maybeSendInviteeInvitationEmail']);
+        //add_action('init', [__CLASS__, 'maybeSendInviteeInvitationEmail']);
+        //add_action('init', [__CLASS__, 'test']);
+    }
+
+    public static function test()
+    {
+        $invitees = Model::getInvitees([
+            'meta_query' => [
+                'relation' => 'AND',
+                [
+                    'relation' => 'OR',
+                    [
+                        'key'     => 'email_sent',
+                        'compare' => '=',
+                        'value'   => false,
+                    ],
+                    [
+                        'key'     => 'email_sent',
+                        'compare' => '!=',
+                        'value'   => true,
+                    ],
+                    [
+                        'key'     => 'email_sent',
+                        'compare' => 'NOT EXISTS',
+                    ],
+                ],
+                [
+                    [
+                        'key'     => 'status',
+                        'compare' => '=',
+                        'value'   => 'pending',
+                    ],
+                ],
+            ],
+        ]);
+
+        $events = [];
+        foreach ($invitees as $invitee) {
+            $invitee = new Invitee($invitee);
+            $event_id = $invitee->getEvent();
+            $user_id = $invitee->getUser();
+            $events[$user_id][$event_id] = new Event($event_id);
+            $invitee->setEmailSent(true);
+        }
+
+        // TODO: sort events.
+        foreach ($events as $user_id => $data) {
+            self::sendEventOverviewNotification($user_id, $data);
+        }
+    }
+
+    public static function sendEventOverviewNotification($user_id, $events)
+    {
+        $user = get_userdata($user_id);
+
+        if (! $user) {
+            return false;
+        }
+
+        $to = $user->user_email;
+
+        $subject = __('Events you are invited for.', 'my-events');
+
+        $message = Helpers::loadTemplate('emails/event-overview-invitation', [
+            'user'   => $user,
+            'events' => $events,
+        ], true);
+
+        return self::sendNotification($to, $subject, $message);
     }
 
     public static function maybeSendInviteeInvitationEmail()
     {
         // Get all invitees with status 'pending' who has not received an email.
 
-        $invitees = Events::getInvitees([
+        $invitees = Model::getInvitees([
             'meta_query' => [
                 'relation' => 'AND',
                 [
@@ -121,6 +189,10 @@ class Notifications
         }
 
         if ($event->isOver()) {
+            return false;
+        }
+
+        if ($invitee->getStatus() !== 'pending') {
             return false;
         }
 

@@ -14,11 +14,15 @@ class Events
         add_action('before_delete_post', [__CLASS__, 'beforeDeletePost']);
         add_action('transition_post_status', [__CLASS__, 'transitionPostStatus'], 10, 3);
         add_action('delete_user', [__CLASS__, 'beforeDeleteUser'], 10, 3);
+
         add_action('admin_notices', [__CLASS__, 'adminNotices']);
+
         add_action('pre_get_posts', [__CLASS__, 'excludePrivateEvents']);
         add_action('admin_enqueue_scripts', [__CLASS__, 'checkAccessEventEdit']);
+       
         add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
         add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
+        
         add_action('add_meta_boxes', [__CLASS__, 'addMetaBoxes']);
         add_action('admin_init', [__CLASS__, 'maybeDetachEventFromGroup']);
 
@@ -60,118 +64,6 @@ class Events
         return $classes;
     }
 
-    public static function getEvents($args = [])
-    {
-        return get_posts([
-            'post_type'   => 'event',
-            'numberposts' => 999,
-        ] + $args);
-    }
-
-    public static function getPrivateEvents($args = [])
-    {
-        return self::getEvents([
-            'meta_key'     => 'is_private',
-            'meta_compare' => '=',
-            'meta_value'   => true,
-        ] + $args);
-    }
-
-    public static function getEventsByTime($start, $end, $args = [])
-    {
-        return self::getEvents([
-            'meta_query' => [
-                'relation' => 'AND',
-                [
-                    'key'     => 'start',
-                    'compare' => '=',
-                    'value'   => $start,
-                    'type'    => 'DATETIME',
-                ],
-                [
-                    'key'     => 'end',
-                    'compare' => '=',
-                    'value'   => $end,
-                    'type'    => 'DATETIME',
-                ],
-            ],
-        ] + $args);
-    }
-
-    public static function getEventsByUser($user_id, $args = [])
-    {
-        $invitees = self::getInviteesByUser($user_id);
-
-        $events = [];
-        foreach ($invitees as $invitee) {
-            $invitee = new Invitee($invitee);
-            $events[] = $invitee->getEvent();
-        }
-
-        if (! $events) {
-            return [];
-        }
-
-        return self::getEvents([
-            'include' => $events,
-        ] + $args);
-    }
-
-    public static function getEventsByInviteeGroup($group_id, $args = [])
-    {
-        return self::getEvents([
-            'meta_query' => [
-                'relation' => 'AND',
-                [
-                    'key'     => 'invitees_type',
-                    'compare' => '=',
-                    'value'   => 'group',
-                ],
-                [
-                    'key'     => 'invitees_group',
-                    'compare' => '=',
-                    'value'   => $group_id,
-                ],
-            ],
-        ] + $args);
-    }
-
-    public static function getEventsByLocation($location_id, $args = [])
-    {
-        return self::getEvents([
-            'meta_query' => [
-                'relation' => 'AND',
-                [
-                    'key'     => 'location_type',
-                    'compare' => '=',
-                    'value'   => 'id',
-                ],
-                [
-                    'key'     => 'location_id',
-                    'compare' => '=',
-                    'value'   => $location_id,
-                ],
-            ],
-        ] + $args);
-    }
-
-    public static function getInviteesByUser($user_id, $args = [])
-    {
-        return self::getInvitees([
-            'meta_key'     => 'user',
-            'meta_compare' => '=',
-            'meta_value'   => $user_id,
-        ] + $args);
-    }
-
-    public static function getInvitees($args = [])
-    {
-        return get_posts([
-            'post_type'   => 'invitee',
-            'numberposts' => 999,
-        ] + $args);
-    }
-
     public static function savePost($post_id)
     {
         switch (get_post_type($post_id)) {
@@ -197,54 +89,18 @@ class Events
 
                 $repeat_exclude = wp_list_pluck($repeat_exclude, 'date', 'date');
 
-                $times = Helpers::getTimes($start, $end, $repeat_end, $repeat, $repeat_exclude);
+                $times = Helpers::getTimesRepeat($start, $end, $repeat_end, $repeat, $repeat_exclude);
                 $times = array_slice($times, 0, 50);
 
                 $processed = [];
 
-                foreach ($times as $time) {
-
-                    $event = current(self::getEventsByTime($time['start'], $time['end'], [
-                        'meta_key'     => 'group',
-                        'meta_compare' => '=',
-                        'meta_value'   => $group->ID,
-                    ]));
-
-                    $postdata = [
-                        'post_title'   => $group->post_title,
-                        'post_content' => '',
-                        'post_type'    => 'event',
-                        'post_status'  => $group->post_status,
-                    ];
-
-                    if ($event) {
-                        $postdata['ID'] = $event->ID;
+                if (is_array($times)) {
+                    foreach ($times as $time) {
+                        $processed[] = Model::createGroupEvent($group->ID, $time['start'], $time['end']);
                     }
-
-                    $post_id = wp_insert_post($postdata);
-
-                    $event = new Event($post_id);
-
-                    $fields = array_keys(get_field_objects($group->ID));
-                    foreach ($fields as $name) {
-                        if (! in_array($name, ['start', 'end'])) {
-                            $event->updateMeta($name, $group->getMeta($name, true));
-                        }
-                    }
-
-                    $event->updateMeta('start', $time['start']);
-                    $event->updateMeta('end', $time['end']);
-                    $event->updateMeta('group', $group->ID);
-
-                    self::setInviteesFromSettingsFields($event->ID);
-
-                    $processed[] = $event->ID;
                 }
 
-                $delete = self::getEvents([
-                    'meta_key'     => 'group',
-                    'meta_compare' => '=',
-                    'meta_value'   => $group->ID,
+                $delete = Model::getEventsByEventGroup($group->ID, [
                     'exclude'      => $processed,
                     'post_status'  => 'any',
                 ]);
@@ -268,7 +124,7 @@ class Events
                 break;
 
             case 'invitee_group':
-                $events = self::getEventsByInviteeGroup($post_id);
+                $events = Model::getEventsByInviteeGroup($post_id);
                 foreach ($events as $event) {
                     $event = new Event($event);
                     // Set invitee type to 'individual'.
@@ -280,12 +136,18 @@ class Events
                 // Get address setting from location
                 $location = new Post($post_id);
                 $address = $location->getMeta('address', true);
-                $events = self::getEventsByLocation($post_id);
+                $events = Model::getEventsByLocation($post_id);
                 foreach ($events as $event) {
                     // Switch to 'input' and save location address.
                     $event = new Event($event);
                     $event->updateMeta('location_type', 'input');
                     $event->updateMeta('location_input', $address);
+                }
+                break;
+            case 'event_group':
+                $events = Model::getEventsByEventGroup($post_id, ['post_status' => 'any']);
+                foreach ($events as $event) {
+                    wp_trash_post($event->ID);
                 }
                 break;
         }
@@ -299,6 +161,12 @@ class Events
                 $event = new Event($post_id);
                 $event->setInvitees([]);
                 break;
+            case 'event_group':
+                $events = Model::getEventsByEventGroup($post_id, ['post_status' => 'any']);
+                foreach ($events as $event) {
+                    wp_delete_post($event->ID);
+                }
+                break;
         }
     }
 
@@ -311,13 +179,21 @@ class Events
                     $event->updateMeta('was_published', true);
                 }
                 break;
+            case 'event_group':
+                if ($new_status !== 'trash') {
+                    $events = Model::getEventsByEventGroup($post->ID, ['post_status' => 'any']);
+                    foreach ($events as $event) {
+                        wp_update_post(['ID' => $event->ID, 'post_status' => $new_status]);
+                    }
+                }
+                break;
         }
     }
 
     public static function beforeDeleteUser($user_id, $reassign, $user)
     {
         // Get invitees by user.
-        $invitees = self::getInviteesByUser($user_id);
+        $invitees = Model::getInviteesByUser($user_id);
 
         // Remove user related invitees.
         foreach ($invitees as $invitee) {
@@ -406,7 +282,7 @@ class Events
         // Add invitees
 
         foreach ($added_users as $user_id) {
-            $events = self::getEventsByInviteeGroup($group->ID);
+            $events = Model::getEventsByInviteeGroup($group->ID);
 
             foreach ($events as $event) {
                 $event = new Event($event);
@@ -420,7 +296,7 @@ class Events
         // Remove invitees
 
         foreach ($removed_users as $user_id) {
-            $events = self::getEventsByInviteeGroup($group->ID);
+            $events = Model::getEventsByInviteeGroup($group->ID);
 
             foreach ($events as $event) {
                 $event = new Event($event);
@@ -519,7 +395,7 @@ class Events
 
         remove_action(current_action(), [__CLASS__, __FUNCTION__]);
 
-        $private_events = self::getPrivateEvents(['fields' => 'ids']);
+        $private_events = Model::getPrivateEvents(['fields' => 'ids']);
 
         add_action(current_action(), [__CLASS__, __FUNCTION__]);
 
