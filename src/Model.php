@@ -22,6 +22,40 @@ class Model
         ]);
     }
 
+    public static function orderEventsByStartTime($event_ids, $order = 'ASC', $args = [])
+    {
+        if (! $event_ids) {
+            return [];
+        }
+
+        return self::getEvents($args + [
+            'include'   => $event_ids,
+            'orderby'   => 'meta_value',
+            'meta_key'  => 'start',
+            'meta_type' => 'DATETIME',
+            'order'     => $order,
+        ]);
+    }
+
+    public static function excludeEventsThatAreOver($event_ids, $args = [])
+    {
+        if (! $event_ids) {
+            return [];
+        }
+
+        return self::getEvents($args + [
+            'include' => $event_ids,
+            'meta_query' => [
+                [
+                    'key'     => 'start',
+                    'compare' => '>=',
+                    'value'   => date_i18n('Y-m-d H:i:s'),
+                    'type'    => 'DATETIME',
+                ],
+            ],
+        ]);
+    }
+
     /**
      * Get events between
      *
@@ -76,32 +110,6 @@ class Model
                     'value'   => $end,
                     'type'    => 'DATETIME',
                 ]
-            ],
-        ] + $args);
-    }
-
-    /**
-     * Get events by invitee group
-     *
-     * @param int   $group_id
-     * @param array $args
-     * @return array
-     */
-    public static function getEventsByInviteeGroup($group_id, $args = [])
-    {
-        return self::getEvents([
-            'meta_query' => [
-                'relation' => 'AND',
-                [
-                    'key'     => 'invitees_type',
-                    'compare' => '=',
-                    'value'   => 'group',
-                ],
-                [
-                    'key'     => 'invitees_group',
-                    'compare' => '=',
-                    'value'   => $group_id,
-                ],
             ],
         ] + $args);
     }

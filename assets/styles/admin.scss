@@ -66,25 +66,22 @@
   }
 }
 
-
 /**
  * Grouped events
  */
 
-body.post-php.post-type-event.is-grouped-event #acf-my_events_event_group {
-  .acf-field {
-    position: relative;
-    z-index: 100;
-    &:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      z-index: 200;
-      background-color: rgba(#ffffff, .5);
-    }
+.acf-field.disabled {
+  position: relative;
+  z-index: 100;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 200;
+    background-color: rgba(#ffffff, .5);
   }
 }
 
@@ -115,5 +112,30 @@ body.edit-php.post-type-event #the-list .hentry.type-event {
 .my-events-send-email {
   &.is-loading {
     @include make-loader(2rem, 0, true);
+  }
+}
+
+body.post-php.post-type-invitee {
+  &.is-grouped-event {
+    #submitdiv {
+      #delete-action,
+      #minor-publishing-actions,
+      #misc-publishing-actions {
+        display: none;
+      }
+    }
+  }
+}
+
+body.edit-php.post-type-invitee #the-list .hentry.type-invitee {
+  &.is-grouped-event {
+    .row-actions {
+      .inline, .trash {
+        display: none;
+      }
+    }
+    .check-column * {
+      display: none;
+    }
   }
 }

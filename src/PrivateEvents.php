@@ -12,7 +12,7 @@ class PrivateEvents
         add_action('admin_enqueue_scripts', [__CLASS__, 'checkAccessEventEdit']);
         add_action('admin_notices', [__CLASS__, 'adminNotices']);
     }
-    
+
     public static function excludePrivateEvents($query)
     {
         // Check role
@@ -97,7 +97,7 @@ class PrivateEvents
         if ($screen->id === 'event') {
             $event = new Event($_GET['post']);
             if ($event->isPrivate()) {
-                Helpers::adminNotice(__('This event is only accessible to organisers and invitees of this event.', 'my-events'));
+                echo Helpers::adminNotice(__('This event is only accessible to organisers and invitees of this event.', 'my-events'));
             }
         }
     }

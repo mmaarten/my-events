@@ -4,6 +4,7 @@ namespace My\Events;
 
 use My\Events\Posts\Post;
 use My\Events\Posts\Event;
+use My\Events\Posts\Invitee;
 
 class Events
 {
@@ -23,13 +24,40 @@ class Events
         add_filter('acf/load_field/key=my_events_event_invitees_list', [__CLASS__, 'renderInvities'], 10, 2);
         add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
         add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
+
+        add_filter('acf/load_field', function ($field) {
+
+            $screen = get_current_screen();
+
+            if ($screen->base !== 'post') {
+                return $field;
+            }
+
+            $post_id = $_GET['post'];
+
+            switch ($screen->post_type) {
+                case 'event':
+                    $event = new Event($post_id);
+                    if ($event->isGrouped() && $field['parent'] === 'my_events_event_group') {
+                        $field['wrapper']['class'] = 'disabled';
+                    }
+                    break;
+                case 'invitee':
+                    if (in_array($field['name'], ['event', 'user'])) {
+                        $field['wrapper']['class'] = 'disabled';
+                    }
+                    break;
+            }
+
+            return $field;
+        });
     }
 
     public static function addMetaBoxes($post_type)
     {
         $screen = get_current_screen();
 
-        if ($screen->id === 'event' && $post_type === 'event') {
+        if ($screen->base === 'post' && $screen->post_type === 'event') {
             $event = new Event($_GET['post']);
             if ($event->isGrouped()) {
                 remove_meta_box('submitdiv', $post_type, 'side');
@@ -37,9 +65,9 @@ class Events
         }
     }
 
-    public static function getEventClasses($event_id)
+    public static function getEventClasses($post_id)
     {
-        $event = new Event($event_id);
+        $event = new Event($post_id);
 
         $classes = [];
 
@@ -64,6 +92,27 @@ class Events
         }
 
         return apply_filters('my_events/event_class', $classes, $event_id);
+    }
+
+    public static function getInviteeClasses($post_id)
+    {
+        $invitee = new Invitee($post_id);
+
+        $event = null;
+        $event_id = $invitee->getEvent();
+        if ($event_id && get_post_type($event_id)) {
+            $event = new Event($event_id);
+        }
+
+        $classes[] = sprintf('is-invitee-%s', $invitee->getStatus());
+
+        if ($event) {
+            if ($event->isGrouped()) {
+                $classes[] = 'is-grouped-event';
+            }
+        }
+
+        return $classes;
     }
 
     public static function savePost($post_id)
@@ -339,21 +388,18 @@ class Events
 
     public static function updateInvitiesField($value, $post_id, $field)
     {
-        // Event groups have same settings field.
-        if (get_post_type($post_id) !== 'event') {
-            return $value;
-        }
-
         // Stop when value. We need to access it on post save.
         if ($value) {
             return $value;
         }
 
         // Populates field with invitees from our post type.
+        if (get_post_type($post_id) === 'event') {
+            $event = new Event($post_id);
+            return $event->getInviteesUsers(null, ['fields' => 'ID']);
+        }
 
-        $event = new Event($post_id);
-
-        return $event->getInviteesUsers(null, ['fields' => 'ID']);
+        return $value;
     }
 
     public static function updateInviteesFromInviteeGroup($group_id)
@@ -457,7 +503,7 @@ class Events
                 $event = new Event($_GET['post']);
 
                 if ($event->isOver()) {
-                    Helpers::adminNotice(__('This event is over.', 'my-events'), 'warning');
+                    echo Helpers::adminNotice(__('This event is over.', 'my-events'), 'warning');
                 }
 
                 if ($event->isGrouped()) {
@@ -481,7 +527,7 @@ class Events
                         );
                     }
 
-                    Helpers::adminNotice($message, 'warning', false, true);
+                    echo Helpers::adminNotice($message, 'warning', false, true);
                 }
 
                 break;
@@ -490,8 +536,13 @@ class Events
 
     public static function postClass($classes, $class, $post_id)
     {
-        if (get_post_type($post_id) === 'event') {
-            $classes = array_merge($classes, self::getEventClasses($post_id));
+        switch (get_post_type($post_id)) {
+            case 'event':
+                $classes = array_merge($classes, self::getEventClasses($post_id));
+                break;
+            case 'invitee':
+                $classes = array_merge($classes, self::getInviteeClasses($post_id));
+                break;
         }
 
         return $classes;
@@ -501,8 +552,19 @@ class Events
     {
         $screen = get_current_screen();
 
-        if ($screen->id === 'event') {
-            $classes .= ' ' . implode(' ', self::getEventClasses($_GET['post']));
+        if ($screen->base !== 'post') {
+            return $classes;
+        }
+
+        $post_id = $_GET['post'];
+
+        switch ($screen->post_type) {
+            case 'event':
+                $classes .= ' ' . implode(' ', self::getEventClasses($post_id));
+                break;
+            case 'invitee':
+                $classes .= ' ' . implode(' ', self::getInviteeClasses($post_id));
+                break;
         }
 
         return $classes;

@@ -5,7 +5,7 @@ namespace My\Events;
 use My\Events\Posts\Event;
 
 if (! $args['events']) {
-    Helpers::adminNotice(__('No events found.', 'my-events'), 'info', true);
+    echo Helpers::adminNotice(__('No events found.', 'my-events'), 'info', true);
     return;
 }
 

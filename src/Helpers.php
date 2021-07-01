@@ -13,10 +13,10 @@ class Helpers
             'numberposts' => 1,
         ]));
     }
-    
+
     public static function adminNotice($message, $type = 'info', $inline = false, $html = false)
     {
-        printf(
+        return sprintf(
             '<div class="notice notice-%1$s %2$s"><p>%3$s</p></div>',
             sanitize_html_class($type),
             $inline ? 'inline' : '',
@@ -103,7 +103,7 @@ class Helpers
     public static function isDateInbetween($date, $start, $end)
     {
         $dates = is_array($date) ? $date : (array) $date;
-        
+
         $start = strtotime(date('Y-m-d', strtotime($start)));
         $end   = strtotime(date('Y-m-d', strtotime($end)));
 

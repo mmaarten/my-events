@@ -57,7 +57,7 @@ class Emails
 
             <div class="my-events-send-email-output"></div>
 
-            <?php Helpers::adminNotice(__('Be sure to save the event before sending.', 'my-events'), 'info', true); ?>
+            <?php echo Helpers::adminNotice(__('Be sure to save the event before sending.', 'my-events'), 'info', true); ?>
 
         </div>
 
@@ -77,11 +77,11 @@ class Emails
         $message  = wpautop(trim(stripcslashes($message)));
 
         if (! $event_id || get_post_type($event_id) !== 'event') {
-            wp_send_json_error(__('Invalid event.', 'my-events'));
+            wp_send_json_error(Helpers::adminNotice(__('Invalid event.', 'my-events'), 'error', true));
         }
 
         if (! $message) {
-            wp_send_json_error(__('Message is required.', 'my-events'));
+            wp_send_json_error(Helpers::adminNotice(__('Message is required.', 'my-events'), 'error', true));
         }
 
         $event = new Event($event_id);
@@ -99,6 +99,6 @@ class Emails
             wp_mail($to, $subject, $email_message);
         }
 
-        wp_send_json_success(__('Email send.', 'my-events'));
+        wp_send_json_success(Helpers::adminNotice(__('Email send.', 'my-events'), 'success', true));
     }
 }

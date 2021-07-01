@@ -21,10 +21,31 @@ class Notifications
 
     public static function sendEventGroupInvitation($group_id)
     {
-        $events = Model::getEventsByEventGroup($group_id);
+        $events = get_posts([
+            'post_type'   => 'event',
+            'post_status' => 'publish',
+            'numberposts' => 999,
+            'orderby'     => 'meta_value',
+            'meta_key'    => 'start',
+            'meta_type'   => 'DATETIME',
+            'order'       => 'ASC',
+            'meta_query'  => [
+                [
+                    'key'     => 'group',
+                    'compare' => '=',
+                    'value'   => $group_id,
+                ],
+                [
+                    'key'     => 'start',
+                    'compare' => '>=',
+                    'value'   => date_i18n('Y-m-d H:i:s'),
+                    'type'    => 'DATETIME',
+                ],
+            ],
+        ]);
 
         if (! $events) {
-            return;
+            return false;
         }
 
         $group = new Post($group_id);
@@ -32,8 +53,48 @@ class Notifications
         $user_ids = Model::getInviteesFromSettingsField($group_id);
 
         if (! $user_ids) {
-            return;
+            return false;
         }
+
+        $users = get_users([
+            'include' => $user_ids,
+        ]);
+
+        if (! $users) {
+            return false;
+        }
+
+        foreach ($users as $user) {
+            // Double check if the user is invited for the events comming from the group.
+            $user_events = [];
+            foreach ($events as $event) {
+                $event = new Event($event);
+                if ($event->isInvitee($user->ID)) {
+                    $user_events[] = $event;
+                }
+            }
+
+            if (! $user_events) {
+                continue;
+            }
+
+            $to = $user->user_email;
+
+            $subject = sprintf(
+                __('You are invited for the group event: "%1$s".', 'my-events'),
+                $event->post_title
+            );
+
+            $message = Helpers::loadTemplate('emails/group-event-invitation', [
+                'group' => $group,
+                'user'  => $user,
+                'event' => $user_events,
+            ], true);
+
+            self::sendNotification($to, $subject, $message);
+        }
+
+        return true;
     }
 
     public static function test()
@@ -223,6 +284,11 @@ class Notifications
         }
 
         if ($event->isOver()) {
+            return false;
+        }
+
+        // Grouped events have notifications of their own.
+        if ($event->isGrouped()) {
             return false;
         }
 
