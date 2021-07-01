@@ -8,7 +8,7 @@ $declined = $event->getInviteesUsers('declined');
 $pending  = $event->getInviteesUsers('pending');
 
 if (! $accepted && ! $declined && ! $pending) {
-    Helpers::adminNotice(__('No invitees found.', 'my-events'));
+    Helpers::adminNotice(__('No invitees found.', 'my-events'), 'info', true);
     return;
 }
 

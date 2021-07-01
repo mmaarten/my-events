@@ -236,6 +236,14 @@ class Model
 
         $event = current(Model::getEventsByEventGroupAndTime($group->ID, $start, $end, ['numberposts' => 1]));
 
+        // Don't update when event exists and is over.
+        if ($event) {
+            $event = new Event($event);
+            if ($event->isOver()) {
+                return $event->ID;
+            }
+        }
+
         $postdata = [
             'post_title'   => $group->post_title,
             'post_content' => '',
@@ -264,6 +272,12 @@ class Model
         $event->updateField('group', $group->ID);
 
         Events::setInviteesFromSettingsFields($event->ID);
+
+        // Update post name.
+        wp_update_post([
+            'ID'        => $event->ID,
+            'post_name' => sanitize_title($event->post_title . '-' . $event->getStartTime()),
+        ]);
 
         return $event->ID;
     }

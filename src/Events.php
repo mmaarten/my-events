@@ -40,7 +40,7 @@ class Events
     public static function getEventClasses($event_id)
     {
         $event = new Event($event_id);
-        
+
         $classes = [];
 
         if ($event->isOver()) {
@@ -446,7 +446,7 @@ class Events
 
                     Helpers::adminNotice($message, 'warning', false, true);
                 }
-                
+
                 break;
         }
     }

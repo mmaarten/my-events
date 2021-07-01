@@ -1,0 +1,35 @@
+
+@mixin make-loader($size: 3rem, $padding: 0, $backdrop: false) {
+  position: relative;
+  min-width: $size + $padding;
+  min-height: $size + $padding;
+  &:after {
+    content: "";
+    position: absolute;
+    background-image: escape-svg($spinner);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: $size;
+    height: $size;
+    animation: spin 1.2s linear infinite, fade 3s linear forwards;
+    top: calc(50% - #{$size/2});
+    left: calc(50% - #{$size/2});
+  }
+  @if ($backdrop) {
+    &:after {
+      z-index: 200;
+    }
+    &:before {
+      animation: fadeIn 3s;
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(#ffffff, .75);
+      z-index: 100;
+    }
+  }
+}

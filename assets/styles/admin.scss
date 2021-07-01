@@ -1,3 +1,5 @@
+@import "autoload";
+
 /**
  * Event settings
  */
@@ -21,7 +23,7 @@
         display: none;
       }
     }
-    
+
     &[data-name="max_subscriptions"] {
       .acf-label label {
         font-weight: normal;
@@ -48,15 +50,14 @@
  */
 
 .acf-fields .notice {
-  margin: 14px;
+  margin-top: 0;
 }
 
 /**
  * Event group
  */
 
-
- #acf-my_events_event_group_group .acf-field[data-key="my_events_event_group_events"] {
+#acf-my_events_event_group_group .acf-field[data-key="my_events_event_group_events"] {
   .acf-label {
     display: none;
   }
@@ -70,7 +71,7 @@
  * Grouped events
  */
 
-body.post-php.post-type-event.is-grouped-event {
+body.post-php.post-type-event.is-grouped-event #acf-my_events_event_group {
   .acf-field {
     position: relative;
     z-index: 100;
@@ -84,7 +85,7 @@ body.post-php.post-type-event.is-grouped-event {
       z-index: 200;
       background-color: rgba(#ffffff, .5);
     }
-  } 
+  }
 }
 
 /**
@@ -104,5 +105,15 @@ body.edit-php.post-type-event #the-list .hentry.type-event {
     .check-column * {
       display: none;
     }
+  }
+}
+
+/**
+ * Send email
+ */
+
+.my-events-send-email {
+  &.is-loading {
+    @include make-loader(2rem, 0, true);
   }
 }

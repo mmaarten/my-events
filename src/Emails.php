@@ -32,14 +32,8 @@ class Emails
     {
         $event = new Event($post);
 
-        if ($event->post_status !== 'publish') {
-            Helpers::adminNotice(__('Invitees can only see published events.', 'my-events'), 'error', true);
-        }
-
-        Helpers::adminNotice(__('Be sure to save the event before sending an email.', 'my-events'), 'info', true);
-
         $atts = [
-            'id'             => 'my-events-send-email',
+            'class'          => 'my-events-send-email',
             'data-action'    => 'my_events_event_send_email',
             'data-event'     => $event->ID,
             'data-noncename' => MY_EVENTS_NONCE_NAME,
@@ -50,18 +44,20 @@ class Emails
 
         <div <?php echo acf_esc_attr($atts); ?>>
 
+            <p><?php esc_html_e('Send an email to all invitees of this event.', 'my-events'); ?></p>
+
             <p>
-                <label for="my-events-send-email-message"><?php esc_html_e('Message', 'my-events'); ?></label><br>
+                <label for="my-events-send-email-message"><strong><?php esc_html_e('Message', 'my-events'); ?></strong></label><br>
                 <textarea id="my-events-send-email-message" class="large-text" rows="5"></textarea>
             </p>
-
-            <p class="description"><?php esc_html_e('Event link and time are included in the email.', 'my-events'); ?></p>
 
             <p>
                 <button type="button" class="button my-events-send-email-submit"><?php esc_html_e('Send', 'my-events'); ?></button>
             </p>
 
-            <div id="my-events-send-email-output"></div>
+            <div class="my-events-send-email-output"></div>
+
+            <?php Helpers::adminNotice(__('Be sure to save the event before sending.', 'my-events'), 'info', true); ?>
 
         </div>
 
@@ -81,23 +77,16 @@ class Emails
         $message  = wpautop(trim(stripcslashes($message)));
 
         if (! $event_id || get_post_type($event_id) !== 'event') {
-            wp_send_json_error(Helpers::adminNotice(__('Invalid event.', 'my-events'), 'error', true));
+            wp_send_json_error(__('Invalid event.', 'my-events'));
         }
 
         if (! $message) {
-            wp_send_json_error(Helpers::adminNotice(__('Message is required.', 'my-events'), 'error', true));
+            wp_send_json_error(__('Message is required.', 'my-events'));
         }
 
         $event = new Event($event_id);
 
-        $organisers   = wp_list_pluck($event->getOrganisers(), 'user_email', 'user_email');
-        $participants = wp_list_pluck($event->getInviteesUsers(), 'user_email', 'user_email');
-
-        $recipients = array_merge($organisers, $participants);
-
-        if (! $recipients) {
-            wp_send_json_error(Helpers::adminNotice(__('No recipients found.', 'my-events'), 'error', true));
-        }
+        $recipients = wp_list_pluck($event->getInviteesUsers(), 'user_email', 'ID');
 
         foreach ($recipients as $to) {
             $subject = sprintf(__('Announcement for event "%s".', 'my-events'), $event->post_title);
@@ -107,11 +96,9 @@ class Emails
                 'message' => $message,
             ], true);
 
-            //wp_mail($to, $subject, $email_message);
+            wp_mail($to, $subject, $email_message);
         }
 
-        wp_send_json_success(Helpers::adminNotice(__('Email send.', 'my-events'), 'success', true));
+        wp_send_json_success(__('Email send.', 'my-events'));
     }
-
-
 }
