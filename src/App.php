@@ -19,6 +19,7 @@ class App
             'PrivateEvents',
             'Notifications',
             'Subscriptions',
+            'Emails',
             'Calendar',
         ]);
     }
