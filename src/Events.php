@@ -24,43 +24,29 @@ class Events
         add_filter('acf/load_field/key=my_events_event_invitees_list', [__CLASS__, 'renderInvities'], 10, 2);
         add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
         add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
+    }
 
-        add_filter('acf/load_field', function ($field) {
+    public static function isEditableEvent($event_id)
+    {
+        $event = new Event($event_id);
 
-            $screen = get_current_screen();
-
-            if ($screen->base !== 'post') {
-                return $field;
-            }
-
-            $post_id = $_GET['post'];
-
-            switch ($screen->post_type) {
-                case 'event':
-                    $event = new Event($post_id);
-                    if ($event->isGrouped() && $field['parent'] === 'my_events_event_group') {
-                        $field['wrapper']['class'] = 'disabled';
-                    }
-                    break;
-                case 'invitee':
-                    if (in_array($field['name'], ['event', 'user'])) {
-                        $field['wrapper']['class'] = 'disabled';
-                    }
-                    break;
-            }
-
-            return $field;
-        });
+        return ! $event->isGrouped();
     }
 
     public static function addMetaBoxes($post_type)
     {
         $screen = get_current_screen();
 
-        if ($screen->base === 'post' && $screen->post_type === 'event') {
-            $event = new Event($_GET['post']);
-            if ($event->isGrouped()) {
-                remove_meta_box('submitdiv', $post_type, 'side');
+        if ($screen->base === 'post') {
+
+            $post_id = $_GET['post'];
+
+            switch ($screen->post_type) {
+                case 'event':
+                    if (! self::isEditableEvent($post_id)) {
+                        remove_meta_box('submitdiv', $post_type, 'side');
+                    }
+                    break;
             }
         }
     }
@@ -83,6 +69,10 @@ class Events
             $classes[] = 'is-grouped-event';
         }
 
+        if (is_admin() && self::isEditableEvent($event->ID)) {
+            $classes[] = 'is-editable-event';
+        }
+
         if (is_user_logged_in()) {
             $invitee = $event->getInviteeByUser(get_current_user_id());
             if ($invitee) {
@@ -91,7 +81,7 @@ class Events
             }
         }
 
-        return apply_filters('my_events/event_class', $classes, $event_id);
+        return apply_filters('my_events/event_class', $classes, $event->ID);
     }
 
     public static function getInviteeClasses($post_id)

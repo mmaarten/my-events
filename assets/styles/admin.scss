@@ -1,9 +1,6 @@
 @import "autoload";
 
-/**
- * Event settings
- */
-
+// Event settings
 #acf-my_events_event_group {
   .acf-field {
     &[data-name="invitees_individual"],
@@ -14,7 +11,6 @@
       border-top: none;
       padding-top: 0;
     }
-
     &[data-name="invitees_individual"],
     &[data-name="invitees_group"],
     &[data-name="location_id"],
@@ -23,7 +19,6 @@
         display: none;
       }
     }
-
     &[data-name="max_subscriptions"] {
       .acf-label label {
         font-weight: normal;
@@ -32,10 +27,7 @@
   }
 }
 
-/**
- * 'Invitees' meta box on event edit screen.
- */
-
+// 'Invitees' meta box on event edit screen.
 #acf-my_events_event_invitees_group .acf-field[data-key="my_events_event_invitees_list"] {
   .acf-label {
     display: none;
@@ -45,18 +37,12 @@
   }
 }
 
-/**
- * Admin notices.
- */
-
+// Admin notices.
 .acf-fields .notice {
   margin-top: 0;
 }
 
-/**
- * Event group
- */
-
+// Event group.
 #acf-my_events_event_group_group .acf-field[data-key="my_events_event_group_events"] {
   .acf-label {
     display: none;
@@ -66,33 +52,45 @@
   }
 }
 
-/**
- * Grouped events
- */
-
-.acf-field.disabled {
-  position: relative;
-  z-index: 100;
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 200;
-    background-color: rgba(#ffffff, .5);
-  }
-}
-
-/**
- * Events overview screen
- */
-
-body.edit-php.post-type-event #the-list .hentry.type-event {
+ // Events overview screen
+body.edit-php.post-type-event .hentry.type-event {
+  // Events that are over.
   &.is-event-over {
     opacity: .5;
   }
+  // Not editable events.
+  &:not(.is-editable-event) {
+    .row-actions {
+      .inline, .trash {
+        display: none;
+      }
+    }
+    .check-column * {
+      display: none;
+    }
+  }
+}
+
+// Event edit screen
+body.post-php.post-type-event {
+  // Disable fields
+  &:not(.is-editable-event) {
+    #acf-my_events_event_group .acf-field {
+      @include disable-field();
+    }
+  }
+}
+
+// Send email
+.my-events-send-email {
+  &.is-loading {
+    @include make-loader(2rem, 0, true);
+  }
+}
+
+// Invitee overview screen.
+body.edit-php.post-type-invitee .hentry.type-invitee {
+  // Disable actions.
   &.is-grouped-event {
     .row-actions {
       .inline, .trash {
@@ -105,17 +103,16 @@ body.edit-php.post-type-event #the-list .hentry.type-event {
   }
 }
 
-/**
- * Send email
- */
-
-.my-events-send-email {
-  &.is-loading {
-    @include make-loader(2rem, 0, true);
-  }
-}
-
+// Invitee edit screen.
 body.post-php.post-type-invitee {
+  // Disable fields.
+  .acf-field {
+    &[data-name="event"],
+    &[data-name="user"] {
+      @include disable-field();
+    }
+  }
+  // Disable actions.
   &.is-grouped-event {
     #submitdiv {
       #delete-action,
@@ -125,17 +122,5 @@ body.post-php.post-type-invitee {
       }
     }
   }
-}
 
-body.edit-php.post-type-invitee #the-list .hentry.type-invitee {
-  &.is-grouped-event {
-    .row-actions {
-      .inline, .trash {
-        display: none;
-      }
-    }
-    .check-column * {
-      display: none;
-    }
-  }
 }
