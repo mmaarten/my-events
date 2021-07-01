@@ -2,6 +2,7 @@
 
 namespace My\Events;
 
+use My\Events\Posts\Post;
 use My\Events\Posts\Event;
 use My\Events\Posts\Invitee;
 
@@ -16,6 +17,23 @@ class Notifications
         add_action('my_events/event_cancelled', [__CLASS__, 'sendEventCancelledNotification'], 10, 3);
         //add_action('init', [__CLASS__, 'maybeSendInviteeInvitationEmail']);
         //add_action('init', [__CLASS__, 'test']);
+    }
+
+    public static function sendEventGroupInvitation($group_id)
+    {
+        $events = Model::getEventsByEventGroup($group_id);
+
+        if (! $events) {
+            return;
+        }
+
+        $group = new Post($group_id);
+
+        $user_ids = Model::getInviteesFromSettingsField($group_id);
+
+        if (! $user_ids) {
+            return;
+        }
     }
 
     public static function test()

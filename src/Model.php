@@ -107,6 +107,32 @@ class Model
     }
 
     /**
+     * Get events by invitee group
+     *
+     * @param int   $group_id
+     * @param array $args
+     * @return array
+     */
+    public static function getEventsByInviteeGroup($group_id, $args = [])
+    {
+        return self::getEvents([
+            'meta_query' => [
+                'relation' => 'AND',
+                [
+                    'key'     => 'invitees_type',
+                    'compare' => '=',
+                    'value'   => 'group',
+                ],
+                [
+                    'key'     => 'invitees_group',
+                    'compare' => '=',
+                    'value'   => $group_id,
+                ],
+            ],
+        ] + $args);
+    }
+
+    /**
      * Get events by location
      *
      * @param int   $location_id
@@ -228,6 +254,53 @@ class Model
             'meta_compare' => '=',
             'meta_value'   => $status,
         ]);
+    }
+
+    public static function getEventGroups($args = [])
+    {
+        return get_posts($args + [
+            'post_type'   => 'event_group',
+            'post_status' => 'publish',
+            'numberposts' => 999,
+        ]);
+    }
+
+    public static function getEventGroupsByInviteeGroup($group_id, $args = [])
+    {
+        return self::getEventGroups([
+            'meta_query' => [
+                'relation' => 'AND',
+                [
+                    'key'     => 'invitees_type',
+                    'compare' => '=',
+                    'value'   => 'group',
+                ],
+                [
+                    'key'     => 'invitees_group',
+                    'compare' => '=',
+                    'value'   => $group_id,
+                ],
+            ],
+        ] + $args);
+    }
+
+    public static function getEventGroupsByLocation($location_id, $args = [])
+    {
+        return self::getEventGroups([
+            'meta_query' => [
+                'relation' => 'AND',
+                [
+                    'key'     => 'location_type',
+                    'compare' => '=',
+                    'value'   => 'id',
+                ],
+                [
+                    'key'     => 'location_id',
+                    'compare' => '=',
+                    'value'   => $location_id,
+                ],
+            ],
+        ] + $args);
     }
 
     public static function createGroupEvent($group_id, $start, $end)

@@ -132,11 +132,19 @@ class Events
                     // The field 'invitees_individual' is automatically populated. So we dont need to update it.
                     $event->updateField('invitees_type', 'individual');
                 }
+                $groups = Model::getEventGroupsByInviteeGroup($post_id);
+                foreach ($groups as $group) {
+                    $group = new Post($group);
+                    // Set invitee type to 'individual'.
+                    // The field 'invitees_individual' is automatically populated. So we dont need to update it.
+                    $group->updateField('invitees_type', 'individual');
+                }
                 break;
             case 'event_location':
                 // Get address setting from location
                 $location = new Post($post_id);
                 $address = $location->getField('address');
+
                 $events = Model::getEventsByLocation($post_id);
                 foreach ($events as $event) {
                     // Switch to 'input' and save location address.
@@ -144,6 +152,15 @@ class Events
                     $event->updateField('location_type', 'input');
                     $event->updateField('location_input', $address);
                 }
+
+                $groups = Model::getEventGroupsByLocation($post_id);
+                foreach ($groups as $group) {
+                    // Switch to 'input' and save location address.
+                    $group = new Post($group);
+                    $group->updateField('location_type', 'input');
+                    $group->updateField('location_input', $address);
+                }
+
                 break;
             case 'event_group':
                 // Get all events related to this post.
@@ -273,11 +290,12 @@ class Events
         return true;
     }
 
-    public static function setInviteesFromSettingsFields($event_id)
+    public static function getInviteesFromSettingsField($event_id)
     {
         // Get event.
         $event = new Event($event_id);
 
+        // Get invitee type.
         $type = $event->getField('invitees_type');
 
         $user_ids = [];
@@ -294,9 +312,23 @@ class Events
             $user_ids = $group->getField('users');
         }
 
-        if (! is_array($user_ids)) {
+        if (! $user_ids || ! is_array($user_ids)) {
             $user_ids = [];
         }
+
+        // Make sure all users exist.
+        return get_users([
+            'include' => $user_ids,
+            'fields'  => 'ID',
+        ]);
+    }
+
+    public static function setInviteesFromSettingsFields($event_id)
+    {
+        // Get event.
+        $event = new Event($event_id);
+
+        $user_ids = self::getInviteesFromSettingsField($event->ID);
 
         // Create invitees
         $event->setInvitees($user_ids);
@@ -307,6 +339,11 @@ class Events
 
     public static function updateInvitiesField($value, $post_id, $field)
     {
+        // Event groups have same settings field.
+        if (get_post_type($post_id) !== 'event') {
+            return $value;
+        }
+
         // Stop when value. We need to access it on post save.
         if ($value) {
             return $value;

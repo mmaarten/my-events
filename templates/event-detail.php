@@ -64,4 +64,6 @@ $participants = wp_list_pluck($event->getParticipants(), 'display_name', 'ID');
         <?php Subscriptions::form(); ?>
     </section>
 
+    <?php edit_post_link(__('Edit this event', 'my-events', '<p>', '</p>')); ?>
+
 </article>
