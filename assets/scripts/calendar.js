@@ -190,6 +190,8 @@ import './components/breakpoints';
       $form.addClass('is-loading');
       jQuery.post(MyEvents.ajaxurl, jQuery(this).serialize(), function(response){
         $form.removeClass('is-loading');
+        // Reload calendar.
+        MyEventsCalendar.addEvents(MyEventsCalendar.start, MyEventsCalendar.end);
         // Reload event detail.
         MyEventsCalendar.loadEventDetail(eventId, function(content){
           $content.html(content);
