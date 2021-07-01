@@ -1,3 +1,20 @@
 @import "autoload";
 @import '~fullcalendar/main';
 @import 'modal';
+
+#calendar {
+  &.is-loading {
+    .fc-view-harness-active {
+      @include make-loader(2rem, 0, true);
+    }
+  }
+}
+
+#event-subscription-form {
+  &.is-loading {
+    @include make-loader(1.5rem, 0, true);
+    &:after {
+      left: 0;
+    }
+  }
+}

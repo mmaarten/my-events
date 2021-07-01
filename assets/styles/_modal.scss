@@ -48,7 +48,7 @@ html.with-my-events-modal {
 .my-events-modal .my-events-modal-content {
 
   max-width: 700px;
-  
+
 	/* make content container for positioned elements (close button) */
 	position: relative;
 
@@ -79,6 +79,10 @@ html.with-my-events-modal {
 .my-events-modal .my-events-modal-inner {
 	/* make sure its visible */
 	display: block;
+
+  &.is-loading {
+    @include make-loader(2rem, 1rem, true);
+  }
 }
 
 /* don't show these though */

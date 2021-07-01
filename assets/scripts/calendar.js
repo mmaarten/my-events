@@ -175,10 +175,10 @@ import './components/breakpoints';
 })(window, document);
 
 (function(){
-  
+
   // Event subscription form
   jQuery(MyEventsCalendar).on('MyEvents.eventDetailLoaded', function(event, $content, eventId){
-    
+
     var $form = $content.find('#event-subscription-form');
 
     $form.on('change', ':input[name="request"]', function (event){
@@ -187,8 +187,10 @@ import './components/breakpoints';
 
     $form.on('submit', function(event) {
       event.preventDefault();
+      $form.addClass('is-loading');
       jQuery.post(MyEvents.ajaxurl, jQuery(this).serialize(), function(response){
-        console.log(response);
+        $form.removeClass('is-loading');
+        // Reload event detail.
         MyEventsCalendar.loadEventDetail(eventId, function(content){
           $content.html(content);
           jQuery(MyEventsCalendar).trigger('MyEvents.eventDetailLoaded', [$content, eventId]);
