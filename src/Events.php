@@ -477,8 +477,11 @@ class Events
 
         $group_id = $_GET['post'];
 
+        $events = Model::getEventsByEventGroup($group_id, ['fields' => 'ids']);
+        $events = Model::orderEventsByStartTime($events);
+
         $field['message'] = Helpers::loadTemplate('event-group-edit-events', [
-            'events' => Model::getEventsByEventGroup($group_id),
+            'events' => $events,
         ], true);
 
         return $field;
