@@ -22,5 +22,12 @@ class App
             'Emails',
             'Calendar',
         ]);
+
+        add_action('init', [__CLASS__, 'loadTextdomain']);
+    }
+
+    public static function loadTextdomain()
+    {
+        load_plugin_textdomain('my-events', false, dirname(plugin_basename(MY_EVENTS_PLUGIN_FILE)) . '/languages');
     }
 }

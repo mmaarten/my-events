@@ -44,7 +44,7 @@ class Emails
 
         <div <?php echo acf_esc_attr($atts); ?>>
 
-            <p><?php esc_html_e('Send an email to all invitees of this event.', 'my-events'); ?></p>
+            <p><?php esc_html_e('Notify the invitees about any changes of this event.', 'my-events'); ?></p>
 
             <p>
                 <label for="my-events-send-email-message"><strong><?php esc_html_e('Message', 'my-events'); ?></strong></label><br>
