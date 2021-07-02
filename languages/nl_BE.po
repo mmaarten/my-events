@@ -1,11 +1,9 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Project-Id-Version: My Events\n"
 "POT-Creation-Date: 2021-07-02 21:43+0200\n"
-"PO-Revision-Date: 2021-07-02 21:42+0200\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2021-07-02 22:05+0200\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,932 +15,943 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
 "_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Last-Translator: \n"
+"Language: nl_BE\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
 #: plugin.php:22
 #, php-format
 msgid "%1$s installation is incomplete. Run %2$s within the %3$s directory."
-msgstr ""
+msgstr "%1$s installatie is niet volledig. Run %2$s binnenin de %3$s folder."
 
 #. Plugin Name of the plugin/theme
 #: plugin.php:23
 msgid "My Events"
-msgstr ""
+msgstr "Mijn evenementen"
 
 #: src/AdminColumns.php:33
 msgid "Time of day"
-msgstr ""
+msgstr "Tijdstip"
 
 #: src/AdminColumns.php:34 src/Fields.php:228 templates/event-detail.php:47
 msgid "Organisers"
-msgstr ""
+msgstr "Organisatoren"
 
 #: src/AdminColumns.php:35 templates/event-detail.php:56
 msgid "Participants"
-msgstr ""
+msgstr "Deelnemers"
 
 #: src/AdminColumns.php:36
 msgid "Number of participants"
-msgstr ""
+msgstr "Aantal deelnemers"
 
 #: src/AdminColumns.php:37 src/Fields.php:333 templates/event-detail.php:38
 msgid "Location"
-msgstr ""
+msgstr "Locatie"
 
 #: src/AdminColumns.php:38
 msgid "Over"
-msgstr ""
+msgstr "Voorbij"
 
 #: src/AdminColumns.php:39 src/Fields.php:391
 msgid "Private"
-msgstr ""
+msgstr "Privé"
 
 #: src/AdminColumns.php:40 src/Fields.php:278
 msgid "Group"
-msgstr ""
+msgstr "Groep"
 
 #: src/AdminColumns.php:98 src/Fields.php:458
 msgid "User"
-msgstr ""
+msgstr "Gebruiker"
 
 #: src/AdminColumns.php:99 src/Fields.php:444
 msgid "Event"
-msgstr ""
+msgstr "Evenement"
 
 #: src/AdminColumns.php:100 src/Fields.php:471
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: src/AdminColumns.php:101
 msgid "Email sent"
-msgstr ""
+msgstr "E-mail verzonden"
 
 #: src/AdminColumns.php:135
 msgid "Users"
-msgstr ""
+msgstr "Gebruikers"
 
 #: src/AdminColumns.php:157 src/Fields.php:512
 msgid "Address"
-msgstr ""
+msgstr "Adres"
 
 #: src/AdminMenu.php:15 src/AdminMenu.php:16 src/Fields.php:135
 #: src/PostTypes.php:25
 msgid "Events"
-msgstr ""
+msgstr "Evenementen"
 
 #: src/Emails.php:24
 msgid "Send email"
-msgstr ""
+msgstr "E-mail versturen"
 
 #: src/Emails.php:47
 msgid "Notify the invitees about any changes of this event."
 msgstr ""
+"Breng de genodigden op de hoogte van eventuele wijzigingen van dit evenement."
 
 #: src/Emails.php:50
 msgid "Message"
-msgstr ""
+msgstr "Bericht"
 
 #: src/Emails.php:55
 msgid "Send"
-msgstr ""
+msgstr "Verstuur"
 
 #: src/Emails.php:60
 msgid "Be sure to save the event before sending."
-msgstr ""
+msgstr "Zorg ervoor dat u het evenement opslaat voordat u verzendt."
 
 #: src/Emails.php:80 src/Subscriptions.php:149
 msgid "Invalid event."
-msgstr ""
+msgstr "Ongeldig evenement."
 
 #: src/Emails.php:84
 msgid "Message is required."
-msgstr ""
+msgstr "Bericht is verplicht."
 
 #: src/Emails.php:92
 #, php-format
 msgid "Announcement for event \"%s\"."
-msgstr ""
+msgstr "Aankondiging voor evenement \"%s\"."
 
 #: src/Emails.php:102
 msgid "Email send."
-msgstr ""
+msgstr "E-mail verzonden."
 
 #: src/Events.php:505 src/Posts/Event.php:376 src/Posts/Event.php:407
 msgid "This event is over."
-msgstr ""
+msgstr "Dit evenement is voorbij."
 
 #: src/Events.php:512
 #, php-format
 msgid "This event belongs to the group %s."
-msgstr ""
+msgstr "Dit evenement behoort tot de groep %s."
 
 #: src/Events.php:520
 msgid "here"
-msgstr ""
+msgstr "hier"
 
 #: src/Events.php:524
 #, php-format
 msgid "Click %s to detach from group."
-msgstr ""
+msgstr "Klik %s om los te koppelen van de groep."
 
 #: src/Fields.php:31
 msgid "Create events based on the following settings:"
-msgstr ""
+msgstr "Maak evenementen op basis van de volgende instellingen:"
 
 #: src/Fields.php:35
 msgid "Repeat"
-msgstr ""
+msgstr "Herhaal"
 
 #: src/Fields.php:38
 msgid "Repeat the start and end time."
-msgstr ""
+msgstr "Herhaal de begin- en eindtijd."
 
 #: src/Fields.php:60
 msgid "End repeat"
-msgstr ""
+msgstr "Einde herhaling"
 
 #: src/Fields.php:77
 msgid "Exclude"
-msgstr ""
+msgstr "Uitsluiten"
 
 #: src/Fields.php:80
 msgid "Exclude days from repeat settings."
-msgstr ""
+msgstr "Sluit dagen uit van de herhaalinstellingen."
 
 #: src/Fields.php:92
 msgid "Add day"
-msgstr ""
+msgstr "Dag toevoegen"
 
 #: src/Fields.php:96
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: src/Fields.php:163 src/Fields.php:429 src/Fields.php:497 src/Fields.php:525
 msgid "Settings"
-msgstr ""
+msgstr "Instellingen"
 
 #: src/Fields.php:185 templates/event-detail.php:24
 msgid "Description"
-msgstr ""
+msgstr "Omschrijving"
 
 #: src/Fields.php:186
 msgid "A brief description of this event."
-msgstr ""
+msgstr "Een korte beschrijving van dit evenement."
 
 #: src/Fields.php:198
 msgid "Start"
-msgstr ""
+msgstr "Starttijd"
 
 #: src/Fields.php:199
 msgid "The time when the event starts."
-msgstr ""
+msgstr "Het tijdstip waarop het evenement begint."
 
 #: src/Fields.php:213
 msgid "End"
-msgstr ""
+msgstr "Eindtijd"
 
 #: src/Fields.php:214
 msgid "The time when the event ends."
-msgstr ""
+msgstr "Het tijdstip waarop het evenement eindigt."
 
 #: src/Fields.php:229
 msgid ""
 "The organizers receive an email when an invitee accepts or declines an "
 "invitation."
 msgstr ""
+"De organisatoren ontvangen een e-mail wanneer een genodigde een uitnodiging "
+"accepteert of weigert."
 
 #: src/Fields.php:241 src/Fields.php:402 src/Fields.php:540
 #: src/PostTypes.php:121
 msgid "Invitees"
-msgstr ""
+msgstr "Genodigden"
 
 #: src/Fields.php:242
 msgid ""
 "The invitees will receive an email about the event when published. They can "
 "accept or decline the invitation."
 msgstr ""
+"De genodigden ontvangen een e-mail over het evenement bij publicatie. Ze "
+"kunnen de uitnodiging accepteren of weigeren."
 
 #: src/Fields.php:246 src/Fields.php:256
 msgid "Individual"
-msgstr ""
+msgstr "Individueel"
 
 #: src/Fields.php:247
 msgid "Choose from a group"
-msgstr ""
+msgstr "Kies uit een groep"
 
 #: src/Fields.php:257
 msgid "A list of people you want to invite."
-msgstr ""
+msgstr "Een lijst met mensen die je wilt uitnodigen."
 
 #: src/Fields.php:279
 msgid "A group of people you like to invite."
-msgstr ""
+msgstr "Een groep mensen die je graag uitnodigt."
 
 #: src/Fields.php:301
 msgid "Limited subscriptions"
-msgstr ""
+msgstr "Beperkte inschrijvingen"
 
 #: src/Fields.php:302
 msgid "Limit the amount of invitees who can subscribe."
-msgstr ""
+msgstr "Beperk het aantal genodigden die zich kunnen inschrijven."
 
 #: src/Fields.php:312
 msgid "Amount"
-msgstr ""
+msgstr "Hoeveelheid"
 
 #: src/Fields.php:334
 msgid "The geographical location of the event."
-msgstr ""
+msgstr "De geografische locatie van het evenement."
 
 #: src/Fields.php:338 src/Fields.php:348
 msgid "Custom"
-msgstr ""
+msgstr "Aangepast"
 
 #: src/Fields.php:339
 msgid "Choose from a list"
-msgstr ""
+msgstr "Kies uit een lijst"
 
 #: src/Fields.php:368
 msgid "List"
-msgstr ""
+msgstr "Lijst"
 
 #: src/Fields.php:392
 msgid ""
 "Only organisers and participants of this event have access to this event."
 msgstr ""
+"Alleen organisatoren en deelnemers van dit evenement hebben toegang tot dit "
+"evenement."
 
 #: src/Fields.php:484
 msgid "Email Sent"
-msgstr ""
+msgstr "E-mail verzonden"
 
 #: src/Fields.php:513
 msgid "The geographical location."
-msgstr ""
+msgstr "De geografische ligging."
 
 #: src/Helpers.php:56
 msgid "Pending"
-msgstr ""
+msgstr "In afwachting"
 
 #: src/Helpers.php:57
 msgid "Accepted"
-msgstr ""
+msgstr "Aanvaard"
 
 #: src/Helpers.php:58
 msgid "Declined"
-msgstr ""
+msgstr "Geweigerd"
 
 #: src/Helpers.php:100
 msgid "yes"
-msgstr ""
+msgstr "ja"
 
 #: src/Helpers.php:100
 msgid "no"
-msgstr ""
+msgstr "nee"
 
 #: src/Notifications.php:83
 #, php-format
 msgid "%1$s accepted your invitation for \"%2$s\"."
-msgstr ""
+msgstr "%1$s heeft uw uitnodiging voor \"%2$s\" geaccepteerd."
 
 #: src/Notifications.php:116
 #, php-format
 msgid "%1$s declined your invitation for \"%2$s\"."
-msgstr ""
+msgstr "%1$s heeft uw uitnodiging voor \"%2$s\" geweigerd."
 
 #: src/Notifications.php:149
 #, php-format
 msgid "You are invited for the event: \"%1$s\"."
-msgstr ""
+msgstr "U bent uitgenodigd voor het evenement: \"%1$s\"."
 
 #: src/Notifications.php:181
 #, php-format
 msgid "You are no longer invited for the event: \"%1$s\"."
-msgstr ""
+msgstr "Je bent niet langer uitgenodigd voor het evenement: \"%1$s\"."
 
 #: src/PostTypes.php:16
 msgctxt "Post type general name"
 msgid "Events"
-msgstr ""
+msgstr "Evenementen"
 
 #: src/PostTypes.php:17
 msgctxt "Post type singular name"
 msgid "Event"
-msgstr ""
+msgstr "Evenement"
 
 #: src/PostTypes.php:18
 msgctxt "Admin Menu text"
 msgid "Events"
-msgstr ""
+msgstr "Evenementen"
 
 #: src/PostTypes.php:19
 msgctxt "Add New on Toolbar"
 msgid "Event"
-msgstr ""
+msgstr "Evenement"
 
 #: src/PostTypes.php:20 src/PostTypes.php:63 src/PostTypes.php:116
 #: src/PostTypes.php:169 src/PostTypes.php:222
 msgid "Add New"
-msgstr ""
+msgstr "Nieuwe Toevoegen"
 
 #: src/PostTypes.php:21
 msgid "Add New event"
-msgstr ""
+msgstr "Nieuw evenement toevoegen"
 
 #: src/PostTypes.php:22
 msgid "New event"
-msgstr ""
+msgstr "Nieuw evenement"
 
 #: src/PostTypes.php:23
 msgid "Edit event"
-msgstr ""
+msgstr "Bewerk evenement"
 
 #: src/PostTypes.php:24
 msgid "View event"
-msgstr ""
+msgstr "Bekijk evenement"
 
 #: src/PostTypes.php:26
 msgid "Search events"
-msgstr ""
+msgstr "Zoek evenementen"
 
 #: src/PostTypes.php:27
 msgid "Parent events:"
-msgstr ""
+msgstr "Parent evenementen:"
 
 #: src/PostTypes.php:28 templates/event-group-edit-events.php:8
 msgid "No events found."
-msgstr ""
+msgstr "Geen evenementen gevonden."
 
 #: src/PostTypes.php:29
 msgid "No events found in Trash."
-msgstr ""
+msgstr "Geen evenementen gevonden in prullenbak."
 
 #: src/PostTypes.php:30
 msgctxt ""
 "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
 msgid "Event Cover Image"
-msgstr ""
+msgstr "Omslagafbeelding evenement"
 
 #: src/PostTypes.php:31 src/PostTypes.php:74 src/PostTypes.php:127
 #: src/PostTypes.php:180 src/PostTypes.php:233
 msgctxt ""
 "Overrides the “Set featured image” phrase for this post type. Added in 4.3"
 msgid "Set cover image"
-msgstr ""
+msgstr "Omslagafbeelding instellen"
 
 #: src/PostTypes.php:32 src/PostTypes.php:75 src/PostTypes.php:128
 #: src/PostTypes.php:181 src/PostTypes.php:234
 msgctxt ""
 "Overrides the “Remove featured image” phrase for this post type. Added in 4.3"
 msgid "Remove cover image"
-msgstr ""
+msgstr "Omslagafbeelding verwijderen"
 
 #: src/PostTypes.php:33 src/PostTypes.php:76 src/PostTypes.php:129
 #: src/PostTypes.php:182 src/PostTypes.php:235
 msgctxt ""
 "Overrides the “Use as featured image” phrase for this post type. Added in 4.3"
 msgid "Use as cover image"
-msgstr ""
+msgstr "Gebruik als omslagafbeelding"
 
 #: src/PostTypes.php:34
 msgctxt ""
 "The post type archive label used in nav menus. Default “Post Archives”. "
 "Added in 4.4"
 msgid "Event archives"
-msgstr ""
+msgstr "Evenement archieven"
 
 #: src/PostTypes.php:35
 msgctxt ""
 "Overrides the “Insert into post”/”Insert into page” phrase (used when "
 "inserting media into a post). Added in 4.4"
 msgid "Insert into event"
-msgstr ""
+msgstr "Invoegen in evenement"
 
 #: src/PostTypes.php:36
 msgctxt ""
 "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used "
 "when viewing media attached to a post). Added in 4.4"
 msgid "Uploaded to this event"
-msgstr ""
+msgstr "Geüpload naar dit evenement"
 
 #: src/PostTypes.php:37
 msgctxt ""
 "Screen reader text for the filter links heading on the post type listing "
 "screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
 msgid "Filter events list"
-msgstr ""
+msgstr "Filter evenementenlijst"
 
 #: src/PostTypes.php:38
 msgctxt ""
 "Screen reader text for the pagination heading on the post type listing "
 "screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
 msgid "Events list navigation"
-msgstr ""
+msgstr "Evenementenlijstnavigatie"
 
 #: src/PostTypes.php:39
 msgctxt ""
 "Screen reader text for the items list heading on the post type listing "
 "screen. Default “Posts list”/”Pages list”. Added in 4.4"
 msgid "Events list"
-msgstr ""
+msgstr "Evenementlijst"
 
 #: src/PostTypes.php:41
 msgid "Event custom post type."
-msgstr ""
+msgstr "Aangepast berichttype evenement."
 
 #: src/PostTypes.php:59
 msgctxt "Post type general name"
 msgid "Event groups"
-msgstr ""
+msgstr "Evenement"
 
 #: src/PostTypes.php:60
 msgctxt "Post type singular name"
 msgid "Event group"
-msgstr ""
+msgstr "Evenement groep"
 
 #: src/PostTypes.php:61
 msgctxt "Admin Menu text"
 msgid "Event groups"
-msgstr ""
+msgstr "Evenement groepen"
 
 #: src/PostTypes.php:62
 msgctxt "Add New on Toolbar"
 msgid "Event group"
-msgstr ""
+msgstr "Evenement groep"
 
 #: src/PostTypes.php:64
 msgid "Add New event group"
-msgstr ""
+msgstr "Nieuwe evenement groep toevoegen"
 
 #: src/PostTypes.php:65
 msgid "New event group"
-msgstr ""
+msgstr "Nieuwe evenement groep"
 
 #: src/PostTypes.php:66
 msgid "Edit event group"
-msgstr ""
+msgstr "Evenement groep bewerken"
 
 #: src/PostTypes.php:67
 msgid "View event group"
-msgstr ""
+msgstr "Evenement groep bekijken"
 
 #: src/PostTypes.php:68
 msgid "Event groups"
-msgstr ""
+msgstr "Evenement groepen"
 
 #: src/PostTypes.php:69
 msgid "Search event groups"
-msgstr ""
+msgstr "Zoek evenement groepen"
 
 #: src/PostTypes.php:70
 msgid "Parent event groups:"
-msgstr ""
+msgstr "Ouder evenement groep:"
 
 #: src/PostTypes.php:71
 msgid "No event groups found."
-msgstr ""
+msgstr "Geen evenement groepen gevonden."
 
 #: src/PostTypes.php:72
 msgid "No event groups found in Trash."
-msgstr ""
+msgstr "Geen evenement groepen gevonden in Prullenbak."
 
 #: src/PostTypes.php:73
 msgctxt ""
 "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
 msgid "Event group Cover Image"
-msgstr ""
+msgstr "Omslagafbeelding evenement groep"
 
 #: src/PostTypes.php:77
 msgctxt ""
 "The post type archive label used in nav menus. Default “Post Archives”. "
 "Added in 4.4"
 msgid "Event group archives"
-msgstr ""
+msgstr "evenement groepen archieven"
 
 #: src/PostTypes.php:78
 msgctxt ""
 "Overrides the “Insert into post”/”Insert into page” phrase (used when "
 "inserting media into a post). Added in 4.4"
 msgid "Insert into event group"
-msgstr ""
+msgstr "Invoegen in evenement groep"
 
 #: src/PostTypes.php:79
 msgctxt ""
 "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used "
 "when viewing media attached to a post). Added in 4.4"
 msgid "Uploaded to this event group"
-msgstr ""
+msgstr "Geüpload naar deze evenement groep"
 
 #: src/PostTypes.php:80
 msgctxt ""
 "Screen reader text for the filter links heading on the post type listing "
 "screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
 msgid "Filter event groups list"
-msgstr ""
+msgstr "Lijst met evenement groepen filteren"
 
 #: src/PostTypes.php:81
 msgctxt ""
 "Screen reader text for the pagination heading on the post type listing "
 "screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
 msgid "Event groups list navigation"
-msgstr ""
+msgstr "Lijstnavigatie met evenement groepen"
 
 #: src/PostTypes.php:82
 msgctxt ""
 "Screen reader text for the items list heading on the post type listing "
 "screen. Default “Posts list”/”Pages list”. Added in 4.4"
 msgid "Event groups list"
-msgstr ""
+msgstr "Lijst met evenement groepen"
 
 #: src/PostTypes.php:112
 msgctxt "Post type general name"
 msgid "Invitees"
-msgstr ""
+msgstr "Genodigden"
 
 #: src/PostTypes.php:113
 msgctxt "Post type singular name"
 msgid "Invitee"
-msgstr ""
+msgstr "Genodigde"
 
 #: src/PostTypes.php:114
 msgctxt "Admin Menu text"
 msgid "Invitees"
-msgstr ""
+msgstr "Genodigden"
 
 #: src/PostTypes.php:115
 msgctxt "Add New on Toolbar"
 msgid "Invitee"
-msgstr ""
+msgstr "Genodigde"
 
 #: src/PostTypes.php:117
 msgid "Add New invitee"
-msgstr ""
+msgstr "Nieuwe genodigde toevoegen"
 
 #: src/PostTypes.php:118
 msgid "New invitee"
-msgstr ""
+msgstr "Nieuwe genodigde"
 
 #: src/PostTypes.php:119
 msgid "Edit invitee"
-msgstr ""
+msgstr "Genodigde bewerken"
 
 #: src/PostTypes.php:120
 msgid "View invitee"
-msgstr ""
+msgstr "Genodigde bekijken"
 
 #: src/PostTypes.php:122
 msgid "Search invitees"
-msgstr ""
+msgstr "Genodigden zoeken"
 
 #: src/PostTypes.php:123
 msgid "Parent invitees:"
-msgstr ""
+msgstr "Ouder genodigden:"
 
 #: src/PostTypes.php:124 templates/event-edit-invitees.php:11
 msgid "No invitees found."
-msgstr ""
+msgstr "Geen genodigden gevonden."
 
 #: src/PostTypes.php:125
 msgid "No invitees found in Trash."
-msgstr ""
+msgstr "Geen genodigden gevonden in Prullenbak."
 
 #: src/PostTypes.php:126
 msgctxt ""
 "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
 msgid "Invitee Cover Image"
-msgstr ""
+msgstr "Omslagafbeelding genodigde"
 
 #: src/PostTypes.php:130
 msgctxt ""
 "The post type archive label used in nav menus. Default “Post Archives”. "
 "Added in 4.4"
 msgid "Invitee archives"
-msgstr ""
+msgstr "Archief van genodigden"
 
 #: src/PostTypes.php:131
 msgctxt ""
 "Overrides the “Insert into post”/”Insert into page” phrase (used when "
 "inserting media into a post). Added in 4.4"
 msgid "Insert into invitee"
-msgstr ""
+msgstr "Invoegen in genodigde"
 
 #: src/PostTypes.php:132
 msgctxt ""
 "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used "
 "when viewing media attached to a post). Added in 4.4"
 msgid "Uploaded to this invitee"
-msgstr ""
+msgstr "Geüpload naar deze genodigde"
 
 #: src/PostTypes.php:133
 msgctxt ""
 "Screen reader text for the filter links heading on the post type listing "
 "screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
 msgid "Filter invitees list"
-msgstr ""
+msgstr "Lijst met genodigden filteren"
 
 #: src/PostTypes.php:134
 msgctxt ""
 "Screen reader text for the pagination heading on the post type listing "
 "screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
 msgid "Invitees list navigation"
-msgstr ""
+msgstr "Navigatie lijst met genodigden"
 
 #: src/PostTypes.php:135
 msgctxt ""
 "Screen reader text for the items list heading on the post type listing "
 "screen. Default “Posts list”/”Pages list”. Added in 4.4"
 msgid "Invitees list"
-msgstr ""
+msgstr "Genodigden lijst"
 
 #: src/PostTypes.php:137
 msgid "Invitee custom post type."
-msgstr ""
+msgstr "Aangepast bericht type genodigde."
 
 #: src/PostTypes.php:165
 msgctxt "Post type general name"
 msgid "Invitee groups"
-msgstr ""
+msgstr "Genodigden groepen"
 
 #: src/PostTypes.php:166
 msgctxt "Post type singular name"
 msgid "Invitee group"
-msgstr ""
+msgstr "Genodigdengroep"
 
 #: src/PostTypes.php:167
 msgctxt "Admin Menu text"
 msgid "Invitee groups"
-msgstr ""
+msgstr "Genodigden groepen"
 
 #: src/PostTypes.php:168
 msgctxt "Add New on Toolbar"
 msgid "Invitee group"
-msgstr ""
+msgstr "Genodigden groep"
 
 #: src/PostTypes.php:170
 msgid "Add New invitee group"
-msgstr ""
+msgstr "Nieuwe genodigden groep toevoegen"
 
 #: src/PostTypes.php:171
 msgid "New invitee group"
-msgstr ""
+msgstr "Nieuwe genodigden groep toevoegen"
 
 #: src/PostTypes.php:172
 msgid "Edit invitee group"
-msgstr ""
+msgstr "Genodigden groep bewerken"
 
 #: src/PostTypes.php:173
 msgid "View invitee group"
-msgstr ""
+msgstr "Toon genodigden groep"
 
 #: src/PostTypes.php:174
 msgid "Invitee groups"
-msgstr ""
+msgstr "Genodigden groepen"
 
 #: src/PostTypes.php:175
 msgid "Search invitee groups"
-msgstr ""
+msgstr "Genodigden groepen zoeken"
 
 #: src/PostTypes.php:176
 msgid "Parent invitee groups:"
-msgstr ""
+msgstr "Parent genodigden groepen:"
 
 #: src/PostTypes.php:177
 msgid "No invitee groups found."
-msgstr ""
+msgstr "Geen genodigden groepen gevonden."
 
 #: src/PostTypes.php:178
 msgid "No invitee groups found in Trash."
-msgstr ""
+msgstr "Geen genodigden groepen gevonden in de Prullenbak."
 
 #: src/PostTypes.php:179
 msgctxt ""
 "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
 msgid "Invitee group Cover Image"
-msgstr ""
+msgstr "Omslagafbeelding genodigden groepen"
 
 #: src/PostTypes.php:183
 msgctxt ""
 "The post type archive label used in nav menus. Default “Post Archives”. "
 "Added in 4.4"
 msgid "Invitee group archives"
-msgstr ""
+msgstr "Archieven van genodigden groepen"
 
 #: src/PostTypes.php:184
 msgctxt ""
 "Overrides the “Insert into post”/”Insert into page” phrase (used when "
 "inserting media into a post). Added in 4.4"
 msgid "Insert into invitee group"
-msgstr ""
+msgstr "Invoegen in genodigden groep"
 
 #: src/PostTypes.php:185
 msgctxt ""
 "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used "
 "when viewing media attached to a post). Added in 4.4"
 msgid "Uploaded to this invitee group"
-msgstr ""
+msgstr "Geüpload naar deze genodigde groep"
 
 #: src/PostTypes.php:186
 msgctxt ""
 "Screen reader text for the filter links heading on the post type listing "
 "screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
 msgid "Filter invitee groups list"
-msgstr ""
+msgstr "Lijst met genodigden groepen filteren"
 
 #: src/PostTypes.php:187
 msgctxt ""
 "Screen reader text for the pagination heading on the post type listing "
 "screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
 msgid "Invitee groups list navigation"
-msgstr ""
+msgstr "Navigatie in de lijst met genodigden groepen"
 
 #: src/PostTypes.php:188
 msgctxt ""
 "Screen reader text for the items list heading on the post type listing "
 "screen. Default “Posts list”/”Pages list”. Added in 4.4"
 msgid "Invitee groups list"
-msgstr ""
+msgstr "Genodigden groepen lijst"
 
 #: src/PostTypes.php:218
 msgctxt "Post type general name"
 msgid "Event locations"
-msgstr ""
+msgstr "Evenementen locaties"
 
 #: src/PostTypes.php:219
 msgctxt "Post type singular name"
 msgid "Event location"
-msgstr ""
+msgstr "Evenement locatie"
 
 #: src/PostTypes.php:220
 msgctxt "Admin Menu text"
 msgid "Event locations"
-msgstr ""
+msgstr "Evenement locaties"
 
 #: src/PostTypes.php:221
 msgctxt "Add New on Toolbar"
 msgid "Event location"
-msgstr ""
+msgstr "Evenement locatie"
 
 #: src/PostTypes.php:223
 msgid "Add New event location"
-msgstr ""
+msgstr "Nieuwe locatie toevoegen"
 
 #: src/PostTypes.php:224
 msgid "New event location"
-msgstr ""
+msgstr "Nieuwe locatie"
 
 #: src/PostTypes.php:225
 msgid "Edit event location"
-msgstr ""
+msgstr "Locatie bewerken"
 
 #: src/PostTypes.php:226
 msgid "View event location"
-msgstr ""
+msgstr "Toon locatie"
 
 #: src/PostTypes.php:227
 msgid "Event locations"
-msgstr ""
+msgstr "Evenement locaties"
 
 #: src/PostTypes.php:228
 msgid "Search event locations"
-msgstr ""
+msgstr "Zoek locaties"
 
 #: src/PostTypes.php:229
 msgid "Parent event locations:"
-msgstr ""
+msgstr "Parent locaties:"
 
 #: src/PostTypes.php:230
 msgid "No event locations found."
-msgstr ""
+msgstr "Geen locaties gevonden."
 
 #: src/PostTypes.php:231
 msgid "No event locations found in Trash."
-msgstr ""
+msgstr "Geen locaties gevonden in Prullenbak."
 
 #: src/PostTypes.php:232
 msgctxt ""
 "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
 msgid "Event location Cover Image"
-msgstr ""
+msgstr "Locatie Coverafbeelding"
 
 #: src/PostTypes.php:236
 msgctxt ""
 "The post type archive label used in nav menus. Default “Post Archives”. "
 "Added in 4.4"
 msgid "Event location archives"
-msgstr ""
+msgstr "Archief locaties"
 
 #: src/PostTypes.php:237
 msgctxt ""
 "Overrides the “Insert into post”/”Insert into page” phrase (used when "
 "inserting media into a post). Added in 4.4"
 msgid "Insert into event location"
-msgstr ""
+msgstr "Invoegen in locatie"
 
 #: src/PostTypes.php:238
 msgctxt ""
 "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used "
 "when viewing media attached to a post). Added in 4.4"
 msgid "Uploaded to this event location"
-msgstr ""
+msgstr "Geüpload naar deze locatie"
 
 #: src/PostTypes.php:239
 msgctxt ""
 "Screen reader text for the filter links heading on the post type listing "
 "screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
 msgid "Filter event locations list"
-msgstr ""
+msgstr "Lijst met locaties filteren"
 
 #: src/PostTypes.php:240
 msgctxt ""
 "Screen reader text for the pagination heading on the post type listing "
 "screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
 msgid "Event locations list navigation"
-msgstr ""
+msgstr "Lijstnavigatie met locaties"
 
 #: src/PostTypes.php:241
 msgctxt ""
 "Screen reader text for the items list heading on the post type listing "
 "screen. Default “Posts list”/”Pages list”. Added in 4.4"
 msgid "Event locations list"
-msgstr ""
+msgstr "locatielijst"
 
 #: src/Posts/Event.php:81
 #, php-format
 msgid "%1$s from %2$s until %3$s"
-msgstr ""
+msgstr "%1$s van %2$s tot %3$s"
 
 #: src/Posts/Event.php:89
 #, php-format
 msgid "from %1$s until %2$s"
-msgstr ""
+msgstr "van %1$s tot %2$s"
 
 #: src/Posts/Event.php:372 src/Posts/Event.php:403 src/Subscriptions.php:35
 msgid "You have no access to this event."
-msgstr ""
+msgstr "Je hebt geen toegang tot dit evenement."
 
 #: src/Posts/Event.php:382 src/Posts/Event.php:413 src/Subscriptions.php:47
 msgid "You are not invited to this event."
-msgstr ""
+msgstr "U bent niet uitgenodigd op dit evenement."
 
 #: src/Posts/Event.php:390
 msgid "The maximum amount of participants is reached"
-msgstr ""
+msgstr "Het maximum aantal deelnemers is bereikt"
 
 #: src/PrivateEvents.php:88
 msgid "You are not allowed to access this page"
-msgstr ""
+msgstr "U hebt geen toegang tot deze pagina"
 
 #: src/PrivateEvents.php:100
 msgid "This event is only accessible to organisers and invitees of this event."
 msgstr ""
+"Dit evenement is alleen toegankelijk voor organisatoren en genodigden van "
+"dit evenement."
 
 #: src/Subscriptions.php:25
 msgid "You need to login in order to subscribe to this event."
-msgstr ""
+msgstr "Je moet inloggen om je te abonneren op dit evenement."
 
 #: src/Subscriptions.php:40
 msgid "The event is over."
-msgstr ""
+msgstr "Het evenement is voorbij."
 
 #: src/Subscriptions.php:52
 msgid "The maximum amount of participants is reached."
-msgstr ""
+msgstr "Het maximum aantal deelnemers is bereikt."
 
 #: src/Subscriptions.php:56 src/Subscriptions.php:173
 msgid "You have accepted the invitation."
-msgstr ""
+msgstr "U heeft de uitnodiging geaccepteerd."
 
 #: src/Subscriptions.php:60 src/Subscriptions.php:177
 msgid "You have declined the invitation."
-msgstr ""
+msgstr "U heeft de uitnodiging afgewezen."
 
 #: src/Subscriptions.php:64
 msgid "We would like to know if you are comming to this event."
-msgstr ""
+msgstr "Wij willen graag weten of je naar dit evenement komt."
 
 #: src/Subscriptions.php:107
 msgid "Decline invitation"
-msgstr ""
+msgstr "Uitnodiging weigeren"
 
 #: src/Subscriptions.php:110
 msgid "Accept invitation"
-msgstr ""
+msgstr "Uitnodiging accepteren"
 
 #: src/Subscriptions.php:131
 msgid "You need to login in order to subscribe."
-msgstr ""
+msgstr "Je moet inloggen om je te abonneren op dit evenement."
 
 #: src/Subscriptions.php:135
 msgid "Invalid invitee."
-msgstr ""
+msgstr "Ongeldige genodigde."
 
 #: src/Subscriptions.php:143
 msgid "Invalid user."
-msgstr ""
+msgstr "Ongeldige gebruiker."
 
 #: src/Subscriptions.php:153
 msgid "Invalid request."
-msgstr ""
+msgstr "Ongeldig verzoek."
 
 #: templates/emails/event-send-email.php:6
 #: templates/emails/invitee-accepted-invitation.php:6
@@ -951,67 +960,69 @@ msgstr ""
 #: templates/emails/invitee-removed-notification.php:6
 #, php-format
 msgid "Time: %s"
-msgstr ""
+msgstr "Tijdstip: %s"
 
 #: templates/emails/invitee-accepted-invitation.php:2
 #, php-format
 msgid "%1$s accepted your invitation for:"
-msgstr ""
+msgstr "%1$s heeft je uitnodiging geaccepteerd voor:"
 
 #: templates/emails/invitee-added-notification.php:2
 msgid "You are invited for following event:"
-msgstr ""
+msgstr "U bent uitgenodigd voor het volgende evenement:"
 
 #: templates/emails/invitee-declined-invitation.php:2
 #, php-format
 msgid "%1$s declined your invitation for:"
-msgstr ""
+msgstr "%1$s heeft uw uitnodiging voor geweigerd voor:"
 
 #: templates/emails/invitee-removed-notification.php:2
 msgid "You are no longer invited for following event:"
-msgstr ""
+msgstr "Je bent niet langer uitgenodigd voor het volgende evenement:"
 
 #: templates/event-detail.php:30
 msgid "Time"
-msgstr ""
+msgstr "Tijdstip"
 
 #: templates/event-detail.php:67
 msgid "Edit this event"
-msgstr ""
+msgstr "Dit evenement bewerken"
 
 #: templates/event-edit-invitees.php:23
 msgid "accepted"
-msgstr ""
+msgstr "aanvaard"
 
 #: templates/event-edit-invitees.php:33
 msgid "pending"
-msgstr ""
+msgstr "in afwachting"
 
 #: templates/event-edit-invitees.php:43
 msgid "declined"
-msgstr ""
+msgstr "geweigerd"
 
 #: templates/event-group-edit-events.php:12
 msgid "Events created by this group:"
-msgstr ""
+msgstr "Evenementen gemaakt door deze groep:"
 
 #: vendor/wp-cli/wp-cli/php/utils-wp.php:222
 msgid "Inactive Widgets"
-msgstr ""
+msgstr "Inactieve Widgets"
 
 #: vendor/wp-cli/wp-cli/php/utils-wp.php:225
 msgid ""
 "Drag widgets here to remove them from the sidebar but keep their settings."
 msgstr ""
+"Sleep de widgets hierheen om deze te verwijderen van de zijbalk, maar met "
+"behoud van de instellingen."
 
 #. Plugin URI of the plugin/theme
 msgid "https://github.com/mmaarten/my-events"
-msgstr ""
+msgstr "https://github.com/mmaarten/my-events"
 
 #. Author of the plugin/theme
 msgid "Maarten Menten"
-msgstr ""
+msgstr "Maarten Menten"
 
 #. Author URI of the plugin/theme
 msgid "https://profiles.wordpress.org/maartenm/"
-msgstr ""
+msgstr "https://profiles.wordpress.org/maartenm/"
