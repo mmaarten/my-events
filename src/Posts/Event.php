@@ -178,27 +178,27 @@ class Event extends Post
 
     public function getInviteesByStatus($status, $args = [])
     {
-        return $this->getInvitees([
-            'meta_query' => [
-                [
-                    'key'     => 'status',
-                    'compare' => '=',
-                    'value'   => $status,
-                ],
-            ],
+        $invitees = $this->getInvitees(['fields' => 'ids']);
+
+        if (! $invitees) {
+            return [];
+        }
+
+        return Model::getInviteesByStatus($status, [
+            'include' => $invitees,
         ] + $args);
     }
 
     public function getInviteesByUser($user_id, $args = [])
     {
-        return $this->getInvitees([
-            'meta_query' => [
-                [
-                    'key'     => 'user',
-                    'compare' => '=',
-                    'value'   => $user_id,
-                ],
-            ],
+        $invitees = $this->getInvitees(['fields' => 'ids']);
+
+        if (! $invitees) {
+            return [];
+        }
+
+        return Model::getInviteesByUser($user_id, [
+            'include' => $invitees,
         ] + $args);
     }
 

@@ -7,19 +7,20 @@ use My\Events\Posts\Event;
 
 class Model
 {
-    /**
-     * Get events
-     *
-     * @param array $args
-     * @return array
-     */
-    public static function getEvents($args = [])
+    public static function getPosts($args = [])
     {
         return get_posts($args + [
-            'post_type'   => 'event',
+            'post_type'   => 'post',
             'post_status' => 'publish',
             'numberposts' => 999,
         ]);
+    }
+
+    public static function getEvents($args = [])
+    {
+        return self::getPosts([
+            'post_type' => 'event',
+        ] + $args);
     }
 
     public static function orderEventsByStartTime($event_ids, $order = 'ASC', $args = [])
@@ -225,11 +226,9 @@ class Model
      */
     public static function getInvitees($args = [])
     {
-        return get_posts($args + [
-            'post_type'   => 'invitee',
-            'post_status' => 'publish',
-            'numberposts' => 999,
-        ]);
+        return self::getPosts([
+            'post_type' => 'invitee',
+        ] + $args);
     }
 
     /**
