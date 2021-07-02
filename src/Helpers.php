@@ -26,7 +26,11 @@ class Helpers
 
     public static function loadTemplate($name, $args = [], $return = false)
     {
-        $file = plugin_dir_path(MY_EVENTS_PLUGIN_FILE) . 'templates/' . $name . '.php';
+        $file = locate_template('events/' . $name . '.php', false, false);
+
+        if (! $file) {
+            $file = plugin_dir_path(MY_EVENTS_PLUGIN_FILE) . 'templates/' . $name . '.php';
+        }
 
         if (! file_exists($file)) {
             return false;
