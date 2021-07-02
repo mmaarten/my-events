@@ -233,6 +233,22 @@ class Model
     }
 
     /**
+     * Get invitees by event
+     *
+     * @param int   $event_id
+     * @param array $args
+     * @return array
+     */
+    public static function getInviteesByEvent($event_id, $args = [])
+    {
+        return self::getInvitees($args + [
+            'meta_key'     => 'event',
+            'meta_compare' => '=',
+            'meta_value'   => $event_id,
+        ]);
+    }
+
+    /**
      * Get invitees by user
      *
      * @param int   $user_id

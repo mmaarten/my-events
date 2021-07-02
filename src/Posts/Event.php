@@ -173,11 +173,7 @@ class Event extends Post
 
     public function getInvitees($args = [])
     {
-        return Model::getInvitees([
-            'meta_key'     => 'event',
-            'meta_compare' => '=',
-            'meta_value'   => $this->ID,
-        ] + $args);
+        return Model::getInviteesByEvent($this->ID, $args);
     }
 
     public function getInviteesByStatus($status, $args = [])
