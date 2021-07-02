@@ -25,7 +25,7 @@ class Calendar
             return $permalink;
         }, 10, 3);
 
-        add_action('wp_enqueue_scripts', [__CLASS__, 'enqueueAssets']);
+        add_action('wp_enqueue_scripts', [__CLASS__, 'autoEnqueueAssets']);
         add_action('wp_ajax_my_events_get_events', [__CLASS__, 'getEvents']);
         add_action('wp_ajax_nopriv_my_events_get_events', [__CLASS__, 'getEvents']);
         add_action('wp_ajax_my_events_render_calendar_event_detail', [__CLASS__, 'renderEventDetail']);
@@ -71,10 +71,6 @@ class Calendar
 
     public static function enqueueAssets()
     {
-        if (! self::isPage()) {
-            return;
-        }
-
         wp_enqueue_script(
             'featherlight',
             plugins_url('build/featherlight-script.js', MY_EVENTS_PLUGIN_FILE),
@@ -104,6 +100,15 @@ class Calendar
             'fontawesome',
             plugins_url('build/fontawesome.css', MY_EVENTS_PLUGIN_FILE),
         );
+    }
+
+    public static function autoEnqueueAssets()
+    {
+        if (! self::isPage()) {
+            return;
+        }
+
+        self::enqueueAssets();
     }
 
     public static function getEvents()
