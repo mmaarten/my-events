@@ -24,6 +24,17 @@ class Events
         add_filter('acf/load_field/key=my_events_event_invitees_list', [__CLASS__, 'renderInvities'], 10, 2);
         add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
         add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
+
+        add_filter('my_events/invitee_default_status', [__CLASS__, 'inviteeDefaultStatus'], 10, 2);
+    }
+
+    public static function inviteeDefaultStatus($status, $event)
+    {
+        if ($event->isGrouped()) {
+            $status = 'accepted';
+        }
+
+        return $status;
     }
 
     public static function isEditableEvent($event_id)

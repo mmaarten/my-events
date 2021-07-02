@@ -213,8 +213,12 @@ class Event extends Post
         return $invitee ? new Invitee($invitee) : null;
     }
 
-    public function addInvitee($user_id, $status = 'pending')
+    public function addInvitee($user_id, $status = null)
     {
+        if (! $status) {
+            $status = apply_filters('my_events/invitee_default_status', 'pending', $this);
+        }
+
         $invitee = $this->getInviteeByUser($user_id);
 
         if ($invitee) {
