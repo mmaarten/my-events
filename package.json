@@ -16,7 +16,7 @@
     "start": "wp-scripts start",
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js",
-    "bundle": "dir-archiver --src . --dest ../my-events-theme.zip --exclude webpack.config.js .DS_Store .editorconfig .git .gitignore .gitattributes phpcs.xml node_modules composer.json package.json assets"
+    "bundle": "dir-archiver --src . --dest ../my-events.zip --exclude webpack.config.js .DS_Store .editorconfig .git .gitignore .gitattributes phpcs.xml node_modules composer.json package.json assets"
   },
   "keywords": [
     "wordpress",
