@@ -52,7 +52,7 @@ class Calendar
 
     public static function getPageId()
     {
-        return apply_filters('my_events/calendar_page', 2);
+        return apply_filters('my_events/calendar_page', 0);
     }
 
     public static function isPage()
