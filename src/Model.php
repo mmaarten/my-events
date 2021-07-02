@@ -339,15 +339,17 @@ class Model
         $event_id = wp_insert_post($postdata);
 
         $event = new Event($event_id);
-
-        // An event group and an event have the same settings.
-        $meta_keys = array_keys(get_field_objects($event->ID));
-        foreach ($meta_keys as $meta_key) {
-            if (! in_array($meta_key, ['start', 'end'])) {
-                $event->updateField($meta_key, $group->getField($meta_key, false));
-            }
-        }
-
+        $event->updateField('description', $group->getField('description', false));
+        $event->updateField('organisers', $group->getField('organisers', false));
+        $event->updateField('invitees_type', $group->getField('invitees_type', false));
+        $event->updateField('invitees_individual', $group->getField('invitees_individual', false));
+        $event->updateField('invitees_group', $group->getField('invitees_group', false));
+        $event->updateField('limit_subscriptions', $group->getField('limit_subscriptions', false));
+        $event->updateField('max_subscriptions', $group->getField('max_subscriptions', false));
+        $event->updateField('location_type', $group->getField('location_type', false));
+        $event->updateField('location_input', $group->getField('location_input', false));
+        $event->updateField('location_id', $group->getField('location_id', false));
+        $event->updateField('is_private', $group->getField('is_private', false));
         $event->updateField('start', $start);
         $event->updateField('end', $end);
         $event->updateField('group', $group->ID);
