@@ -25,10 +25,10 @@ class Events
         add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
         add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
 
-        add_filter('my_events/invitee_default_status', [__CLASS__, 'inviteeDefaultStatus'], 10, 2);
+        add_filter('my_events/add_invitee_status', [__CLASS__, 'inviteeStatus'], 10, 2);
     }
 
-    public static function inviteeDefaultStatus($status, $event)
+    public static function inviteeStatus($status, $event)
     {
         if ($event->isGrouped()) {
             $status = 'accepted';
@@ -49,7 +49,6 @@ class Events
         $screen = get_current_screen();
 
         if ($screen->base === 'post') {
-
             $post_id = $_GET['post'];
 
             switch ($screen->post_type) {
@@ -409,7 +408,7 @@ class Events
 
         // Get previous users
 
-        $prev_users = $group->getField('prev_users');
+        $prev_users = $group->getMeta('prev_users', true);
 
         if (! is_array($prev_users)) {
             $prev_users = [];
@@ -432,10 +431,8 @@ class Events
 
         foreach ($added_users as $user_id) {
             $events = Model::getEventsByInviteeGroup($group->ID);
-
             foreach ($events as $event) {
                 $event = new Event($event);
-
                 if (! $event->isOver()) {
                     $event->addInvitee($user_id);
                 }
@@ -446,10 +443,8 @@ class Events
 
         foreach ($removed_users as $user_id) {
             $events = Model::getEventsByInviteeGroup($group->ID);
-
             foreach ($events as $event) {
                 $event = new Event($event);
-
                 if (! $event->isOver()) {
                     $event->removeInviteeByUser($user_id);
                 }
@@ -458,7 +453,7 @@ class Events
 
         // Save current users
 
-        $group->updateField('prev_users', $current_users);
+        $group->updateMeta('prev_users', $current_users);
     }
 
     public static function renderInvities($field)

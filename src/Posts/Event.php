@@ -213,17 +213,15 @@ class Event extends Post
         return $invitee ? new Invitee($invitee) : null;
     }
 
-    public function addInvitee($user_id, $status = null)
+    public function addInvitee($user_id, $status = 'pending')
     {
-        if (! $status) {
-            $status = apply_filters('my_events/invitee_default_status', 'pending', $this);
-        }
-
         $invitee = $this->getInviteeByUser($user_id);
 
         if ($invitee) {
             return $invitee->ID;
         }
+
+        $status = apply_filters('my_events/add_invitee_status', $status, $this);
 
         $post_id = wp_insert_post([
             'post_title'   => '',
