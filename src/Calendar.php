@@ -8,18 +8,8 @@ class Calendar
 {
     public static function init()
     {
-        add_shortcode('calendar', function () {
-            ob_start();
-            self::render();
-            return ob_get_clean();
-        });
-
-        if (! self::isActive()) {
-            return;
-        }
-
         add_filter('post_type_link', function ($permalink, $post, $leavename) {
-            if (get_post_type($post) === 'event') {
+            if (self::isActive() && get_post_type($post) === 'event') {
                 return self::getEventURL($post->ID);
             }
             return $permalink;
