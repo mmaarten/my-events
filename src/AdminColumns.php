@@ -185,16 +185,13 @@ class AdminColumns
     public static function addEventGroupColumns($columns)
     {
         return [
-            'cb'               => $columns['cb'],
-            'title'            => $columns['title'],
-            'time'             => __('Time of day', 'my-events'),
-            'organisers'       => __('Organisers', 'my-events'),
-            'participants'     => __('Participants', 'my-events'),
-            'participants_num' => __('Number of participants', 'my-events'),
-            'location'         => __('Location', 'my-events'),
-            'over'             => __('Over', 'my-events'),
-            'private'          => __('Private', 'my-events'),
-            'group'            => __('Group', 'my-events'),
+            'cb'         => $columns['cb'],
+            'title'      => $columns['title'],
+            'time'       => __('Time of day', 'my-events'),
+            'organisers' => __('Organisers', 'my-events'),
+            'invitees'   => __('Invitees', 'my-events'),
+            'location'   => __('Location', 'my-events'),
+            'private'    => __('Private', 'my-events'),
         ] + $columns;
     }
 
@@ -202,10 +199,22 @@ class AdminColumns
     {
         $event = new Event($post_id);
 
-        $time         = $event->getTimeFromUntil();
-        $organisers   = Helpers::renderUsers($event->getOrganisers(['fields' => 'ID']));
-        $participants = Helpers::renderUsers($event->getParticipants(['fields' => 'ID']));
-        $location     = $event->getLocation();
+        $invitees_type = $event->getField('invitees_type');
+        $invitees = [];
+
+        if ($invitees_type === 'individual') {
+            $invitees = $event->getField('invitees_individual');
+        }
+
+        if ($invitees_type === 'group') {
+            $group = new Post($event->getField('invitees_group'));
+            $invitees = $group->getField('users');
+        }
+
+        $time       = $event->getTimeFromUntil();
+        $organisers = Helpers::renderUsers($event->getOrganisers(['fields' => 'ID']));
+        $invitees   = Helpers::renderUsers($invitees);
+        $location   = $event->getLocation();
 
         switch ($column) {
             case 'time':
@@ -214,15 +223,8 @@ class AdminColumns
             case 'organisers':
                 echo $organisers ? $organisers : esc_html(self::NO_VALUE);
                 break;
-            case 'participants':
-                echo $participants ? $participants : esc_html(self::NO_VALUE);
-                break;
-            case 'participants_num':
-                if ($event->isLimitedParticipants()) {
-                    printf('%1$d/%2$d', count($event->getParticipants()), $event->getMaxParticipants());
-                } else {
-                    echo count($event->getParticipants());
-                }
+            case 'invitees':
+                echo $invitees ? $invitees : esc_html(self::NO_VALUE);
                 break;
             case 'location':
                 if ($location) {
@@ -235,14 +237,8 @@ class AdminColumns
                     echo esc_html(self::NO_VALUE);
                 }
                 break;
-            case 'over':
-                echo Helpers::renderBoolean($event->isOver());
-                break;
             case 'private':
                 echo Helpers::renderBoolean($event->isPrivate());
-                break;
-            case 'group':
-                echo Helpers::renderPosts($event->getField('group'));
                 break;
         }
     }
