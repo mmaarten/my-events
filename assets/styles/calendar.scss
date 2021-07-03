@@ -4,7 +4,7 @@
 
 #calendar {
   &.is-loading {
-    .fc-view-harness-active {
+    .fc-view-harness {
       @include make-loader(2rem, 0, true);
     }
   }
