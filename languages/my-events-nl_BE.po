@@ -1,151 +1,176 @@
+# Copyright (C) 2021 Maarten Menten
+# This file is distributed under the same license as the My Events plugin.
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Project-Id-Version: My Events\n"
-"POT-Creation-Date: 2021-07-02 21:43+0200\n"
-"PO-Revision-Date: 2021-07-02 22:05+0200\n"
+"Project-Id-Version: My Events 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/my-events\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-07-03 16:30+0200\n"
+"PO-Revision-Date: 2021-07-03 16:44+0200\n"
 "X-Generator: Poedit 1.8.7\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-WPHeader: plugin.php\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Domain: my-events\n"
 "Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: nl_BE\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: plugin.php:22
-#, php-format
-msgid "%1$s installation is incomplete. Run %2$s within the %3$s directory."
-msgstr "%1$s installatie is niet volledig. Run %2$s binnenin de %3$s folder."
-
-#. Plugin Name of the plugin/theme
-#: plugin.php:23
+#. Plugin Name of the plugin
 msgid "My Events"
 msgstr "Mijn evenementen"
 
-#: src/AdminColumns.php:33
-msgid "Time of day"
+#. Plugin URI of the plugin
+msgid "https://github.com/mmaarten/my-events"
+msgstr "https://github.com/mmaarten/my-events"
+
+#. Author of the plugin
+msgid "Maarten Menten"
+msgstr "Maarten Menten"
+
+#. Author URI of the plugin
+msgid "https://profiles.wordpress.org/maartenm/"
+msgstr "https://profiles.wordpress.org/maartenm/"
+
+#: templates/emails/invitee-added-notification.php:2
+msgid "You are invited for following event:"
+msgstr "U bent uitgenodigd voor het volgende evenement:"
+
+#: templates/emails/invitee-added-notification.php:6
+#: templates/emails/invitee-accepted-invitation.php:6
+#: templates/emails/invitee-removed-notification.php:6
+#: templates/emails/invitee-declined-invitation.php:6
+#: templates/emails/event-send-email.php:6
+msgid "Time: %s"
+msgstr "Tijdstip: %s"
+
+#: templates/emails/invitee-accepted-invitation.php:2
+msgid "%1$s accepted your invitation for:"
+msgstr "%1$s heeft je uitnodiging geaccepteerd voor:"
+
+#: templates/emails/invitee-removed-notification.php:2
+msgid "You are no longer invited for following event:"
+msgstr "Je bent niet langer uitgenodigd voor het volgende evenement:"
+
+#: templates/emails/invitee-declined-invitation.php:2
+msgid "%1$s declined your invitation for:"
+msgstr "%1$s heeft uw uitnodiging geweigerd voor:"
+
+#: templates/event-edit-invitees.php:11 src/PostTypes.php:124
+msgid "No invitees found."
+msgstr "Geen genodigden gevonden."
+
+#: templates/event-edit-invitees.php:23
+msgid "accepted"
+msgstr "aanvaard"
+
+#: templates/event-edit-invitees.php:33
+msgid "pending"
+msgstr "in afwachting"
+
+#: templates/event-edit-invitees.php:43
+msgid "declined"
+msgstr "geweigerd"
+
+#: templates/event-group-edit-events.php:8 src/PostTypes.php:28
+msgid "No events found."
+msgstr "Geen evenementen gevonden."
+
+#: templates/event-group-edit-events.php:12
+msgid "Events created by this group:"
+msgstr "Evenementen gemaakt door deze groep:"
+
+#: templates/event-detail.php:24 src/Fields.php:185
+msgid "Description"
+msgstr "Omschrijving"
+
+#: templates/event-detail.php:30
+msgid "Time"
 msgstr "Tijdstip"
 
-#: src/AdminColumns.php:34 src/Fields.php:228 templates/event-detail.php:47
-msgid "Organisers"
-msgstr "Organisatoren"
-
-#: src/AdminColumns.php:35 templates/event-detail.php:56
-msgid "Participants"
-msgstr "Deelnemers"
-
-#: src/AdminColumns.php:36
-msgid "Number of participants"
-msgstr "Aantal deelnemers"
-
-#: src/AdminColumns.php:37 src/Fields.php:333 templates/event-detail.php:38
+#: templates/event-detail.php:38 src/Fields.php:333 src/AdminColumns.php:37
 msgid "Location"
 msgstr "Locatie"
 
-#: src/AdminColumns.php:38
-msgid "Over"
-msgstr "Voorbij"
+#: templates/event-detail.php:47 src/Fields.php:228 src/AdminColumns.php:34
+msgid "Organisers"
+msgstr "Organisatoren"
 
-#: src/AdminColumns.php:39 src/Fields.php:391
-msgid "Private"
-msgstr "Privé"
+#: templates/event-detail.php:56 src/AdminColumns.php:35
+msgid "Participants"
+msgstr "Deelnemers"
 
-#: src/AdminColumns.php:40 src/Fields.php:278
-msgid "Group"
-msgstr "Groep"
+#: templates/event-detail.php:67
+msgid "Edit this event"
+msgstr "Dit evenement bewerken"
 
-#: src/AdminColumns.php:98 src/Fields.php:458
-msgid "User"
-msgstr "Gebruiker"
+#: src/Subscriptions.php:25
+msgid "You need to login in order to subscribe to this event."
+msgstr "Je moet inloggen om je te abonneren op dit evenement."
 
-#: src/AdminColumns.php:99 src/Fields.php:444
-msgid "Event"
-msgstr "Evenement"
+#: src/Subscriptions.php:35 src/Posts/Event.php:372 src/Posts/Event.php:403
+msgid "You have no access to this event."
+msgstr "Je hebt geen toegang tot dit evenement."
 
-#: src/AdminColumns.php:100 src/Fields.php:471
-msgid "Status"
-msgstr "Status"
+#: src/Subscriptions.php:40
+msgid "The event is over."
+msgstr "Het evenement is voorbij."
 
-#: src/AdminColumns.php:101
-msgid "Email sent"
-msgstr "E-mail verzonden"
+#: src/Subscriptions.php:47 src/Posts/Event.php:382 src/Posts/Event.php:413
+msgid "You are not invited to this event."
+msgstr "U bent niet uitgenodigd op dit evenement."
 
-#: src/AdminColumns.php:135
-msgid "Users"
-msgstr "Gebruikers"
+#: src/Subscriptions.php:52
+msgid "The maximum amount of participants is reached."
+msgstr "Het maximum aantal deelnemers is bereikt."
 
-#: src/AdminColumns.php:157 src/Fields.php:512
-msgid "Address"
-msgstr "Adres"
+#: src/Subscriptions.php:56 src/Subscriptions.php:173
+msgid "You have accepted the invitation."
+msgstr "U heeft de uitnodiging geaccepteerd."
 
-#: src/AdminMenu.php:15 src/AdminMenu.php:16 src/Fields.php:135
-#: src/PostTypes.php:25
-msgid "Events"
-msgstr "Evenementen"
+#: src/Subscriptions.php:60 src/Subscriptions.php:177
+msgid "You have declined the invitation."
+msgstr "U heeft de uitnodiging afgewezen."
 
-#: src/Emails.php:24
-msgid "Send email"
-msgstr "E-mail versturen"
+#: src/Subscriptions.php:64
+msgid "We would like to know if you are comming to this event."
+msgstr "Wij willen graag weten of je naar dit evenement komt."
 
-#: src/Emails.php:47
-msgid "Notify the invitees about any changes of this event."
-msgstr ""
-"Breng de genodigden op de hoogte van eventuele wijzigingen van dit evenement."
+#: src/Subscriptions.php:131
+msgid "You need to login in order to subscribe."
+msgstr "Je moet inloggen om je te abonneren op dit evenement."
 
-#: src/Emails.php:50
-msgid "Message"
-msgstr "Bericht"
+#: src/Subscriptions.php:135
+msgid "Invalid invitee."
+msgstr "Ongeldige genodigde."
 
-#: src/Emails.php:55
-msgid "Send"
-msgstr "Verstuur"
+#: src/Subscriptions.php:143
+msgid "Invalid user."
+msgstr "Ongeldige gebruiker."
 
-#: src/Emails.php:60
-msgid "Be sure to save the event before sending."
-msgstr "Zorg ervoor dat u het evenement opslaat voordat u verzendt."
-
-#: src/Emails.php:80 src/Subscriptions.php:149
+#: src/Subscriptions.php:149 src/Emails.php:80
 msgid "Invalid event."
 msgstr "Ongeldig evenement."
 
-#: src/Emails.php:84
-msgid "Message is required."
-msgstr "Bericht is verplicht."
+#: src/Subscriptions.php:153
+msgid "Invalid request."
+msgstr "Ongeldig verzoek."
 
-#: src/Emails.php:92
-#, php-format
-msgid "Announcement for event \"%s\"."
-msgstr "Aankondiging voor evenement \"%s\"."
+#: src/Posts/Event.php:81
+msgid "%1$s from %2$s until %3$s"
+msgstr "%1$s van %2$s tot %3$s"
 
-#: src/Emails.php:102
-msgid "Email send."
-msgstr "E-mail verzonden."
+#: src/Posts/Event.php:89
+msgid "from %1$s until %2$s"
+msgstr "van %1$s tot %2$s"
 
-#: src/Events.php:505 src/Posts/Event.php:376 src/Posts/Event.php:407
+#: src/Posts/Event.php:376 src/Posts/Event.php:407 src/Events.php:505
 msgid "This event is over."
 msgstr "Dit evenement is voorbij."
 
-#: src/Events.php:512
-#, php-format
-msgid "This event belongs to the group %s."
-msgstr "Dit evenement behoort tot de groep %s."
-
-#: src/Events.php:520
-msgid "here"
-msgstr "hier"
-
-#: src/Events.php:524
-#, php-format
-msgid "Click %s to detach from group."
-msgstr "Klik %s om los te koppelen van de groep."
+#: src/Posts/Event.php:390
+msgid "The maximum amount of participants is reached"
+msgstr "Het maximum aantal deelnemers is bereikt"
 
 #: src/Fields.php:31
 msgid "Create events based on the following settings:"
@@ -179,13 +204,14 @@ msgstr "Dag toevoegen"
 msgid "Date"
 msgstr "Datum"
 
+#: src/Fields.php:135 src/AdminMenu.php:15 src/AdminMenu.php:16
+#: src/PostTypes.php:25
+msgid "Events"
+msgstr "Evenementen"
+
 #: src/Fields.php:163 src/Fields.php:429 src/Fields.php:497 src/Fields.php:525
 msgid "Settings"
 msgstr "Instellingen"
-
-#: src/Fields.php:185 templates/event-detail.php:24
-msgid "Description"
-msgstr "Omschrijving"
 
 #: src/Fields.php:186
 msgid "A brief description of this event."
@@ -240,6 +266,10 @@ msgstr "Kies uit een groep"
 msgid "A list of people you want to invite."
 msgstr "Een lijst met mensen die je wilt uitnodigen."
 
+#: src/Fields.php:278 src/AdminColumns.php:40
+msgid "Group"
+msgstr "Groep"
+
 #: src/Fields.php:279
 msgid "A group of people you like to invite."
 msgstr "Een groep mensen die je graag uitnodigt."
@@ -272,6 +302,10 @@ msgstr "Kies uit een lijst"
 msgid "List"
 msgstr "Lijst"
 
+#: src/Fields.php:391 src/AdminColumns.php:39
+msgid "Private"
+msgstr "Privé"
+
 #: src/Fields.php:392
 msgid ""
 "Only organisers and participants of this event have access to this event."
@@ -279,53 +313,67 @@ msgstr ""
 "Alleen organisatoren en deelnemers van dit evenement hebben toegang tot dit "
 "evenement."
 
+#: src/Fields.php:444 src/AdminColumns.php:99
+msgid "Event"
+msgstr "Evenement"
+
+#: src/Fields.php:458 src/AdminColumns.php:98
+msgid "User"
+msgstr "Gebruiker"
+
+#: src/Fields.php:471 src/AdminColumns.php:100
+msgid "Status"
+msgstr "Status"
+
 #: src/Fields.php:484
 msgid "Email Sent"
 msgstr "E-mail verzonden"
+
+#: src/Fields.php:512 src/AdminColumns.php:157
+msgid "Address"
+msgstr "Adres"
 
 #: src/Fields.php:513
 msgid "The geographical location."
 msgstr "De geografische ligging."
 
-#: src/Helpers.php:56
-msgid "Pending"
-msgstr "In afwachting"
+#: src/Events.php:512
+msgid "This event belongs to the group %s."
+msgstr "Dit evenement behoort tot de groep %s."
 
-#: src/Helpers.php:57
-msgid "Accepted"
-msgstr "Aanvaard"
+#: src/Events.php:520
+msgid "here"
+msgstr "hier"
 
-#: src/Helpers.php:58
-msgid "Declined"
-msgstr "Geweigerd"
+#: src/Events.php:524
+msgid "Click %s to detach from group."
+msgstr "Klik %s om los te koppelen van de groep."
 
-#: src/Helpers.php:100
-msgid "yes"
-msgstr "ja"
+#: src/PrivateEvents.php:88
+msgid "You are not allowed to access this page"
+msgstr "U hebt geen toegang tot deze pagina"
 
-#: src/Helpers.php:100
-msgid "no"
-msgstr "nee"
+#: src/PrivateEvents.php:100
+msgid "This event is only accessible to organisers and invitees of this event."
+msgstr ""
+"Dit evenement is alleen toegankelijk voor organisatoren en genodigden van "
+"dit evenement."
 
 #: src/Notifications.php:83
-#, php-format
 msgid "%1$s accepted your invitation for \"%2$s\"."
 msgstr "%1$s heeft uw uitnodiging voor \"%2$s\" geaccepteerd."
 
 #: src/Notifications.php:116
-#, php-format
 msgid "%1$s declined your invitation for \"%2$s\"."
-msgstr "%1$s heeft uw uitnodiging voor \"%2$s\" geweigerd."
+msgstr "%1$s heeft uw uitnodiging voor “%2$s” geweigerd."
 
 #: src/Notifications.php:149
-#, php-format
 msgid "You are invited for the event: \"%1$s\"."
-msgstr "U bent uitgenodigd voor het evenement: \"%1$s\"."
+msgstr "U bent uitgenodigd voor het evenement: “%1$s”."
 
 #: src/Notifications.php:181
-#, php-format
 msgid "You are no longer invited for the event: \"%1$s\"."
-msgstr "Je bent niet langer uitgenodigd voor het evenement: \"%1$s\"."
+msgstr "Je bent niet langer uitgenodigd voor het evenement: “%1$s”."
 
 #: src/PostTypes.php:16
 msgctxt "Post type general name"
@@ -375,10 +423,6 @@ msgstr "Zoek evenementen"
 #: src/PostTypes.php:27
 msgid "Parent events:"
 msgstr "Parent evenementen:"
-
-#: src/PostTypes.php:28 templates/event-group-edit-events.php:8
-msgid "No events found."
-msgstr "Geen evenementen gevonden."
 
 #: src/PostTypes.php:29
 msgid "No events found in Trash."
@@ -470,7 +514,7 @@ msgstr "Evenement groep"
 #: src/PostTypes.php:61
 msgctxt "Admin Menu text"
 msgid "Event groups"
-msgstr "Evenement groepen"
+msgstr "Evenement"
 
 #: src/PostTypes.php:62
 msgctxt "Add New on Toolbar"
@@ -605,10 +649,6 @@ msgstr "Genodigden zoeken"
 msgid "Parent invitees:"
 msgstr "Ouder genodigden:"
 
-#: src/PostTypes.php:124 templates/event-edit-invitees.php:11
-msgid "No invitees found."
-msgstr "Geen genodigden gevonden."
-
 #: src/PostTypes.php:125
 msgid "No invitees found in Trash."
 msgstr "Geen genodigden gevonden in Prullenbak."
@@ -683,7 +723,7 @@ msgstr "Genodigden groepen"
 #: src/PostTypes.php:168
 msgctxt "Add New on Toolbar"
 msgid "Invitee group"
-msgstr "Genodigden groep"
+msgstr "Genodigdengroep"
 
 #: src/PostTypes.php:170
 msgid "Add New invitee group"
@@ -782,7 +822,7 @@ msgstr "Evenement locatie"
 #: src/PostTypes.php:220
 msgctxt "Admin Menu text"
 msgid "Event locations"
-msgstr "Evenement locaties"
+msgstr "Evenementen locaties"
 
 #: src/PostTypes.php:221
 msgctxt "Add New on Toolbar"
@@ -807,7 +847,7 @@ msgstr "Toon locatie"
 
 #: src/PostTypes.php:227
 msgid "Event locations"
-msgstr "Evenement locaties"
+msgstr "Evenementen locaties"
 
 #: src/PostTypes.php:228
 msgid "Search event locations"
@@ -873,156 +913,75 @@ msgctxt ""
 msgid "Event locations list"
 msgstr "locatielijst"
 
-#: src/Posts/Event.php:81
-#, php-format
-msgid "%1$s from %2$s until %3$s"
-msgstr "%1$s van %2$s tot %3$s"
+#: src/Emails.php:24
+msgid "Send email"
+msgstr "E-mail versturen"
 
-#: src/Posts/Event.php:89
-#, php-format
-msgid "from %1$s until %2$s"
-msgstr "van %1$s tot %2$s"
-
-#: src/Posts/Event.php:372 src/Posts/Event.php:403 src/Subscriptions.php:35
-msgid "You have no access to this event."
-msgstr "Je hebt geen toegang tot dit evenement."
-
-#: src/Posts/Event.php:382 src/Posts/Event.php:413 src/Subscriptions.php:47
-msgid "You are not invited to this event."
-msgstr "U bent niet uitgenodigd op dit evenement."
-
-#: src/Posts/Event.php:390
-msgid "The maximum amount of participants is reached"
-msgstr "Het maximum aantal deelnemers is bereikt"
-
-#: src/PrivateEvents.php:88
-msgid "You are not allowed to access this page"
-msgstr "U hebt geen toegang tot deze pagina"
-
-#: src/PrivateEvents.php:100
-msgid "This event is only accessible to organisers and invitees of this event."
+#: src/Emails.php:47
+msgid "Notify the invitees about any changes of this event."
 msgstr ""
-"Dit evenement is alleen toegankelijk voor organisatoren en genodigden van "
-"dit evenement."
+"Breng de genodigden op de hoogte van eventuele wijzigingen van dit evenement."
 
-#: src/Subscriptions.php:25
-msgid "You need to login in order to subscribe to this event."
-msgstr "Je moet inloggen om je te abonneren op dit evenement."
+#: src/Emails.php:50
+msgid "Message"
+msgstr "Bericht"
 
-#: src/Subscriptions.php:40
-msgid "The event is over."
-msgstr "Het evenement is voorbij."
+#: src/Emails.php:55
+msgid "Send"
+msgstr "Verstuur"
 
-#: src/Subscriptions.php:52
-msgid "The maximum amount of participants is reached."
-msgstr "Het maximum aantal deelnemers is bereikt."
+#: src/Emails.php:60
+msgid "Be sure to save the event before sending."
+msgstr "Zorg ervoor dat u het evenement opslaat voordat u verzendt."
 
-#: src/Subscriptions.php:56 src/Subscriptions.php:173
-msgid "You have accepted the invitation."
-msgstr "U heeft de uitnodiging geaccepteerd."
+#: src/Emails.php:84
+msgid "Message is required."
+msgstr "Bericht is verplicht."
 
-#: src/Subscriptions.php:60 src/Subscriptions.php:177
-msgid "You have declined the invitation."
-msgstr "U heeft de uitnodiging afgewezen."
+#: src/Emails.php:92
+msgid "Announcement for event \"%s\"."
+msgstr "Aankondiging voor evenement \"%s\"."
 
-#: src/Subscriptions.php:64
-msgid "We would like to know if you are comming to this event."
-msgstr "Wij willen graag weten of je naar dit evenement komt."
+#: src/Emails.php:102
+msgid "Email send."
+msgstr "E-mail verzonden."
 
-#: src/Subscriptions.php:107
-msgid "Decline invitation"
-msgstr "Uitnodiging weigeren"
+#: src/Helpers.php:60
+msgid "Pending"
+msgstr "In afwachting"
 
-#: src/Subscriptions.php:110
-msgid "Accept invitation"
-msgstr "Uitnodiging accepteren"
+#: src/Helpers.php:61
+msgid "Accepted"
+msgstr "Aanvaard"
 
-#: src/Subscriptions.php:131
-msgid "You need to login in order to subscribe."
-msgstr "Je moet inloggen om je te abonneren op dit evenement."
+#: src/Helpers.php:62
+msgid "Declined"
+msgstr "Geweigerd"
 
-#: src/Subscriptions.php:135
-msgid "Invalid invitee."
-msgstr "Ongeldige genodigde."
+#: src/Helpers.php:104
+msgid "yes"
+msgstr "ja"
 
-#: src/Subscriptions.php:143
-msgid "Invalid user."
-msgstr "Ongeldige gebruiker."
+#: src/Helpers.php:104
+msgid "no"
+msgstr "aantal"
 
-#: src/Subscriptions.php:153
-msgid "Invalid request."
-msgstr "Ongeldig verzoek."
-
-#: templates/emails/event-send-email.php:6
-#: templates/emails/invitee-accepted-invitation.php:6
-#: templates/emails/invitee-added-notification.php:6
-#: templates/emails/invitee-declined-invitation.php:6
-#: templates/emails/invitee-removed-notification.php:6
-#, php-format
-msgid "Time: %s"
-msgstr "Tijdstip: %s"
-
-#: templates/emails/invitee-accepted-invitation.php:2
-#, php-format
-msgid "%1$s accepted your invitation for:"
-msgstr "%1$s heeft je uitnodiging geaccepteerd voor:"
-
-#: templates/emails/invitee-added-notification.php:2
-msgid "You are invited for following event:"
-msgstr "U bent uitgenodigd voor het volgende evenement:"
-
-#: templates/emails/invitee-declined-invitation.php:2
-#, php-format
-msgid "%1$s declined your invitation for:"
-msgstr "%1$s heeft uw uitnodiging voor geweigerd voor:"
-
-#: templates/emails/invitee-removed-notification.php:2
-msgid "You are no longer invited for following event:"
-msgstr "Je bent niet langer uitgenodigd voor het volgende evenement:"
-
-#: templates/event-detail.php:30
-msgid "Time"
+#: src/AdminColumns.php:33
+msgid "Time of day"
 msgstr "Tijdstip"
 
-#: templates/event-detail.php:67
-msgid "Edit this event"
-msgstr "Dit evenement bewerken"
+#: src/AdminColumns.php:36
+msgid "Number of participants"
+msgstr "Aantal deelnemers"
 
-#: templates/event-edit-invitees.php:23
-msgid "accepted"
-msgstr "aanvaard"
+#: src/AdminColumns.php:38
+msgid "Over"
+msgstr "Voorbij"
 
-#: templates/event-edit-invitees.php:33
-msgid "pending"
-msgstr "in afwachting"
+#: src/AdminColumns.php:101
+msgid "Email sent"
+msgstr "E-mail verzonden"
 
-#: templates/event-edit-invitees.php:43
-msgid "declined"
-msgstr "geweigerd"
-
-#: templates/event-group-edit-events.php:12
-msgid "Events created by this group:"
-msgstr "Evenementen gemaakt door deze groep:"
-
-#: vendor/wp-cli/wp-cli/php/utils-wp.php:222
-msgid "Inactive Widgets"
-msgstr "Inactieve Widgets"
-
-#: vendor/wp-cli/wp-cli/php/utils-wp.php:225
-msgid ""
-"Drag widgets here to remove them from the sidebar but keep their settings."
-msgstr ""
-"Sleep de widgets hierheen om deze te verwijderen van de zijbalk, maar met "
-"behoud van de instellingen."
-
-#. Plugin URI of the plugin/theme
-msgid "https://github.com/mmaarten/my-events"
-msgstr "https://github.com/mmaarten/my-events"
-
-#. Author of the plugin/theme
-msgid "Maarten Menten"
-msgstr "Maarten Menten"
-
-#. Author URI of the plugin/theme
-msgid "https://profiles.wordpress.org/maartenm/"
-msgstr "https://profiles.wordpress.org/maartenm/"
+#: src/AdminColumns.php:135
+msgid "Users"
+msgstr "Gebruikers"
