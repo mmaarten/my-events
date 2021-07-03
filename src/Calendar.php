@@ -165,22 +165,12 @@ class Calendar
     {
         $post = new Event($post_id);
 
-        $start = $post->getStartTime('Y-m-d\TH:i:s');
-        $end   = $post->getEndTime('Y-m-d\TH:i:s');
-
-        if ($post->isAllDay()) {
-            $end = new \DateTime($end);
-            $end->modify('+1 day');
-            $end = $end->format('Y-m-d\TH:i:s');
-        }
-
         // Create event
         $event = [
             'id'        => $post->ID,
             'title'     => $post->post_title,
-            'start'     => $start,
-            'end'       => $end,
-            'allDay'    => $post->isAllDay(),
+            'start'     => $post->getStartTime('Y-m-d\TH:i:s'),
+            'end'       => $post->getEndTime('Y-m-d\TH:i:s'),
             'url'       => get_permalink($post->ID),
             'className' => implode(' ', Events::getEventClasses($post->ID)),
         ];

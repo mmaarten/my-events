@@ -7,8 +7,6 @@ use My\Events\Posts\Invitee;
 
 class Subscriptions
 {
-    protected static $message = '';
-
     public static function init()
     {
         add_action('template_redirect', [__CLASS__, 'process']);

@@ -27,15 +27,6 @@ class Event extends Post
         return $this->updateField('description', $value);
     }
 
-    public function isAllDay($value = null)
-    {
-        if (is_null($value)) {
-            return $this->getField('is_all_day') ? true : false;
-        }
-
-        return $this->updateField('is_all_day', $value ? true : false);
-    }
-
     /**
      * Get start time
      *
@@ -44,11 +35,7 @@ class Event extends Post
     public function getStartTime($format = null)
     {
         if (! $format) {
-            if ($this->isAllDay()) {
-                $format = get_option('date_format');
-            } else {
-                $format = get_option('date_format') . ' ' . get_option('time_format');
-            }
+            $format = get_option('date_format') . ' ' . get_option('time_format');
         }
 
         return date_i18n($format, strtotime($this->getField('start')));
@@ -62,8 +49,6 @@ class Event extends Post
      */
     public function setStartTime($value)
     {
-        $this->updateField('all_day_start', $value);
-
         return $this->updateField('start', $value);
     }
 
@@ -75,11 +60,7 @@ class Event extends Post
     public function getEndTime($format = null)
     {
         if (! $format) {
-            if ($this->isAllDay()) {
-                $format = get_option('date_format');
-            } else {
-                $format = get_option('date_format') . ' ' . get_option('time_format');
-            }
+            $format = get_option('date_format') . ' ' . get_option('time_format');
         }
 
         return date_i18n($format, strtotime($this->getField('end')));
@@ -93,8 +74,6 @@ class Event extends Post
      */
     public function setEndTime($value)
     {
-        $this->updateField('all_day_end', $value);
-
         return $this->updateField('end', $value);
     }
 
@@ -109,10 +88,6 @@ class Event extends Post
         $end_date   = $this->getEndTime(get_option('date_format'));
 
         if ($start_date == $end_date) {
-            if ($this->isAllDay()) {
-                return $start_date;
-            }
-
             return sprintf(
                 __('%1$s from %2$s until %3$s', 'my-events'),
                 $start_date,
