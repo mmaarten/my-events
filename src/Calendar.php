@@ -15,6 +15,12 @@ class Calendar
             return $permalink;
         }, 10, 3);
 
+        add_shortcode('calendar', function () {
+            ob_start();
+            self::render();
+            return ob_get_clean();
+        });
+
         add_action('wp_enqueue_scripts', [__CLASS__, 'autoEnqueueAssets']);
         add_action('wp_ajax_my_events_get_events', [__CLASS__, 'getEvents']);
         add_action('wp_ajax_nopriv_my_events_get_events', [__CLASS__, 'getEvents']);
@@ -42,7 +48,7 @@ class Calendar
 
     public static function getPageId()
     {
-        return apply_filters('my_events/calendar_page', 0);
+        return apply_filters('my_events/calendar_page', 2);
     }
 
     public static function isPage()

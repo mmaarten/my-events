@@ -1,4 +1,4 @@
-(function(){
+(function(window, document){
   var Breakpoints = {
     breakpoint : null,
     breakpoints : {},
@@ -22,8 +22,7 @@
       this.breakpoint = breakpoint;
       jQuery(document).trigger('myEvents.breakpointChange', [this.breakpoint]);
     },
-    update : function()
-    {
+    update : function() {
       var width = jQuery(window).width();
       if (width < this.breakpoints.sm) {
         this.setBreakpoint('xs');
@@ -38,5 +37,7 @@
       }
     }
   };
-  Breakpoints.init();
-})();
+
+  window.addEventListener('load', Breakpoints.init.bind(Breakpoints));
+  window.Breakpoints = Breakpoints;
+})(window, document);

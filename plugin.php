@@ -19,8 +19,8 @@ if (!is_readable($autoloader)) {
     error_log(
         sprintf(
             // translators: 1: plugin name. 2: Composer command. 3: theme directory
-            __('%1$s installation is incomplete. Run %2$s within the %3$s directory.', 'my-postloaders'),
-            __('My Events', 'my-postloaders'),
+            __('%1$s installation is incomplete. Run %2$s within the %3$s directory.', 'my-events'),
+            __('My Events', 'my-events'),
             '<code>composer install</code>',
             '<code>' . str_replace(ABSPATH, '', __DIR__) . '</code>'
         )
