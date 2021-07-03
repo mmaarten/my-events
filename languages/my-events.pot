@@ -945,3 +945,9 @@ msgstr ""
 #: src/AdminColumns.php:135
 msgid "Users"
 msgstr ""
+
+msgid "Decline invitation"
+msgstr ""
+
+msgid "Accept invitation"
+msgstr ""
