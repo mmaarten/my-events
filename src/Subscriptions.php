@@ -51,7 +51,7 @@ class Subscriptions
         if ($invitee->getStatus() !== 'accepted' && $max_reached) {
             printf('<div class="alert alert-danger" role="alert">%s</div>', esc_html__('The maximum amount of participants is reached.', 'my-events'));
         }
-        
+
         if ($invitee->getStatus() === 'accepted') {
             printf('<div class="alert alert-success" role="alert">%s</div>', esc_html__('You have accepted the invitation.', 'my-events'));
         }
@@ -59,7 +59,7 @@ class Subscriptions
         if ($invitee->getStatus() === 'declined') {
             printf('<div class="alert alert-danger" role="alert">%s</div>', esc_html__('You have declined the invitation.', 'my-events'));
         }
-        
+
         if ($invitee->getStatus() === 'pending') {
             printf('<div class="alert alert-warning" role="alert">%s</div>', esc_html__('We would like to know if you are comming to this event.', 'my-events'));
         }
@@ -90,7 +90,7 @@ class Subscriptions
         }
 
         $max_reached = $event->isLimitedParticipants() && count($event->getParticipants()) >= $event->getMaxParticipants();
-        
+
         $can_accept  = ($invitee->getStatus() == 'pending' || $invitee->getStatus() == 'declined') && !$max_reached;
         $can_decline = $invitee->getStatus() == 'pending' || $invitee->getStatus() == 'accepted';
 
@@ -104,10 +104,10 @@ class Subscriptions
 
             <ul class="list-inline mb-0 d-table ml-auto">
                 <?php if ($can_decline) : ?>
-                <li class="list-inline-item"><label class="btn btn-danger mb-0"><input type="radio" class="d-none" name="request" value="decline"><?php esc_attr_e('Decline invitation', 'de-keerkring-theme'); ?></label></li>
+                <li class="list-inline-item"><label class="btn btn-danger mb-0"><input type="radio" class="d-none" name="request" value="decline"><?php esc_attr_e('Decline invitation', 'my-events'); ?></label></li>
                 <?php endif; ?>
                 <?php if ($can_accept) : ?>
-                <li class="list-inline-item"><label class="btn btn-success mb-0"><input type="radio" class="d-none" name="request" value="accept"><?php esc_attr_e('Accept invitation', 'de-keerkring-theme'); ?></label></li>
+                <li class="list-inline-item"><label class="btn btn-success mb-0"><input type="radio" class="d-none" name="request" value="accept"><?php esc_attr_e('Accept invitation', 'my-events'); ?></label></li>
                 <?php endif; ?>
             </ul>
 
