@@ -48,6 +48,8 @@ class Subscriptions
             return;
         }
 
+        $max_reached = $event->isLimitedParticipants() && count($event->getParticipants()) >= $event->getMaxParticipants();
+
         if ($invitee->getStatus() !== 'accepted' && $max_reached) {
             printf('<div class="alert alert-danger" role="alert">%s</div>', esc_html__('The maximum amount of participants is reached.', 'my-events'));
         }

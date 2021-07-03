@@ -69,19 +69,37 @@ class Model
     {
         return self::getEvents([
             'meta_query' => [
-                'relation' => 'AND',
+                'relation' => 'OR',
                 [
-                    'key'     => 'start',
-                    'compare' => '>=',
-                    'value'   => $start,
-                    'type'    => 'DATETIME',
+                    'relation' => 'AND',
+                    [
+                        'key'     => 'start',
+                        'compare' => '>=',
+                        'value'   => $start,
+                        'type'    => 'DATETIME',
+                    ],
+                    [
+                        'key'     => 'start',
+                        'compare' => '<=',
+                        'value'   => $end,
+                        'type'    => 'DATETIME',
+                    ],
                 ],
                 [
-                    'key'     => 'end',
-                    'compare' => '<=',
-                    'value'   => $end,
-                    'type'    => 'DATETIME',
-                ]
+                    'relation' => 'AND',
+                    [
+                        'key'     => 'end',
+                        'compare' => '>=',
+                        'value'   => $start,
+                        'type'    => 'DATETIME',
+                    ],
+                    [
+                        'key'     => 'end',
+                        'compare' => '<=',
+                        'value'   => $end,
+                        'type'    => 'DATETIME',
+                    ],
+                ],
             ],
         ] + $args);
     }

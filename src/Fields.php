@@ -194,6 +194,65 @@ class Fields
         ]);
 
         acf_add_local_field([
+            'key'          => 'my_events_event_is_all_day',
+            'label'        => __('All day', 'my-events'),
+            'instructions'   => __('This event takes one or more full days.', 'my-events'),
+            'name'           => 'is_all_day',
+            'type'           => 'true_false',
+            'required'       => false,
+            'menu_order'     => 200,
+            'parent'         => 'my_events_event_group',
+        ]);
+
+        acf_add_local_field([
+            'key'          => 'my_events_event_all_day_start',
+            'label'        => __('Start', 'my-events'),
+            'instructions'   => __('The time when the event starts.', 'my-events'),
+            'name'           => 'all_day_start',
+            'type'           => 'date_picker',
+            'display_format' => get_option('date_format'),
+            'return_format'  => 'Y-m-d H:i:s',
+            'first_day'      => get_option('start_of_week'),
+            'required'       => true,
+            'wrapper'        => ['width' => '50%'],
+            'menu_order'     => 200,
+            'parent'         => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_is_all_day',
+                        'operator' => '==',
+                        'value'    => 1
+                    ],
+                ],
+            ],
+        ]);
+
+        acf_add_local_field([
+            'key'            => 'my_events_event_all_day_end',
+            'label'          => __('End', 'my-events'),
+            'instructions'   => __('The time when the event ends.', 'my-events'),
+            'name'           => 'all_day_end',
+            'type'           => 'date_picker',
+            'display_format' => get_option('date_format'),
+            'return_format'  => 'Y-m-d H:i:s',
+            'first_day'      => get_option('start_of_week'),
+            'required'       => true,
+            'wrapper'        => ['width' => '50%'],
+            'menu_order'     => 201,
+            'parent'         => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_is_all_day',
+                        'operator' => '==',
+                        'value'    => 1
+                    ],
+                ],
+            ],
+        ]);
+
+        acf_add_local_field([
             'key'          => 'my_events_event_start',
             'label'        => __('Start', 'my-events'),
             'instructions'   => __('The time when the event starts.', 'my-events'),
@@ -206,6 +265,15 @@ class Fields
             'wrapper'        => ['width' => '50%'],
             'menu_order'     => 200,
             'parent'         => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_is_all_day',
+                        'operator' => '==',
+                        'value'    => 0
+                    ],
+                ],
+            ],
         ]);
 
         acf_add_local_field([
@@ -221,6 +289,15 @@ class Fields
             'wrapper'        => ['width' => '50%'],
             'menu_order'     => 201,
             'parent'         => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_is_all_day',
+                        'operator' => '==',
+                        'value'    => 0
+                    ],
+                ],
+            ],
         ]);
 
         acf_add_local_field([
@@ -231,7 +308,7 @@ class Fields
             'type'          => 'user',
             'multiple'      => 1,
             'return_format' => 'id',
-            'required'      => true,
+            'required'      => false,
             'menu_order'    => 300,
             'parent'        => 'my_events_event_group',
         ]);
@@ -246,7 +323,7 @@ class Fields
                 'individual' => __('Individual', 'my-events'),
                 'group'      => __('Choose from a group', 'my-events'),
             ],
-            'required'      => true,
+            'required'      => false,
             'menu_order'    => 400,
             'parent'        => 'my_events_event_group',
         ]);
@@ -259,7 +336,7 @@ class Fields
             'type'          => 'user',
             'multiple'      => true,
             'return_format' => 'id',
-            'required'      => true,
+            'required'      => false,
             'menu_order'    => 400,
             'conditional_logic' => [
                 [
@@ -282,7 +359,7 @@ class Fields
             'post_type'     => 'invitee_group',
             'multiple'      => false,
             'return_format' => 'id',
-            'required'      => true,
+            'required'      => false,
             'menu_order'    => 400,
             'conditional_logic' => [
                 [
@@ -338,7 +415,7 @@ class Fields
                 'input' => __('Custom', 'my-events'),
                 'id'    => __('Choose from a list', 'my-events'),
             ],
-            'required'     => true,
+            'required'     => false,
             'menu_order'   => 500,
             'parent'       => 'my_events_event_group',
         ]);
@@ -349,7 +426,7 @@ class Fields
             'instructions' => __('', 'my-events'),
             'name'         => 'location_input',
             'type'         => 'text',
-            'required'     => true,
+            'required'     => false,
             'menu_order'   => 600,
             'conditional_logic' => [
                 [
@@ -372,7 +449,7 @@ class Fields
             'post_type'     => 'event_location',
             'multiple'      => false,
             'return_format' => 'id',
-            'required'      => true,
+            'required'      => false,
             'menu_order'    => 700,
             'conditional_logic' => [
                 [

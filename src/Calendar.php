@@ -167,11 +167,12 @@ class Calendar
 
         // Create event
         $event = [
-            'id'    => $post->ID,
-            'title' => $post->post_title,
-            'start' => $post->getStartTime('Y-m-d\TH:i:s'),
-            'end'   => $post->getEndTime('Y-m-d\TH:i:s'),
-            'url'   => get_permalink($post->ID),
+            'id'        => $post->ID,
+            'title'     => $post->post_title,
+            'start'     => $post->getStartTime('Y-m-d\TH:i:s'),
+            'end'       => $post->getEndTime('Y-m-d\TH:i:s'),
+            'allDay'    => $post->isAllDay(),
+            'url'       => get_permalink($post->ID),
             'className' => implode(' ', Events::getEventClasses($post->ID)),
         ];
 

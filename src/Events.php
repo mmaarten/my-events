@@ -24,7 +24,6 @@ class Events
         add_filter('acf/load_field/key=my_events_event_invitees_list', [__CLASS__, 'renderInvities'], 10, 2);
         add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
         add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
-
         add_filter('my_events/add_invitee_status', [__CLASS__, 'inviteeStatus'], 10, 2);
     }
 
@@ -79,6 +78,10 @@ class Events
             $classes[] = 'is-grouped-event';
         }
 
+        if ($event->isAllDay()) {
+            $classes[] = 'is-all-day-event';
+        }
+
         if (is_admin() && self::isEditableEvent($event->ID)) {
             $classes[] = 'is-editable-event';
         }
@@ -119,11 +122,20 @@ class Events
     {
         switch (get_post_type($post_id)) {
             case 'event':
-                // Update invitees
+                // Set start and end time.
+                $event = new Event($post_id);
+                if ($event->isAllDay()) {
+                    $event->updateField('start', $event->getField('all_day_start', false));
+                    $event->updateField('end', $event->getField('all_day_end', false));
+                } else {
+                    $event->updateField('all_day_start', $event->getField('start', false));
+                    $event->updateField('all_day_end', $event->getField('end', false));
+                }
+                // Update invitees.
                 self::setInviteesFromSettingsFields($post_id);
                 break;
             case 'invitee_group':
-                // Update invitees
+                // Update invitees.
                 self::updateInviteesFromInviteeGroup($post_id);
                 break;
             case 'event_group':
@@ -362,7 +374,7 @@ class Events
         }
 
         if (! $user_ids || ! is_array($user_ids)) {
-            $user_ids = [];
+            return [];
         }
 
         // Make sure all users exist.
@@ -388,8 +400,7 @@ class Events
 
     public static function updateInvitiesField($value, $post_id, $field)
     {
-        // Stop when value. We need to access it on post save.
-        if ($value) {
+        if (did_action('acf/save_post')) {
             return $value;
         }
 
