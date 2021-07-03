@@ -369,8 +369,10 @@ class Events
         // Get user ids from invitees group
         if ($type === 'group') {
             $group_id = $event->getField('invitees_group');
-            $group = new Post($group_id);
-            $user_ids = $group->getField('users');
+            if ($group_id && get_post_type($group_id)) {
+                $group = new Post($group_id);
+                $user_ids = $group->getField('users');
+            }
         }
 
         if (! $user_ids || ! is_array($user_ids)) {

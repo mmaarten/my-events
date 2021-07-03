@@ -172,8 +172,10 @@ class Event extends Post
 
         if ($type === 'id') {
             $location_id = $this->getField('location_id');
-            $location = new Post($location_id);
-            return $location->getField('address');
+            if ($location_id && get_post_type($location_id)) {
+                $location = new Post($location_id);
+                return $location->getField('address');
+            }
         }
 
         return false;
