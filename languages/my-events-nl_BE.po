@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2021-07-03 16:30+0200\n"
-"PO-Revision-Date: 2021-07-03 16:44+0200\n"
+"PO-Revision-Date: 2021-07-03 17:19+0200\n"
 "X-Generator: Poedit 1.8.7\n"
 "X-Domain: my-events\n"
 "Last-Translator: \n"
@@ -812,22 +812,22 @@ msgstr "Genodigden groepen lijst"
 #: src/PostTypes.php:218
 msgctxt "Post type general name"
 msgid "Event locations"
-msgstr "Evenementen locaties"
+msgstr "Locaties"
 
 #: src/PostTypes.php:219
 msgctxt "Post type singular name"
 msgid "Event location"
-msgstr "Evenement locatie"
+msgstr "Locatie"
 
 #: src/PostTypes.php:220
 msgctxt "Admin Menu text"
 msgid "Event locations"
-msgstr "Evenementen locaties"
+msgstr "Locaties"
 
 #: src/PostTypes.php:221
 msgctxt "Add New on Toolbar"
 msgid "Event location"
-msgstr "Evenement locatie"
+msgstr "Locatie"
 
 #: src/PostTypes.php:223
 msgid "Add New event location"
@@ -847,7 +847,7 @@ msgstr "Toon locatie"
 
 #: src/PostTypes.php:227
 msgid "Event locations"
-msgstr "Evenementen locaties"
+msgstr "Locaties"
 
 #: src/PostTypes.php:228
 msgid "Search event locations"
@@ -964,7 +964,7 @@ msgstr "ja"
 
 #: src/Helpers.php:104
 msgid "no"
-msgstr "aantal"
+msgstr "nee"
 
 #: src/AdminColumns.php:33
 msgid "Time of day"

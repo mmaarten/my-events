@@ -23,6 +23,9 @@ class AdminColumns
 
         add_filter('manage_event_location_posts_columns', [__CLASS__, 'addEventLocationColumns']);
         add_action('manage_event_location_posts_custom_column', [__CLASS__, 'renderEventLocationColumns'], 10, 2);
+
+        add_filter('manage_event_group_posts_columns', [__CLASS__, 'addEventGroupColumns']);
+        add_action('manage_event_group_posts_custom_column', [__CLASS__, 'renderEventGroupColumns'], 10, 2);
     }
 
     public static function addEventColumns($columns)
@@ -175,6 +178,71 @@ class AdminColumns
                 } else {
                     echo esc_html(self::NO_VALUE);
                 }
+                break;
+        }
+    }
+
+    public static function addEventGroupColumns($columns)
+    {
+        return [
+            'cb'               => $columns['cb'],
+            'title'            => $columns['title'],
+            'time'             => __('Time of day', 'my-events'),
+            'organisers'       => __('Organisers', 'my-events'),
+            'participants'     => __('Participants', 'my-events'),
+            'participants_num' => __('Number of participants', 'my-events'),
+            'location'         => __('Location', 'my-events'),
+            'over'             => __('Over', 'my-events'),
+            'private'          => __('Private', 'my-events'),
+            'group'            => __('Group', 'my-events'),
+        ] + $columns;
+    }
+
+    public static function renderEventGroupColumns($column, $post_id)
+    {
+        $event = new Event($post_id);
+
+        $time         = $event->getTimeFromUntil();
+        $organisers   = Helpers::renderUsers($event->getOrganisers(['fields' => 'ID']));
+        $participants = Helpers::renderUsers($event->getParticipants(['fields' => 'ID']));
+        $location     = $event->getLocation();
+
+        switch ($column) {
+            case 'time':
+                echo $time ? esc_html($time) : esc_html(self::NO_VALUE);
+                break;
+            case 'organisers':
+                echo $organisers ? $organisers : esc_html(self::NO_VALUE);
+                break;
+            case 'participants':
+                echo $participants ? $participants : esc_html(self::NO_VALUE);
+                break;
+            case 'participants_num':
+                if ($event->isLimitedParticipants()) {
+                    printf('%1$d/%2$d', count($event->getParticipants()), $event->getMaxParticipants());
+                } else {
+                    echo count($event->getParticipants());
+                }
+                break;
+            case 'location':
+                if ($location) {
+                    printf(
+                        '<a href="%1$s" target="_blank">%2$s</a>',
+                        esc_url(Helpers::getMapURL($location)),
+                        esc_html($location)
+                    );
+                } else {
+                    echo esc_html(self::NO_VALUE);
+                }
+                break;
+            case 'over':
+                echo Helpers::renderBoolean($event->isOver());
+                break;
+            case 'private':
+                echo Helpers::renderBoolean($event->isPrivate());
+                break;
+            case 'group':
+                echo Helpers::renderPosts($event->getField('group'));
                 break;
         }
     }

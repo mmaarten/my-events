@@ -23,7 +23,7 @@ class App
             'Calendar',
         ]);
 
-        add_action('init', [__CLASS__, 'loadTextdomain']);
+        add_action('init', [__CLASS__, 'loadTextdomain'], 0);
     }
 
     public static function loadTextdomain()

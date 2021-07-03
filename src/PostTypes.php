@@ -138,7 +138,7 @@ class PostTypes
             'public'             => false,
             'publicly_queryable' => false,
             'show_ui'            => current_user_can('administrator'),
-            'show_in_menu'       => current_user_can('administrator') ? 'my-events' : false,
+            'show_in_menu'       => current_user_can('administrator') && defined('WP_DEBUG') && WP_DEBUG ? 'my-events' : false,
             'query_var'          => false,
             'rewrite'            => array('slug' => 'invitee'),
             'capability_type'    => 'post',
