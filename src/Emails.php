@@ -32,6 +32,8 @@ class Emails
     {
         $event = new Event($post);
 
+        $invitees = $event->getInviteesUsers();
+
         $atts = [
             'class'          => 'my-events-send-email',
             'data-action'    => 'my_events_event_send_email',
@@ -40,11 +42,36 @@ class Emails
             'data-nonce'     => wp_create_nonce('event_send_email'),
         ];
 
+        $iframe_src = add_query_arg([
+            'event' => $event->ID,
+        ], plugins_url('email-preview.php', MY_EVENTS_PLUGIN_FILE));
+
         ?>
 
         <div <?php echo acf_esc_attr($atts); ?>>
 
             <p><?php esc_html_e('Notify the invitees about any changes of this event.', 'my-events'); ?></p>
+
+            <p><strong><?php esc_html_e('Recipients', 'my-events'); ?></strong></p>
+
+            <ul class="my-events-send-email-recipients">
+                <?php
+
+                foreach ($invitees as $user) {
+                    printf(
+                        '<li><label><input type="checkbox" name="recipients[]" value="%1$s" checked="checked"> %2$s</label></li>',
+                        esc_attr($user->ID),
+                        esc_html($user->display_name)
+                    );
+                }
+
+                ?>
+            </ul>
+
+            <p>
+                <a href="#" class="check-all"><?php esc_html_e('Check all', 'my-events'); ?></a> |
+                <a href="#" class="uncheck-all"><?php esc_html_e('Uncheck all', 'my-events'); ?></a>
+            </p>
 
             <p>
                 <label for="my-events-send-email-message"><strong><?php esc_html_e('Message', 'my-events'); ?></strong></label><br>
@@ -58,6 +85,10 @@ class Emails
             <div class="my-events-send-email-output"></div>
 
             <?php echo Helpers::adminNotice(__('Be sure to save the event before sending.', 'my-events'), 'info', true); ?>
+
+            <p><strong><?php esc_html_e('Preview', 'my-events'); ?></strong></p>
+
+            <iframe src="<?php echo esc_url($iframe_src); ?>"></iframe>
 
         </div>
 
@@ -75,6 +106,7 @@ class Emails
         $event_id = isset($_POST['event']) ? $_POST['event'] : 0;
         $message  = isset($_POST['message']) ? $_POST['message'] : '';
         $message  = wpautop(trim(stripcslashes($message)));
+        $recipients = isset($_POST['recipients']) && is_array($_POST['recipients']) ? $_POST['recipients'] : [];
 
         if (! $event_id || get_post_type($event_id) !== 'event') {
             wp_send_json_error(Helpers::adminNotice(__('Invalid event.', 'my-events'), 'error', true));
@@ -86,7 +118,12 @@ class Emails
 
         $event = new Event($event_id);
 
-        $recipients = wp_list_pluck($event->getInviteesUsers(), 'user_email', 'ID');
+        $event_recipients = wp_list_pluck($event->getInviteesUsers(), 'user_email', 'ID');
+        $recipients = array_intersect_key($event_recipients, array_flip($recipients));
+
+        if (! $recipients) {
+            wp_send_json_error(Helpers::adminNotice(__('At least one recipient is required.', 'my-events'), 'error', true));
+        }
 
         foreach ($recipients as $to) {
             $subject = sprintf(__('Announcement for event "%s".', 'my-events'), $event->post_title);

@@ -85,8 +85,8 @@ class Fields
                         'id' => '',
                     ),
                     'choices' => array(
-                        '+1 week' => 'Every week',
-                        '+2 week' => 'Every 2 weeks',
+                        '+1 week' => __('Every week', 'my-events'),
+                        '+2 week' => __('Every 2 weeks', 'my-events'),
                     ),
                     'default_value' => '+1 week',
                     'allow_null' => 0,

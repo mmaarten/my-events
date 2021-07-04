@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-07-04T18:33:49+00:00\n"
+"POT-Creation-Date: 2021-07-04T21:28:41+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: my-events\n"
@@ -30,6 +30,12 @@ msgstr ""
 
 #. Author URI of the plugin
 msgid "https://profiles.wordpress.org/maartenm/"
+msgstr ""
+
+#: email-preview.php:16
+#: src/Emails.php:112
+#: src/Subscriptions.php:149
+msgid "Invalid event."
 msgstr ""
 
 #. translators: 1: plugin name. 2: Composer command. 3: theme directory
@@ -109,36 +115,51 @@ msgstr ""
 msgid "Send email"
 msgstr ""
 
-#: src/Emails.php:47
+#: src/Emails.php:53
 msgid "Notify the invitees about any changes of this event."
 msgstr ""
 
-#: src/Emails.php:50
+#: src/Emails.php:55
+msgid "Recipients"
+msgstr ""
+
+#: src/Emails.php:72
+msgid "Check all"
+msgstr ""
+
+#: src/Emails.php:73
+msgid "Uncheck all"
+msgstr ""
+
+#: src/Emails.php:77
 msgid "Message"
 msgstr ""
 
-#: src/Emails.php:55
+#: src/Emails.php:82
 msgid "Send"
 msgstr ""
 
-#: src/Emails.php:60
+#: src/Emails.php:87
 msgid "Be sure to save the event before sending."
 msgstr ""
 
-#: src/Emails.php:80
-#: src/Subscriptions.php:149
-msgid "Invalid event."
+#: src/Emails.php:89
+msgid "Preview"
 msgstr ""
 
-#: src/Emails.php:84
+#: src/Emails.php:116
 msgid "Message is required."
 msgstr ""
 
-#: src/Emails.php:92
+#: src/Emails.php:125
+msgid "At least one recipient is required."
+msgstr ""
+
+#: src/Emails.php:129
 msgid "Announcement for event \"%s\"."
 msgstr ""
 
-#: src/Emails.php:102
+#: src/Emails.php:139
 msgid "Email send."
 msgstr ""
 
@@ -192,6 +213,14 @@ msgstr ""
 
 #: src/Fields.php:79
 msgid "Repeat the start and end time."
+msgstr ""
+
+#: src/Fields.php:88
+msgid "Every week"
+msgstr ""
+
+#: src/Fields.php:89
+msgid "Every 2 weeks"
 msgstr ""
 
 #: src/Fields.php:101
@@ -374,7 +403,7 @@ msgstr ""
 msgid "You are invited for the event: \"%1$s\"."
 msgstr ""
 
-#: src/Notifications.php:181
+#: src/Notifications.php:185
 msgid "You are no longer invited for the event: \"%1$s\"."
 msgstr ""
 

@@ -55,6 +55,23 @@ body.edit-php.post-type-event .hentry.type-event {
   &.is-loading {
     @include make-loader(2rem, 0, true);
   }
+
+  iframe {
+    width: 100%;
+    border: 1px solid #c3c4c7;
+    background-color: #fff;
+  }
+
+  ul.my-events-send-email-recipients {
+    border: 1px solid #c3c4c7;
+    padding: 8px 12px;
+    max-height: 100px;
+    overflow-y: scroll;
+
+    > li:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 // Invitee overview screen.
