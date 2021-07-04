@@ -12,7 +12,7 @@
     var updatePreviewContent = function(content) {
       var src = $iframe.attr('src');
       src = src.replace(/\?message=.*/, '');
-      src = src + '&message=' + encodeURIComponent(content);
+      src = src + '&message=' + encodeURIComponent(btoa(content));
       $iframe.attr('src', src);
     };
 
