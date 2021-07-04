@@ -47,7 +47,7 @@ class Events
     {
         $screen = get_current_screen();
 
-        if ($screen->base === 'post') {
+        if ($screen->base === 'post' && isset($_GET['post'])) {
             $post_id = $_GET['post'];
 
             switch ($screen->post_type) {
