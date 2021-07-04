@@ -104,53 +104,23 @@ class Helpers
         return $value ? esc_html__('yes', 'my-events') : esc_html__('no', 'my-events');
     }
 
-    public static function isDateInbetween($date, $start, $end)
+    public static function generateDates($start_date, $end_date, $modifier, $exclude = [])
     {
-        $dates = is_array($date) ? $date : (array) $date;
+        $date     = new \DateTime($start_date);
+        $end_date = new \DateTime($end_date);
 
-        $start = strtotime(date('Y-m-d', strtotime($start)));
-        $end   = strtotime(date('Y-m-d', strtotime($end)));
+        $dates = [];
 
-        foreach ($dates as $date) {
-            $date = strtotime($date);
-            if ($start <= $date && $date <= $end) {
-                return true;
-            }
-        }
+        while ($date->format('U') <= $end_date->format('U') && $date && $end_date) {
+            $include = $date->format('Y-m-d');
 
-        return false;
-    }
-
-    public static function getTimesRepeat($start, $end, $end_repeat, $modifier, $exclude = [])
-    {
-        $start      = new \DateTime($start);
-        $end        = new \DateTime($end);
-        $end_repeat = new \DateTime($end_repeat);
-
-        // Check for valid dates and modifier.
-        if (! $start || ! $end || ! $end_repeat) {
-            return [];
-        }
-
-        $_start = new \DateTime($start->format('Y-m-d'));
-
-        $times = [];
-
-        while ($_start->format('U') <= $end_repeat->format('U') && $_start && $start && $end) {
-            $time = [
-                'start' => $start->format('Y-m-d H:i:s'),
-                'end'   => $end->format('Y-m-d H:i:s'),
-            ];
-
-            if (! self::isDateInbetween($exclude, $time['start'], $time['end'])) {
-                $times[] = $time;
+            if (! in_array($include, $exclude)) {
+                $dates[] = $include;
             }
 
-            $_start->modify($modifier);
-            $start->modify($modifier);
-            $end->modify($modifier);
+            $date->modify($modifier);
         }
 
-        return $times;
+        return $dates;
     }
 }

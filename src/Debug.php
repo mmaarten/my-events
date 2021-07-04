@@ -19,6 +19,7 @@ class Debug
         add_action('before_delete_post', [__CLASS__, 'beforeDeletePost'], 0);
         add_action('delete_post', [__CLASS__, 'deletePost'], 0, 2);
         add_action('transition_post_status', [__CLASS__, 'transitionPostStatus'], 0, 3);
+        add_action('add_post_meta', [__CLASS__, 'addPostMeta'], 0, 3);
         add_action('updated_post_meta', [__CLASS__, 'updatedPostMeta'], 0, 4);
         add_action('delete_user', [__CLASS__, 'beforeDeleteUser'], 0, 3);
         add_filter('pre_wp_mail', [__CLASS__, 'preWPMail'], 0, 2);
@@ -77,6 +78,23 @@ class Debug
                     $new_status
                 )
             );
+        }
+    }
+
+    public static function addPostMeta($object_id, $meta_key, $_meta_value)
+    {
+        if (in_array(get_post_type($object_id), self::$post_types)) {
+            if (get_post_type($object_id) && strpos($meta_key, '_') !== 0) {
+                self::log(
+                    sprintf(
+                        'Add %2$s #%1$s meta "%3$s" to %4$s',
+                        $object_id,
+                        get_post_type($object_id),
+                        $meta_key,
+                        var_export($_meta_value, true)
+                    )
+                );
+            }
         }
     }
 

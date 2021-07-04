@@ -42,42 +42,11 @@
   margin-top: 0;
 }
 
-// Event group.
-#acf-my_events_event_group_group .acf-field[data-key="my_events_event_group_events"] {
-  .acf-label {
-    display: none;
-  }
-  p {
-    margin-top: 0;
-  }
-}
-
  // Events overview screen
 body.edit-php.post-type-event .hentry.type-event {
   // Events that are over.
   &.is-event-over {
     opacity: .5;
-  }
-  // Not editable events.
-  &:not(.is-editable-event) {
-    .row-actions {
-      .inline, .trash {
-        display: none;
-      }
-    }
-    .check-column * {
-      display: none;
-    }
-  }
-}
-
-// Event edit screen
-body.post-php.post-type-event {
-  // Disable fields
-  &:not(.is-editable-event) {
-    #acf-my_events_event_group .acf-field {
-      @include disable-field();
-    }
   }
 }
 
@@ -90,17 +59,6 @@ body.post-php.post-type-event {
 
 // Invitee overview screen.
 body.edit-php.post-type-invitee .hentry.type-invitee {
-  // Disable actions.
-  &.is-grouped-event {
-    .row-actions {
-      .inline, .trash {
-        display: none;
-      }
-    }
-    .check-column * {
-      display: none;
-    }
-  }
 }
 
 // Invitee edit screen.
@@ -122,5 +80,4 @@ body.post-php.post-type-invitee {
       }
     }
   }
-
 }

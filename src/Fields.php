@@ -15,11 +15,37 @@ class Fields
         add_action('acf/init', [__CLASS__, 'addInviteeFields']);
         add_action('acf/init', [__CLASS__, 'addLocationFields']);
         add_action('acf/init', [__CLASS__, 'addInviteeGroupFields']);
-        add_action('acf/init', [__CLASS__, 'addEventGroupFields']);
+        add_action('acf/init', [__CLASS__, 'addEventCreatorFields']);
     }
 
-    public static function addEventGroupFields()
+    public static function addEventCreatorFields()
     {
+        acf_add_local_field_group([
+            'key'      => 'my_events_event_creator_event_extra_group',
+            'title'    => __('Title', 'my-events'),
+            'fields'   => [],
+            'location' => [
+                [
+                    [
+                        'param'    => 'options_page',
+                        'operator' => '==',
+                        'value'    => 'my-events-event-creator',
+                    ],
+                ],
+            ],
+            'menu_order' => 0,
+        ]);
+
+        acf_add_local_field([
+            'key'          => 'my_events_event_creator_event_extra_event_title',
+            'label'        => __('Title', 'my-events'),
+            'instructions' => __('', 'my-events'),
+            'name'         => 'event_title',
+            'type'         => 'text',
+            'required'     => true,
+            'parent'       => 'my_events_event_creator_event_extra_group',
+        ]);
+
         acf_add_local_field_group(array(
             'key' => 'group_60db37be51d92',
             'title' => 'Repeat',
@@ -114,9 +140,9 @@ class Fields
             'location' => array(
                 array(
                     array(
-                        'param' => 'post_type',
+                        'param' => 'options_page',
                         'operator' => '==',
-                        'value' => 'event_group',
+                        'value' => 'my-events-event-creator',
                     ),
                 ),
             ),
@@ -129,31 +155,6 @@ class Fields
             'active' => true,
             'description' => '',
         ));
-
-        acf_add_local_field_group([
-            'key'      => 'my_events_event_group_group',
-            'title'    => __('Events', 'my-events'),
-            'position' => 'side',
-            'fields'   => [],
-            'location' => [
-                [
-                    [
-                        'param'    => 'post_type',
-                        'operator' => '==',
-                        'value'    => 'event_group',
-                    ],
-                ],
-            ],
-        ]);
-
-        acf_add_local_field([
-            'key'           => 'my_events_event_group_events',
-            'label'         => __('', 'my-events'),
-            'instructions'  => __('', 'my-events'),
-            'type'          => 'message',
-            'menu_order'    => 100,
-            'parent'        => 'my_events_event_group_group',
-        ]);
     }
 
     public static function addEventFields()
@@ -172,12 +173,13 @@ class Fields
                 ],
                 [
                     [
-                        'param'    => 'post_type',
+                        'param'    => 'options_page',
                         'operator' => '==',
-                        'value'    => 'event_group',
+                        'value'    => 'my-events-event-creator',
                     ],
                 ],
             ],
+            'menu_order' => 10,
         ]);
 
         acf_add_local_field([
@@ -189,37 +191,45 @@ class Fields
             'rows'         => 3,
             'new_lines'    => 'wpautop',
             'required'     => false,
-            'menu_order'   => 100,
             'parent'       => 'my_events_event_group',
         ]);
 
         acf_add_local_field([
-            'key'          => 'my_events_event_start',
-            'label'        => __('Start', 'my-events'),
-            'instructions'   => __('The time when the event starts.', 'my-events'),
-            'name'           => 'start',
-            'type'           => 'date_time_picker',
-            'display_format' => get_option('date_format') . ' ' . get_option('time_format'),
-            'return_format'  => 'Y-m-d H:i:s',
+            'key'            => 'my_events_event_date',
+            'label'          => __('Date', 'my-events'),
+            'instructions'   => __('The day the event takes place.', 'my-events'),
+            'name'           => 'date',
+            'type'           => 'date_picker',
+            'display_format' => get_option('date_format'),
+            'return_format'  => 'Y-m-d',
             'first_day'      => get_option('start_of_week'),
             'required'       => true,
-            'wrapper'        => ['width' => '50%'],
-            'menu_order'     => 200,
             'parent'         => 'my_events_event_group',
         ]);
 
         acf_add_local_field([
-            'key'            => 'my_events_event_end',
-            'label'          => __('End', 'my-events'),
-            'instructions'   => __('The time when the event ends.', 'my-events'),
-            'name'           => 'end',
-            'type'           => 'date_time_picker',
-            'display_format' => get_option('date_format') . ' ' . get_option('time_format'),
-            'return_format'  => 'Y-m-d H:i:s',
-            'first_day'      => get_option('start_of_week'),
+            'key'            => 'my_events_event_start_time',
+            'label'          => __('Start time', 'my-events'),
+            'instructions'   => __('The time when the event starts.', 'my-events'),
+            'name'           => 'start_time',
+            'type'           => 'time_picker',
+            'display_format' => get_option('time_format'),
+            'return_format'  => 'H:i:s',
             'required'       => true,
             'wrapper'        => ['width' => '50%'],
-            'menu_order'     => 201,
+            'parent'         => 'my_events_event_group',
+        ]);
+
+        acf_add_local_field([
+            'key'            => 'my_events_event_end_time',
+            'label'          => __('End time', 'my-events'),
+            'instructions'   => __('The time when the event ends.', 'my-events'),
+            'name'           => 'end_time',
+            'type'           => 'time_picker',
+            'display_format' => get_option('time_format'),
+            'return_format'  => 'H:i:s',
+            'required'       => true,
+            'wrapper'        => ['width' => '50%'],
             'parent'         => 'my_events_event_group',
         ]);
 
@@ -232,7 +242,6 @@ class Fields
             'multiple'      => 1,
             'return_format' => 'id',
             'required'      => false,
-            'menu_order'    => 300,
             'parent'        => 'my_events_event_group',
         ]);
 
@@ -247,7 +256,6 @@ class Fields
                 'group'      => __('Choose from a group', 'my-events'),
             ],
             'required'      => false,
-            'menu_order'    => 400,
             'parent'        => 'my_events_event_group',
         ]);
 
@@ -260,7 +268,6 @@ class Fields
             'multiple'      => true,
             'return_format' => 'id',
             'required'      => false,
-            'menu_order'    => 400,
             'conditional_logic' => [
                 [
                     [
@@ -283,7 +290,6 @@ class Fields
             'multiple'      => false,
             'return_format' => 'id',
             'required'      => false,
-            'menu_order'    => 400,
             'conditional_logic' => [
                 [
                     [
@@ -303,7 +309,6 @@ class Fields
             'name'          => 'limit_subscriptions',
             'type'         => 'true_false',
             'required'      => false,
-            'menu_order'    => 400,
             'parent'        => 'my_events_event_group',
         ]);
 
@@ -315,7 +320,6 @@ class Fields
             'type'          => 'number',
             'required'      => true,
             'default_value' => 10,
-            'menu_order'    => 400,
             'conditional_logic' => [
                 [
                     [
@@ -339,7 +343,6 @@ class Fields
                 'id'    => __('Choose from a list', 'my-events'),
             ],
             'required'     => false,
-            'menu_order'   => 500,
             'parent'       => 'my_events_event_group',
         ]);
 
@@ -350,7 +353,6 @@ class Fields
             'name'         => 'location_input',
             'type'         => 'text',
             'required'     => false,
-            'menu_order'   => 600,
             'conditional_logic' => [
                 [
                     [
@@ -373,7 +375,6 @@ class Fields
             'multiple'      => false,
             'return_format' => 'id',
             'required'      => false,
-            'menu_order'    => 700,
             'conditional_logic' => [
                 [
                     [
@@ -393,7 +394,6 @@ class Fields
             'name'          => 'is_private',
             'type'         => 'true_false',
             'required'      => false,
-            'menu_order'    => 400,
             'parent'        => 'my_events_event_group',
         ]);
 
@@ -449,7 +449,6 @@ class Fields
             'multiple'      => false,
             'return_format' => 'id',
             'required'      => true,
-            'menu_order'    => 100,
             'parent'        => 'my_events_invitee_group',
         ]);
 
@@ -462,7 +461,6 @@ class Fields
             'multiple'      => false,
             'return_format' => 'id',
             'required'      => true,
-            'menu_order'    => 200,
             'parent'        => 'my_events_invitee_group',
         ]);
 
@@ -475,7 +473,6 @@ class Fields
             'choices'       => Helpers::getInviteeStatusses(),
             'default_value' => 'pending',
             'required'      => true,
-            'menu_order'    => 300,
             'parent'        => 'my_events_invitee_group',
         ]);
 
@@ -544,7 +541,6 @@ class Fields
             'multiple'      => true,
             'return_format' => 'id',
             'required'      => true,
-            'menu_order'    => 300,
             'parent'        => 'my_events_invitee_group_group',
         ]);
     }

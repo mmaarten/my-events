@@ -23,9 +23,6 @@ class AdminColumns
 
         add_filter('manage_event_location_posts_columns', [__CLASS__, 'addEventLocationColumns']);
         add_action('manage_event_location_posts_custom_column', [__CLASS__, 'renderEventLocationColumns'], 10, 2);
-
-        add_filter('manage_event_group_posts_columns', [__CLASS__, 'addEventGroupColumns']);
-        add_action('manage_event_group_posts_custom_column', [__CLASS__, 'renderEventGroupColumns'], 10, 2);
     }
 
     public static function addEventColumns($columns)
@@ -178,67 +175,6 @@ class AdminColumns
                 } else {
                     echo esc_html(self::NO_VALUE);
                 }
-                break;
-        }
-    }
-
-    public static function addEventGroupColumns($columns)
-    {
-        return [
-            'cb'         => $columns['cb'],
-            'title'      => $columns['title'],
-            'time'       => __('Time of day', 'my-events'),
-            'organisers' => __('Organisers', 'my-events'),
-            'invitees'   => __('Invitees', 'my-events'),
-            'location'   => __('Location', 'my-events'),
-            'private'    => __('Private', 'my-events'),
-        ] + $columns;
-    }
-
-    public static function renderEventGroupColumns($column, $post_id)
-    {
-        $event = new Event($post_id);
-
-        $invitees_type = $event->getField('invitees_type');
-        $invitees = [];
-
-        if ($invitees_type === 'individual') {
-            $invitees = $event->getField('invitees_individual');
-        }
-
-        if ($invitees_type === 'group') {
-            $group = new Post($event->getField('invitees_group'));
-            $invitees = $group->getField('users');
-        }
-
-        $time       = $event->getTimeFromUntil();
-        $organisers = Helpers::renderUsers($event->getOrganisers(['fields' => 'ID']));
-        $invitees   = Helpers::renderUsers($invitees);
-        $location   = $event->getLocation();
-
-        switch ($column) {
-            case 'time':
-                echo $time ? esc_html($time) : esc_html(self::NO_VALUE);
-                break;
-            case 'organisers':
-                echo $organisers ? $organisers : esc_html(self::NO_VALUE);
-                break;
-            case 'invitees':
-                echo $invitees ? $invitees : esc_html(self::NO_VALUE);
-                break;
-            case 'location':
-                if ($location) {
-                    printf(
-                        '<a href="%1$s" target="_blank">%2$s</a>',
-                        esc_url(Helpers::getMapURL($location)),
-                        esc_html($location)
-                    );
-                } else {
-                    echo esc_html(self::NO_VALUE);
-                }
-                break;
-            case 'private':
-                echo Helpers::renderBoolean($event->isPrivate());
                 break;
         }
     }

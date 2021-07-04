@@ -21,6 +21,7 @@ class App
             'Subscriptions',
             'Emails',
             'Calendar',
+            'EventCreator',
         ]);
 
         add_action('init', [__CLASS__, 'loadTextdomain'], 0);

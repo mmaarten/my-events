@@ -425,21 +425,4 @@ class Event extends Post
 
         return true;
     }
-
-    public function getGroup()
-    {
-        return $this->getField('group');
-    }
-
-    public function setGroup($value)
-    {
-        return $this->updateField('group', $value);
-    }
-
-    public function isGrouped()
-    {
-        $post_id = $this->getGroup();
-
-        return $post_id && get_post_type($post_id) ? true : false;
-    }
 }
