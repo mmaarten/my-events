@@ -105,7 +105,7 @@ class Emails
 
         $event_id = isset($_POST['event']) ? $_POST['event'] : 0;
         $message  = isset($_POST['message']) ? $_POST['message'] : '';
-        $message  = wpautop(trim(stripcslashes($message)));
+        $message  = trim(stripcslashes($message));
         $recipients = isset($_POST['recipients']) && is_array($_POST['recipients']) ? $_POST['recipients'] : [];
 
         if (! $event_id || get_post_type($event_id) !== 'event') {
@@ -115,6 +115,8 @@ class Emails
         if (! $message) {
             wp_send_json_error(Helpers::adminNotice(__('Message is required.', 'my-events'), 'error', true));
         }
+
+        $message = wpautop(esc_html($message));
 
         $event = new Event($event_id);
 
