@@ -1,5 +1,5 @@
 # Copyright (C) 2021 Maarten Menten
-# This file is distributed under the same license as the My Events plugin.
+# This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
 "Project-Id-Version: My Events 1.0.0\n"
@@ -9,12 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-07-03T14:29:23+00:00\n"
+"POT-Creation-Date: 2021-07-04T16:40:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.2.0\n"
+"X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: my-events\n"
 
 #. Plugin Name of the plugin
+#. translators: 1: plugin name. 2: Composer command. 3: theme directory
+#: plugin.php:23
 msgid "My Events"
 msgstr ""
 
@@ -30,350 +32,305 @@ msgstr ""
 msgid "https://profiles.wordpress.org/maartenm/"
 msgstr ""
 
-#: templates/emails/invitee-added-notification.php:2
-msgid "You are invited for following event:"
+#. translators: 1: plugin name. 2: Composer command. 3: theme directory
+#: plugin.php:22
+msgid "%1$s installation is incomplete. Run %2$s within the %3$s directory."
 msgstr ""
 
-#: templates/emails/invitee-added-notification.php:6
-#: templates/emails/invitee-accepted-invitation.php:6
-#: templates/emails/invitee-removed-notification.php:6
-#: templates/emails/invitee-declined-invitation.php:6
-#: templates/emails/event-send-email.php:6
-msgid "Time: %s"
+#: src/AdminColumns.php:33
+msgid "Time of day"
 msgstr ""
 
-#: templates/emails/invitee-accepted-invitation.php:2
-msgid "%1$s accepted your invitation for:"
-msgstr ""
-
-#: templates/emails/invitee-removed-notification.php:2
-msgid "You are no longer invited for following event:"
-msgstr ""
-
-#: templates/emails/invitee-declined-invitation.php:2
-msgid "%1$s declined your invitation for:"
-msgstr ""
-
-#: templates/event-edit-invitees.php:11
-#: src/PostTypes.php:124
-msgid "No invitees found."
-msgstr ""
-
-#: templates/event-edit-invitees.php:23
-msgid "accepted"
-msgstr ""
-
-#: templates/event-edit-invitees.php:33
-msgid "pending"
-msgstr ""
-
-#: templates/event-edit-invitees.php:43
-msgid "declined"
-msgstr ""
-
-#: templates/event-group-edit-events.php:8
-#: src/PostTypes.php:28
-msgid "No events found."
-msgstr ""
-
-#: templates/event-group-edit-events.php:12
-msgid "Events created by this group:"
-msgstr ""
-
-#: templates/event-detail.php:24
-#: src/Fields.php:185
-msgid "Description"
-msgstr ""
-
-#: templates/event-detail.php:30
-msgid "Time"
-msgstr ""
-
-#: templates/event-detail.php:38
-#: src/Fields.php:333
-#: src/AdminColumns.php:37
-msgid "Location"
-msgstr ""
-
-#: templates/event-detail.php:47
-#: src/Fields.php:228
 #: src/AdminColumns.php:34
+#: src/Fields.php:238
+#: templates/event-detail.php:47
 msgid "Organisers"
 msgstr ""
 
-#: templates/event-detail.php:56
 #: src/AdminColumns.php:35
+#: templates/event-detail.php:56
 msgid "Participants"
 msgstr ""
 
-#: templates/event-detail.php:67
-msgid "Edit this event"
+#: src/AdminColumns.php:36
+msgid "Number of participants"
 msgstr ""
 
-#: src/Subscriptions.php:25
-msgid "You need to login in order to subscribe to this event."
+#: src/AdminColumns.php:37
+#: src/Fields.php:337
+#: templates/event-detail.php:38
+msgid "Location"
 msgstr ""
 
-#: src/Subscriptions.php:35
-#: src/Posts/Event.php:372
-#: src/Posts/Event.php:403
-msgid "You have no access to this event."
+#: src/AdminColumns.php:38
+msgid "Over"
 msgstr ""
 
-#: src/Subscriptions.php:40
-msgid "The event is over."
+#: src/AdminColumns.php:39
+#: src/Fields.php:392
+msgid "Private"
 msgstr ""
 
-#: src/Subscriptions.php:47
-#: src/Posts/Event.php:382
-#: src/Posts/Event.php:413
-msgid "You are not invited to this event."
+#: src/AdminColumns.php:40
+#: src/Fields.php:285
+msgid "Group"
 msgstr ""
 
-#: src/Subscriptions.php:52
-msgid "The maximum amount of participants is reached."
+#: src/AdminColumns.php:98
+#: src/Fields.php:457
+msgid "User"
 msgstr ""
 
-#: src/Subscriptions.php:56
-#: src/Subscriptions.php:173
-msgid "You have accepted the invitation."
+#: src/AdminColumns.php:99
+#: src/Fields.php:444
+msgid "Event"
 msgstr ""
 
-#: src/Subscriptions.php:60
-#: src/Subscriptions.php:177
-msgid "You have declined the invitation."
+#: src/AdminColumns.php:100
+#: src/Fields.php:469
+msgid "Status"
 msgstr ""
 
-#: src/Subscriptions.php:64
-msgid "We would like to know if you are comming to this event."
+#: src/AdminColumns.php:101
+msgid "Email sent"
 msgstr ""
 
-#: src/Subscriptions.php:131
-msgid "You need to login in order to subscribe."
+#: src/AdminColumns.php:135
+msgid "Users"
 msgstr ""
 
-#: src/Subscriptions.php:135
-msgid "Invalid invitee."
+#: src/AdminColumns.php:157
+#: src/Fields.php:509
+msgid "Address"
 msgstr ""
 
-#: src/Subscriptions.php:143
-msgid "Invalid user."
-msgstr ""
-
-#: src/Subscriptions.php:149
-#: src/Emails.php:80
-msgid "Invalid event."
-msgstr ""
-
-#: src/Subscriptions.php:153
-msgid "Invalid request."
-msgstr ""
-
-#: src/Posts/Event.php:81
-msgid "%1$s from %2$s until %3$s"
-msgstr ""
-
-#: src/Posts/Event.php:89
-msgid "from %1$s until %2$s"
-msgstr ""
-
-#: src/Posts/Event.php:376
-#: src/Posts/Event.php:407
-#: src/Events.php:505
-msgid "This event is over."
-msgstr ""
-
-#: src/Posts/Event.php:390
-msgid "The maximum amount of participants is reached"
-msgstr ""
-
-#: src/Fields.php:31
-msgid "Create events based on the following settings:"
-msgstr ""
-
-#: src/Fields.php:35
-msgid "Repeat"
-msgstr ""
-
-#: src/Fields.php:38
-msgid "Repeat the start and end time."
-msgstr ""
-
-#: src/Fields.php:60
-msgid "End repeat"
-msgstr ""
-
-#: src/Fields.php:77
-msgid "Exclude"
-msgstr ""
-
-#: src/Fields.php:80
-msgid "Exclude days from repeat settings."
-msgstr ""
-
-#: src/Fields.php:92
-msgid "Add day"
-msgstr ""
-
-#: src/Fields.php:96
-msgid "Date"
-msgstr ""
-
-#: src/Fields.php:135
 #: src/AdminMenu.php:15
 #: src/AdminMenu.php:16
 #: src/PostTypes.php:25
 msgid "Events"
 msgstr ""
 
-#: src/Fields.php:163
+#: src/Emails.php:24
+msgid "Send email"
+msgstr ""
+
+#: src/Emails.php:47
+msgid "Notify the invitees about any changes of this event."
+msgstr ""
+
+#: src/Emails.php:50
+msgid "Message"
+msgstr ""
+
+#: src/Emails.php:55
+msgid "Send"
+msgstr ""
+
+#: src/Emails.php:60
+msgid "Be sure to save the event before sending."
+msgstr ""
+
+#: src/Emails.php:80
+#: src/Subscriptions.php:149
+msgid "Invalid event."
+msgstr ""
+
+#: src/Emails.php:84
+msgid "Message is required."
+msgstr ""
+
+#: src/Emails.php:92
+msgid "Announcement for event \"%s\"."
+msgstr ""
+
+#: src/Emails.php:102
+msgid "Email send."
+msgstr ""
+
+#: src/EventCreator.php:21
+#: src/EventCreator.php:22
+msgid "Event Creator"
+msgstr ""
+
+#: src/Events.php:293
+#: src/Posts/Event.php:378
+#: src/Posts/Event.php:409
+msgid "This event is over."
+msgstr ""
+
+#: src/Fields.php:25
+msgid "Extra"
+msgstr ""
+
+#: src/Fields.php:41
+msgid "Events title"
+msgstr ""
+
+#: src/Fields.php:42
+msgid "The title of the events."
+msgstr ""
+
+#: src/Fields.php:51
+#: src/Fields.php:61
+msgid "Repeat"
+msgstr ""
+
+#: src/Fields.php:57
+msgid "Create events based on the following settings:"
+msgstr ""
+
+#: src/Fields.php:64
+msgid "Repeat the start and end time."
+msgstr ""
+
+#: src/Fields.php:86
+msgid "End repeat"
+msgstr ""
+
+#: src/Fields.php:103
+msgid "Exclude"
+msgstr ""
+
+#: src/Fields.php:106
+msgid "Exclude days from repeat settings."
+msgstr ""
+
+#: src/Fields.php:118
+msgid "Add day"
+msgstr ""
+
+#: src/Fields.php:122
+#: src/Fields.php:199
+msgid "Date"
+msgstr ""
+
+#: src/Fields.php:164
 #: src/Fields.php:429
-#: src/Fields.php:497
-#: src/Fields.php:525
+#: src/Fields.php:494
+#: src/Fields.php:522
 msgid "Settings"
 msgstr ""
 
-#: src/Fields.php:186
+#: src/Fields.php:187
+#: templates/event-detail.php:24
+msgid "Description"
+msgstr ""
+
+#: src/Fields.php:188
 msgid "A brief description of this event."
 msgstr ""
 
-#: src/Fields.php:198
-msgid "Start"
+#: src/Fields.php:200
+msgid "The day the event takes place."
 msgstr ""
 
-#: src/Fields.php:199
-msgid "The time when the event starts."
+#: src/Fields.php:212
+msgid "Start time"
 msgstr ""
 
 #: src/Fields.php:213
-msgid "End"
+msgid "The time when the event starts."
 msgstr ""
 
-#: src/Fields.php:214
+#: src/Fields.php:225
+msgid "End time"
+msgstr ""
+
+#: src/Fields.php:226
 msgid "The time when the event ends."
 msgstr ""
 
-#: src/Fields.php:229
+#: src/Fields.php:239
 msgid "The organizers receive an email when an invitee accepts or declines an invitation."
 msgstr ""
 
-#: src/Fields.php:241
+#: src/Fields.php:250
 #: src/Fields.php:402
-#: src/Fields.php:540
-#: src/PostTypes.php:121
+#: src/Fields.php:537
+#: src/PostTypes.php:68
 msgid "Invitees"
 msgstr ""
 
-#: src/Fields.php:242
+#: src/Fields.php:251
 msgid "The invitees will receive an email about the event when published. They can accept or decline the invitation."
 msgstr ""
 
-#: src/Fields.php:246
-#: src/Fields.php:256
+#: src/Fields.php:255
+#: src/Fields.php:264
 msgid "Individual"
 msgstr ""
 
-#: src/Fields.php:247
+#: src/Fields.php:256
 msgid "Choose from a group"
 msgstr ""
 
-#: src/Fields.php:257
+#: src/Fields.php:265
 msgid "A list of people you want to invite."
 msgstr ""
 
-#: src/Fields.php:278
-#: src/AdminColumns.php:40
-msgid "Group"
-msgstr ""
-
-#: src/Fields.php:279
+#: src/Fields.php:286
 msgid "A group of people you like to invite."
 msgstr ""
 
-#: src/Fields.php:301
+#: src/Fields.php:307
 msgid "Limited subscriptions"
 msgstr ""
 
-#: src/Fields.php:302
+#: src/Fields.php:308
 msgid "Limit the amount of invitees who can subscribe."
 msgstr ""
 
-#: src/Fields.php:312
+#: src/Fields.php:317
 msgid "Amount"
 msgstr ""
 
-#: src/Fields.php:334
+#: src/Fields.php:338
 msgid "The geographical location of the event."
 msgstr ""
 
-#: src/Fields.php:338
-#: src/Fields.php:348
+#: src/Fields.php:342
+#: src/Fields.php:351
 msgid "Custom"
 msgstr ""
 
-#: src/Fields.php:339
+#: src/Fields.php:343
 msgid "Choose from a list"
 msgstr ""
 
-#: src/Fields.php:368
+#: src/Fields.php:370
 msgid "List"
 msgstr ""
 
-#: src/Fields.php:391
-#: src/AdminColumns.php:39
-msgid "Private"
-msgstr ""
-
-#: src/Fields.php:392
+#: src/Fields.php:393
 msgid "Only organisers and participants of this event have access to this event."
 msgstr ""
 
-#: src/Fields.php:444
-#: src/AdminColumns.php:99
-msgid "Event"
-msgstr ""
-
-#: src/Fields.php:458
-#: src/AdminColumns.php:98
-msgid "User"
-msgstr ""
-
-#: src/Fields.php:471
-#: src/AdminColumns.php:100
-msgid "Status"
-msgstr ""
-
-#: src/Fields.php:484
+#: src/Fields.php:481
 msgid "Email Sent"
 msgstr ""
 
-#: src/Fields.php:512
-#: src/AdminColumns.php:157
-msgid "Address"
-msgstr ""
-
-#: src/Fields.php:513
+#: src/Fields.php:510
 msgid "The geographical location."
 msgstr ""
 
-#: src/Events.php:512
-msgid "This event belongs to the group %s."
+#: src/Helpers.php:60
+msgid "Pending"
 msgstr ""
 
-#: src/Events.php:520
-msgid "here"
+#: src/Helpers.php:61
+msgid "Accepted"
 msgstr ""
 
-#: src/Events.php:524
-msgid "Click %s to detach from group."
+#: src/Helpers.php:62
+msgid "Declined"
 msgstr ""
 
-#: src/PrivateEvents.php:88
-msgid "You are not allowed to access this page"
+#: src/Helpers.php:104
+msgid "yes"
 msgstr ""
 
-#: src/PrivateEvents.php:100
-msgid "This event is only accessible to organisers and invitees of this event."
+#: src/Helpers.php:104
+msgid "no"
 msgstr ""
 
 #: src/Notifications.php:83
@@ -390,6 +347,30 @@ msgstr ""
 
 #: src/Notifications.php:181
 msgid "You are no longer invited for the event: \"%1$s\"."
+msgstr ""
+
+#: src/Posts/Event.php:92
+msgid "%1$s from %2$s until %3$s"
+msgstr ""
+
+#: src/Posts/Event.php:100
+msgid "from %1$s until %2$s"
+msgstr ""
+
+#: src/Posts/Event.php:374
+#: src/Posts/Event.php:405
+#: src/Subscriptions.php:33
+msgid "You have no access to this event."
+msgstr ""
+
+#: src/Posts/Event.php:384
+#: src/Posts/Event.php:415
+#: src/Subscriptions.php:45
+msgid "You are not invited to this event."
+msgstr ""
+
+#: src/Posts/Event.php:392
+msgid "The maximum amount of participants is reached"
 msgstr ""
 
 #: src/PostTypes.php:16
@@ -416,7 +397,6 @@ msgstr ""
 #: src/PostTypes.php:63
 #: src/PostTypes.php:116
 #: src/PostTypes.php:169
-#: src/PostTypes.php:222
 msgid "Add New"
 msgstr ""
 
@@ -444,6 +424,11 @@ msgstr ""
 msgid "Parent events:"
 msgstr ""
 
+#: src/PostTypes.php:28
+#: templates/event-group-edit-events.php:8
+msgid "No events found."
+msgstr ""
+
 #: src/PostTypes.php:29
 msgid "No events found in Trash."
 msgstr ""
@@ -457,7 +442,6 @@ msgstr ""
 #: src/PostTypes.php:74
 #: src/PostTypes.php:127
 #: src/PostTypes.php:180
-#: src/PostTypes.php:233
 msgctxt "Overrides the “Set featured image” phrase for this post type. Added in 4.3"
 msgid "Set cover image"
 msgstr ""
@@ -466,7 +450,6 @@ msgstr ""
 #: src/PostTypes.php:75
 #: src/PostTypes.php:128
 #: src/PostTypes.php:181
-#: src/PostTypes.php:234
 msgctxt "Overrides the “Remove featured image” phrase for this post type. Added in 4.3"
 msgid "Remove cover image"
 msgstr ""
@@ -475,7 +458,6 @@ msgstr ""
 #: src/PostTypes.php:76
 #: src/PostTypes.php:129
 #: src/PostTypes.php:182
-#: src/PostTypes.php:235
 msgctxt "Overrides the “Use as featured image” phrase for this post type. Added in 4.3"
 msgid "Use as cover image"
 msgstr ""
@@ -516,438 +498,380 @@ msgstr ""
 
 #: src/PostTypes.php:59
 msgctxt "Post type general name"
-msgid "Event groups"
+msgid "Invitees"
 msgstr ""
 
 #: src/PostTypes.php:60
 msgctxt "Post type singular name"
-msgid "Event group"
+msgid "Invitee"
 msgstr ""
 
 #: src/PostTypes.php:61
 msgctxt "Admin Menu text"
-msgid "Event groups"
+msgid "Invitees"
 msgstr ""
 
 #: src/PostTypes.php:62
 msgctxt "Add New on Toolbar"
-msgid "Event group"
+msgid "Invitee"
 msgstr ""
 
 #: src/PostTypes.php:64
-msgid "Add New event group"
+msgid "Add New invitee"
 msgstr ""
 
 #: src/PostTypes.php:65
-msgid "New event group"
+msgid "New invitee"
 msgstr ""
 
 #: src/PostTypes.php:66
-msgid "Edit event group"
+msgid "Edit invitee"
 msgstr ""
 
 #: src/PostTypes.php:67
-msgid "View event group"
-msgstr ""
-
-#: src/PostTypes.php:68
-msgid "Event groups"
+msgid "View invitee"
 msgstr ""
 
 #: src/PostTypes.php:69
-msgid "Search event groups"
+msgid "Search invitees"
 msgstr ""
 
 #: src/PostTypes.php:70
-msgid "Parent event groups:"
+msgid "Parent invitees:"
 msgstr ""
 
 #: src/PostTypes.php:71
-msgid "No event groups found."
+#: templates/event-edit-invitees.php:11
+msgid "No invitees found."
 msgstr ""
 
 #: src/PostTypes.php:72
-msgid "No event groups found in Trash."
+msgid "No invitees found in Trash."
 msgstr ""
 
 #: src/PostTypes.php:73
 msgctxt "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
-msgid "Event group Cover Image"
+msgid "Invitee Cover Image"
 msgstr ""
 
 #: src/PostTypes.php:77
 msgctxt "The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4"
-msgid "Event group archives"
+msgid "Invitee archives"
 msgstr ""
 
 #: src/PostTypes.php:78
 msgctxt "Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4"
-msgid "Insert into event group"
+msgid "Insert into invitee"
 msgstr ""
 
 #: src/PostTypes.php:79
 msgctxt "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4"
-msgid "Uploaded to this event group"
+msgid "Uploaded to this invitee"
 msgstr ""
 
 #: src/PostTypes.php:80
 msgctxt "Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
-msgid "Filter event groups list"
+msgid "Filter invitees list"
 msgstr ""
 
 #: src/PostTypes.php:81
 msgctxt "Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
-msgid "Event groups list navigation"
+msgid "Invitees list navigation"
 msgstr ""
 
 #: src/PostTypes.php:82
 msgctxt "Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4"
-msgid "Event groups list"
+msgid "Invitees list"
+msgstr ""
+
+#: src/PostTypes.php:84
+msgid "Invitee custom post type."
 msgstr ""
 
 #: src/PostTypes.php:112
 msgctxt "Post type general name"
-msgid "Invitees"
+msgid "Invitee groups"
 msgstr ""
 
 #: src/PostTypes.php:113
 msgctxt "Post type singular name"
-msgid "Invitee"
+msgid "Invitee group"
 msgstr ""
 
 #: src/PostTypes.php:114
 msgctxt "Admin Menu text"
-msgid "Invitees"
+msgid "Invitee groups"
 msgstr ""
 
 #: src/PostTypes.php:115
 msgctxt "Add New on Toolbar"
-msgid "Invitee"
+msgid "Invitee group"
 msgstr ""
 
 #: src/PostTypes.php:117
-msgid "Add New invitee"
+msgid "Add New invitee group"
 msgstr ""
 
 #: src/PostTypes.php:118
-msgid "New invitee"
+msgid "New invitee group"
 msgstr ""
 
 #: src/PostTypes.php:119
-msgid "Edit invitee"
+msgid "Edit invitee group"
 msgstr ""
 
 #: src/PostTypes.php:120
-msgid "View invitee"
+msgid "View invitee group"
+msgstr ""
+
+#: src/PostTypes.php:121
+msgid "Invitee groups"
 msgstr ""
 
 #: src/PostTypes.php:122
-msgid "Search invitees"
+msgid "Search invitee groups"
 msgstr ""
 
 #: src/PostTypes.php:123
-msgid "Parent invitees:"
+msgid "Parent invitee groups:"
+msgstr ""
+
+#: src/PostTypes.php:124
+msgid "No invitee groups found."
 msgstr ""
 
 #: src/PostTypes.php:125
-msgid "No invitees found in Trash."
+msgid "No invitee groups found in Trash."
 msgstr ""
 
 #: src/PostTypes.php:126
 msgctxt "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
-msgid "Invitee Cover Image"
+msgid "Invitee group Cover Image"
 msgstr ""
 
 #: src/PostTypes.php:130
 msgctxt "The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4"
-msgid "Invitee archives"
+msgid "Invitee group archives"
 msgstr ""
 
 #: src/PostTypes.php:131
 msgctxt "Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4"
-msgid "Insert into invitee"
+msgid "Insert into invitee group"
 msgstr ""
 
 #: src/PostTypes.php:132
 msgctxt "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4"
-msgid "Uploaded to this invitee"
+msgid "Uploaded to this invitee group"
 msgstr ""
 
 #: src/PostTypes.php:133
 msgctxt "Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
-msgid "Filter invitees list"
+msgid "Filter invitee groups list"
 msgstr ""
 
 #: src/PostTypes.php:134
 msgctxt "Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
-msgid "Invitees list navigation"
+msgid "Invitee groups list navigation"
 msgstr ""
 
 #: src/PostTypes.php:135
 msgctxt "Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4"
-msgid "Invitees list"
-msgstr ""
-
-#: src/PostTypes.php:137
-msgid "Invitee custom post type."
+msgid "Invitee groups list"
 msgstr ""
 
 #: src/PostTypes.php:165
 msgctxt "Post type general name"
-msgid "Invitee groups"
+msgid "Event locations"
 msgstr ""
 
 #: src/PostTypes.php:166
 msgctxt "Post type singular name"
-msgid "Invitee group"
+msgid "Event location"
 msgstr ""
 
 #: src/PostTypes.php:167
 msgctxt "Admin Menu text"
-msgid "Invitee groups"
+msgid "Event locations"
 msgstr ""
 
 #: src/PostTypes.php:168
 msgctxt "Add New on Toolbar"
-msgid "Invitee group"
+msgid "Event location"
 msgstr ""
 
 #: src/PostTypes.php:170
-msgid "Add New invitee group"
+msgid "Add New event location"
 msgstr ""
 
 #: src/PostTypes.php:171
-msgid "New invitee group"
+msgid "New event location"
 msgstr ""
 
 #: src/PostTypes.php:172
-msgid "Edit invitee group"
+msgid "Edit event location"
 msgstr ""
 
 #: src/PostTypes.php:173
-msgid "View invitee group"
+msgid "View event location"
 msgstr ""
 
 #: src/PostTypes.php:174
-msgid "Invitee groups"
+msgid "Event locations"
 msgstr ""
 
 #: src/PostTypes.php:175
-msgid "Search invitee groups"
+msgid "Search event locations"
 msgstr ""
 
 #: src/PostTypes.php:176
-msgid "Parent invitee groups:"
+msgid "Parent event locations:"
 msgstr ""
 
 #: src/PostTypes.php:177
-msgid "No invitee groups found."
+msgid "No event locations found."
 msgstr ""
 
 #: src/PostTypes.php:178
-msgid "No invitee groups found in Trash."
+msgid "No event locations found in Trash."
 msgstr ""
 
 #: src/PostTypes.php:179
 msgctxt "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
-msgid "Invitee group Cover Image"
+msgid "Event location Cover Image"
 msgstr ""
 
 #: src/PostTypes.php:183
 msgctxt "The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4"
-msgid "Invitee group archives"
+msgid "Event location archives"
 msgstr ""
 
 #: src/PostTypes.php:184
 msgctxt "Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4"
-msgid "Insert into invitee group"
+msgid "Insert into event location"
 msgstr ""
 
 #: src/PostTypes.php:185
 msgctxt "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4"
-msgid "Uploaded to this invitee group"
+msgid "Uploaded to this event location"
 msgstr ""
 
 #: src/PostTypes.php:186
 msgctxt "Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
-msgid "Filter invitee groups list"
+msgid "Filter event locations list"
 msgstr ""
 
 #: src/PostTypes.php:187
 msgctxt "Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
-msgid "Invitee groups list navigation"
+msgid "Event locations list navigation"
 msgstr ""
 
 #: src/PostTypes.php:188
 msgctxt "Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4"
-msgid "Invitee groups list"
-msgstr ""
-
-#: src/PostTypes.php:218
-msgctxt "Post type general name"
-msgid "Event locations"
-msgstr ""
-
-#: src/PostTypes.php:219
-msgctxt "Post type singular name"
-msgid "Event location"
-msgstr ""
-
-#: src/PostTypes.php:220
-msgctxt "Admin Menu text"
-msgid "Event locations"
-msgstr ""
-
-#: src/PostTypes.php:221
-msgctxt "Add New on Toolbar"
-msgid "Event location"
-msgstr ""
-
-#: src/PostTypes.php:223
-msgid "Add New event location"
-msgstr ""
-
-#: src/PostTypes.php:224
-msgid "New event location"
-msgstr ""
-
-#: src/PostTypes.php:225
-msgid "Edit event location"
-msgstr ""
-
-#: src/PostTypes.php:226
-msgid "View event location"
-msgstr ""
-
-#: src/PostTypes.php:227
-msgid "Event locations"
-msgstr ""
-
-#: src/PostTypes.php:228
-msgid "Search event locations"
-msgstr ""
-
-#: src/PostTypes.php:229
-msgid "Parent event locations:"
-msgstr ""
-
-#: src/PostTypes.php:230
-msgid "No event locations found."
-msgstr ""
-
-#: src/PostTypes.php:231
-msgid "No event locations found in Trash."
-msgstr ""
-
-#: src/PostTypes.php:232
-msgctxt "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
-msgid "Event location Cover Image"
-msgstr ""
-
-#: src/PostTypes.php:236
-msgctxt "The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4"
-msgid "Event location archives"
-msgstr ""
-
-#: src/PostTypes.php:237
-msgctxt "Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4"
-msgid "Insert into event location"
-msgstr ""
-
-#: src/PostTypes.php:238
-msgctxt "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4"
-msgid "Uploaded to this event location"
-msgstr ""
-
-#: src/PostTypes.php:239
-msgctxt "Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
-msgid "Filter event locations list"
-msgstr ""
-
-#: src/PostTypes.php:240
-msgctxt "Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
-msgid "Event locations list navigation"
-msgstr ""
-
-#: src/PostTypes.php:241
-msgctxt "Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4"
 msgid "Event locations list"
 msgstr ""
 
-#: src/Emails.php:24
-msgid "Send email"
+#: src/PrivateEvents.php:88
+msgid "You are not allowed to access this page"
 msgstr ""
 
-#: src/Emails.php:47
-msgid "Notify the invitees about any changes of this event."
+#: src/PrivateEvents.php:100
+msgid "This event is only accessible to organisers and invitees of this event."
 msgstr ""
 
-#: src/Emails.php:50
-msgid "Message"
+#: src/Subscriptions.php:23
+msgid "You need to login in order to subscribe to this event."
 msgstr ""
 
-#: src/Emails.php:55
-msgid "Send"
+#: src/Subscriptions.php:38
+msgid "The event is over."
 msgstr ""
 
-#: src/Emails.php:60
-msgid "Be sure to save the event before sending."
+#: src/Subscriptions.php:52
+msgid "The maximum amount of participants is reached."
 msgstr ""
 
-#: src/Emails.php:84
-msgid "Message is required."
+#: src/Subscriptions.php:56
+#: src/Subscriptions.php:173
+msgid "You have accepted the invitation."
 msgstr ""
 
-#: src/Emails.php:92
-msgid "Announcement for event \"%s\"."
+#: src/Subscriptions.php:60
+#: src/Subscriptions.php:177
+msgid "You have declined the invitation."
 msgstr ""
 
-#: src/Emails.php:102
-msgid "Email send."
+#: src/Subscriptions.php:64
+msgid "We would like to know if you are comming to this event."
 msgstr ""
 
-#: src/Helpers.php:60
-msgid "Pending"
-msgstr ""
-
-#: src/Helpers.php:61
-msgid "Accepted"
-msgstr ""
-
-#: src/Helpers.php:62
-msgid "Declined"
-msgstr ""
-
-#: src/Helpers.php:104
-msgid "yes"
-msgstr ""
-
-#: src/Helpers.php:104
-msgid "no"
-msgstr ""
-
-#: src/AdminColumns.php:33
-msgid "Time of day"
-msgstr ""
-
-#: src/AdminColumns.php:36
-msgid "Number of participants"
-msgstr ""
-
-#: src/AdminColumns.php:38
-msgid "Over"
-msgstr ""
-
-#: src/AdminColumns.php:101
-msgid "Email sent"
-msgstr ""
-
-#: src/AdminColumns.php:135
-msgid "Users"
-msgstr ""
-
+#: src/Subscriptions.php:107
 msgid "Decline invitation"
 msgstr ""
 
+#: src/Subscriptions.php:110
 msgid "Accept invitation"
+msgstr ""
+
+#: src/Subscriptions.php:131
+msgid "You need to login in order to subscribe."
+msgstr ""
+
+#: src/Subscriptions.php:135
+msgid "Invalid invitee."
+msgstr ""
+
+#: src/Subscriptions.php:143
+msgid "Invalid user."
+msgstr ""
+
+#: src/Subscriptions.php:153
+msgid "Invalid request."
+msgstr ""
+
+#: templates/emails/event-send-email.php:6
+#: templates/emails/invitee-accepted-invitation.php:6
+#: templates/emails/invitee-added-notification.php:6
+#: templates/emails/invitee-declined-invitation.php:6
+#: templates/emails/invitee-removed-notification.php:6
+msgid "Time: %s"
+msgstr ""
+
+#: templates/emails/invitee-accepted-invitation.php:2
+msgid "%1$s accepted your invitation for:"
+msgstr ""
+
+#: templates/emails/invitee-added-notification.php:2
+msgid "You are invited for following event:"
+msgstr ""
+
+#: templates/emails/invitee-declined-invitation.php:2
+msgid "%1$s declined your invitation for:"
+msgstr ""
+
+#: templates/emails/invitee-removed-notification.php:2
+msgid "You are no longer invited for following event:"
+msgstr ""
+
+#: templates/event-detail.php:30
+msgid "Time"
+msgstr ""
+
+#: templates/event-detail.php:67
+msgid "Edit this event"
+msgstr ""
+
+#: templates/event-edit-invitees.php:23
+msgid "accepted"
+msgstr ""
+
+#: templates/event-edit-invitees.php:33
+msgid "pending"
+msgstr ""
+
+#: templates/event-edit-invitees.php:43
+msgid "declined"
+msgstr ""
+
+#: templates/event-group-edit-events.php:12
+msgid "Events created by this group:"
 msgstr ""

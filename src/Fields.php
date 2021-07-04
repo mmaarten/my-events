@@ -22,7 +22,7 @@ class Fields
     {
         acf_add_local_field_group([
             'key'      => 'my_events_event_creator_event_extra_group',
-            'title'    => __('Title', 'my-events'),
+            'title'    => __('Extra', 'my-events'),
             'fields'   => [],
             'location' => [
                 [
@@ -38,17 +38,47 @@ class Fields
 
         acf_add_local_field([
             'key'          => 'my_events_event_creator_event_extra_event_title',
-            'label'        => __('Title', 'my-events'),
-            'instructions' => __('', 'my-events'),
+            'label'        => __('Events title', 'my-events'),
+            'instructions' => __('The title of the events.', 'my-events'),
             'name'         => 'event_title',
             'type'         => 'text',
             'required'     => true,
             'parent'       => 'my_events_event_creator_event_extra_group',
         ]);
 
+        acf_add_local_field([
+            'key'          => 'my_events_event_creator_event_extra_post_status',
+            'label'        => __('Event status', 'my-events'),
+            'instructions' => __('', 'my-events'),
+            'name'         => 'post_status',
+            'type'         => 'select',
+            'choices'      => [
+                'draft'   => __('Draft', 'my-events'),
+                'publish' => __('Publish', 'my-events'),
+            ],
+            'default_value' => 'draft',
+            'required'      => true,
+            'parent'        => 'my_events_event_creator_event_extra_group',
+        ]);
+
+        acf_add_local_field([
+            'key'          => 'my_events_event_creator_event_extra_invitee_status',
+            'label'        => __('Invitee status', 'my-events'),
+            'instructions' => __('Pending invitees will receive an invitation email per created event.', 'my-events'),
+            'name'         => 'invitee_status',
+            'type'         => 'select',
+            'choices'      => [
+                'pending'   => __('pending', 'my-events'),
+                'accepted' => __('Accepted', 'my-events'),
+            ],
+            'default_value' => 'pending',
+            'required'     => true,
+            'parent'       => 'my_events_event_creator_event_extra_group',
+        ]);
+
         acf_add_local_field_group(array(
             'key' => 'group_60db37be51d92',
-            'title' => 'Repeat',
+            'title' => __('Repeat', 'my-events'),
             'fields' => array(
                 array(
                     'key' => 'my_events_event_group_repeat_message',

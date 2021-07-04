@@ -37,7 +37,6 @@ class AdminColumns
             'location'         => __('Location', 'my-events'),
             'over'             => __('Over', 'my-events'),
             'private'          => __('Private', 'my-events'),
-            'group'            => __('Group', 'my-events'),
         ] + $columns;
     }
 
@@ -83,9 +82,6 @@ class AdminColumns
                 break;
             case 'private':
                 echo Helpers::renderBoolean($event->isPrivate());
-                break;
-            case 'group':
-                echo Helpers::renderPosts($event->getField('group'));
                 break;
         }
     }

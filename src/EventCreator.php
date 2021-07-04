@@ -55,7 +55,7 @@ class EventCreator
                 'post_title'   => self::getField('event_title'),
                 'post_content' => '',
                 'post_type'    => 'event',
-                'post_status'  => 'publish',
+                'post_status'  => self::getField('post_status'),
             ];
 
             $post_id = wp_insert_post($postdata);
@@ -76,7 +76,7 @@ class EventCreator
             $event->updateField('location_id', self::getField('location_id', false));
 
             Events::updateEventTime($event->ID);
-            Events::setInviteesFromSettingsFields($event->ID, 'accepted');
+            Events::setInviteesFromSettingsFields($event->ID, self::getField('invitee_status'));
 
             wp_update_post([
                 'ID'        => $event->ID,
