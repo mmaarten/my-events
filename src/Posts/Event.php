@@ -88,24 +88,11 @@ class Event extends Post
         $end_date   = $this->getEndTime(get_option('date_format'));
 
         if ($start_date == $end_date) {
-
-            if ($this->isAllDay()) {
-                return $start_date;
-            }
-
             return sprintf(
                 __('%1$s from %2$s until %3$s', 'my-events'),
                 $start_date,
                 $this->getStartTime(get_option('time_format')),
                 $this->getEndTime(get_option('time_format'))
-            );
-        }
-
-        if ($this->isAllDay()) {
-            return sprintf(
-                __('from %1$s until %2$s', 'my-events'),
-                $start_date,
-                $end_date
             );
         }
 
@@ -280,8 +267,17 @@ class Event extends Post
         return $this->getInviteeByUser($user_id) ? true : false;
     }
 
-    public function setInvitees($user_ids, $status = 'pending')
+    public function getDefaultInviteeStatus()
     {
+        return $this->getField('default_invitee_status');
+    }
+
+    public function setInvitees($user_ids, $status = null)
+    {
+        if (! $status) {
+            $status = $this->getDefaultInviteeStatus();
+        }
+
         $processed = [];
 
         foreach ($user_ids as $user_id) {
@@ -355,11 +351,6 @@ class Event extends Post
     public function isOver()
     {
         return $this->getEndTime('U') < date_i18n('U');
-    }
-
-    public function isAllDay()
-    {
-        return $this->getField('is_all_day') ? true : false;
     }
 
     public function isPrivate()

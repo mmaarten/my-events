@@ -71,13 +71,14 @@ class EventCreator
             $event->updateField('invitees_type', self::getField('invitees_type', false));
             $event->updateField('invitees_individual', self::getField('invitees_individual', false));
             $event->updateField('invitees_group', self::getField('invitees_group', false));
+            $event->updateField('invitee_default_status', self::getField('invitee_default_status', false));
             $event->updateField('is_private', self::getField('is_private', false));
             $event->updateField('location_type', self::getField('location_type', false));
             $event->updateField('location_input', self::getField('location_input', false));
             $event->updateField('location_id', self::getField('location_id', false));
 
             Events::updateEventTime($event->ID);
-            Events::setInviteesFromSettingsFields($event->ID, self::getField('invitee_status'));
+            Events::setInviteesFromSettingsFields($event->ID);
 
             wp_update_post([
                 'ID'        => $event->ID,

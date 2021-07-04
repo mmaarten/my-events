@@ -36,10 +36,6 @@ class Events
             $classes[] = 'is-private-event';
         }
 
-        if ($event->isAllDay()) {
-            $classes[] = 'is-all-day-event';
-        }
-
         if (is_user_logged_in()) {
             $invitee = $event->getInviteeByUser(get_current_user_id());
             if ($invitee) {
@@ -71,13 +67,7 @@ class Events
         $event = new Event($post_id);
 
         // Update time.
-        $date = $event->getField('date');
-
-        if ($event->isAllDay()) {
-            $event->updateField('start_time', '00:00:00');
-            $event->updateField('end_time', '23:59:00');
-        }
-
+        $date       = $event->getField('date');
         $start_time = $event->getField('start_time');
         $end_time   = $event->getField('end_time');
 
@@ -191,7 +181,7 @@ class Events
         ]);
     }
 
-    public static function setInviteesFromSettingsFields($event_id, $status = 'pending')
+    public static function setInviteesFromSettingsFields($event_id)
     {
         // Get event.
         $event = new Event($event_id);
@@ -199,7 +189,7 @@ class Events
         $user_ids = self::getInviteesFromSettingsField($event->ID);
 
         // Create invitees
-        $event->setInvitees($user_ids, $status);
+        $event->setInvitees($user_ids);
 
         // Remove settings (will be refilled with invitees from our custom post type).
         $event->deleteField('invitees_individual');

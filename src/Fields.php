@@ -61,21 +61,6 @@ class Fields
             'parent'        => 'my_events_event_creator_event_extra_group',
         ]);
 
-        acf_add_local_field([
-            'key'          => 'my_events_event_creator_event_extra_invitee_status',
-            'label'        => __('Invitee status', 'my-events'),
-            'instructions' => __('Pending invitees will receive an invitation email per created event.', 'my-events'),
-            'name'         => 'invitee_status',
-            'type'         => 'select',
-            'choices'      => [
-                'pending'   => __('pending', 'my-events'),
-                'accepted' => __('Accepted', 'my-events'),
-            ],
-            'default_value' => 'pending',
-            'required'     => true,
-            'parent'       => 'my_events_event_creator_event_extra_group',
-        ]);
-
         acf_add_local_field_group(array(
             'key' => 'group_60db37be51d92',
             'title' => __('Repeat', 'my-events'),
@@ -225,16 +210,6 @@ class Fields
         ]);
 
         acf_add_local_field([
-            'key'            => 'my_events_event_is_all_day',
-            'label'          => __('All day', 'my-events'),
-            'instructions'   => __('This event takes place a whole day.', 'my-events'),
-            'name'           => 'is_all_day',
-            'type'           => 'true_false',
-            'required'       => false,
-            'parent'         => 'my_events_event_group',
-        ]);
-
-        acf_add_local_field([
             'key'            => 'my_events_event_date',
             'label'          => __('Date', 'my-events'),
             'instructions'   => __('The day the event takes place.', 'my-events'),
@@ -258,15 +233,6 @@ class Fields
             'required'       => true,
             'wrapper'        => ['width' => '50%'],
             'parent'         => 'my_events_event_group',
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_is_all_day',
-                        'operator' => '==',
-                        'value'    => 0
-                    ],
-                ],
-            ],
         ]);
 
         acf_add_local_field([
@@ -280,15 +246,6 @@ class Fields
             'required'       => true,
             'wrapper'        => ['width' => '50%'],
             'parent'         => 'my_events_event_group',
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_is_all_day',
-                        'operator' => '==',
-                        'value'    => 0
-                    ],
-                ],
-            ],
         ]);
 
         acf_add_local_field([
@@ -313,6 +270,7 @@ class Fields
                 'individual' => __('Individual', 'my-events'),
                 'group'      => __('Choose from a group', 'my-events'),
             ],
+            'default_value' => 'individual',
             'required'      => false,
             'parent'        => 'my_events_event_group',
         ]);
@@ -361,6 +319,21 @@ class Fields
         ]);
 
         acf_add_local_field([
+            'key'           => 'my_events_event_invitee_default_status',
+            'label'         => __('Default invitee status', 'my-events'),
+            'instructions'  => __('Invitees with a status "pending" will receive an invitation email.', 'my-events'),
+            'name'          => 'invitee_default_status',
+            'type'         => 'select',
+            'choices'      => [
+                'pending' => __('pending', 'my-events'),
+                'accepted' => __('Accepted', 'my-events'),
+            ],
+            'default_value' => 'pending',
+            'required'      => false,
+            'parent'        => 'my_events_event_group',
+        ]);
+
+        acf_add_local_field([
             'key'           => 'my_events_event_limit_subscriptions',
             'label'         => __('Limited subscriptions', 'my-events'),
             'instructions'  => __('Limit the amount of invitees who can subscribe.', 'my-events'),
@@ -400,6 +373,7 @@ class Fields
                 'input' => __('Custom', 'my-events'),
                 'id'    => __('Choose from a list', 'my-events'),
             ],
+            'default_value' => 'input',
             'required'     => false,
             'parent'       => 'my_events_event_group',
         ]);
