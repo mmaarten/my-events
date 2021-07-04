@@ -35,7 +35,7 @@ class Calendar
     public static function updatedPostMeta($meta_id, $object_id, $meta_key, $meta_value)
     {
         if (get_post_type($object_id) === 'event' && get_post_status($object_id) === 'publish') {
-            if ($meta_key === 'start' || $meta_key === 'end') {
+            if (in_array($meta_key, ['date', 'start_time', 'end_time', 'start', 'end'])) {
                 // TODO : Don't delete all.
                 delete_transient(self::TRANSIENT);
             }
