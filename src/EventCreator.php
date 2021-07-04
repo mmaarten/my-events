@@ -2,7 +2,7 @@
 
 namespace My\Events;
 
-use My\Events\Posts\Post;
+use My\Events\Posts\Event;
 
 class EventCreator
 {
@@ -13,25 +13,6 @@ class EventCreator
         add_action('init', [__CLASS__, 'removeFields']);
         add_action('acf/init', [__CLASS__, 'addOptionsPage']);
         add_action('acf/save_post', [__CLASS__, 'savePost']);
-    }
-
-    public static function removeFields()
-    {
-        if (did_action('acf/save_post')) {
-            return;
-        }
-
-        $fields = get_field_objects(self::POST_ID);
-
-        if (! is_array($fields)) {
-            return;
-        }
-
-        $fields = array_keys($fields);
-
-        foreach ($fields as $field) {
-            delete_field($field, self::POST_ID);
-        }
     }
 
     public static function addOptionsPage()
@@ -79,7 +60,7 @@ class EventCreator
 
             $post_id = wp_insert_post($postdata);
 
-            $event = new Post($post_id);
+            $event = new Event($post_id);
 
             $event->updateField('date', $date);
             $event->updateField('start_time', self::getField('start_time', false));
@@ -95,7 +76,31 @@ class EventCreator
             $event->updateField('location_id', self::getField('location_id', false));
 
             Events::updateEventTime($event->ID);
-            Events::setInviteesFromSettingsFields($event->ID);
+            Events::setInviteesFromSettingsFields($event->ID, 'accepted');
+
+            wp_update_post([
+                'ID'        => $event->ID,
+                'post_name' => sanitize_title($event->post_title . '-' . $event->getTimeFromUntil()),
+            ]);
+        }
+    }
+
+    public static function removeFields()
+    {
+        if (did_action('acf/save_post')) {
+            return;
+        }
+
+        $fields = get_field_objects(self::POST_ID);
+
+        if (! is_array($fields)) {
+            return;
+        }
+
+        $fields = array_keys($fields);
+
+        foreach ($fields as $field) {
+            delete_field($field, self::POST_ID);
         }
     }
 }

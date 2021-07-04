@@ -181,7 +181,7 @@ class Events
         ]);
     }
 
-    public static function setInviteesFromSettingsFields($event_id)
+    public static function setInviteesFromSettingsFields($event_id, $status = 'pending')
     {
         // Get event.
         $event = new Event($event_id);
@@ -189,7 +189,7 @@ class Events
         $user_ids = self::getInviteesFromSettingsField($event->ID);
 
         // Create invitees
-        $event->setInvitees($user_ids);
+        $event->setInvitees($user_ids, $status);
 
         // Remove settings (will be refilled with invitees from our custom post type).
         $event->deleteField('invitees_individual');
