@@ -132,9 +132,11 @@ class Helpers
             return [];
         }
 
+        $_start = new \DateTime($start->format('Y-m-d'));
+
         $times = [];
 
-        while ($start->format('U') < $end_repeat->format('U') && $start && $end) {
+        while ($_start->format('U') <= $end_repeat->format('U') && $_start && $start && $end) {
             $time = [
                 'start' => $start->format('Y-m-d H:i:s'),
                 'end'   => $end->format('Y-m-d H:i:s'),
@@ -144,6 +146,7 @@ class Helpers
                 $times[] = $time;
             }
 
+            $_start->modify($modifier);
             $start->modify($modifier);
             $end->modify($modifier);
         }
