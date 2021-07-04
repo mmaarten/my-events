@@ -161,6 +161,10 @@ class Notifications
 
     public static function sendInviteeRemovedNotification($invitee, $user_id, $event)
     {
+        if ($event->post_status !== 'publish') {
+            return;
+        }
+
         $user = get_userdata($user_id);
 
         if (! $user) {
