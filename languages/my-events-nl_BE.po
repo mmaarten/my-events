@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2021-07-04 20:34+0200\n"
-"PO-Revision-Date: 2021-07-04 20:38+0200\n"
+"PO-Revision-Date: 2021-07-04 21:15+0200\n"
 "X-Generator: Poedit 1.8.7\n"
 "X-Domain: my-events\n"
 "Last-Translator: \n"
@@ -280,7 +280,7 @@ msgstr "Standaard genodigdenstatus"
 #: src/Fields.php:324
 msgid "Invitees with a status \"pending\" will receive an invitation email."
 msgstr ""
-"Genodigden met de status 'in behandeling' ontvangen een uitnodigingsmail."
+"Genodigden met de status 'in afwachting' ontvangen een uitnodigingsmail."
 
 #: src/Fields.php:328 templates/event-edit-invitees.php:33
 msgid "pending"
