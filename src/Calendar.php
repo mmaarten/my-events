@@ -6,6 +6,8 @@ use My\Events\Posts\Event;
 
 class Calendar
 {
+    const TRANSIENT = 'my_events_calendar_events';
+
     public static function init()
     {
         add_filter('post_type_link', function ($permalink, $post, $leavename) {
@@ -26,6 +28,26 @@ class Calendar
         add_action('wp_ajax_nopriv_my_events_get_events', [__CLASS__, 'getEvents']);
         add_action('wp_ajax_my_events_render_calendar_event_detail', [__CLASS__, 'renderEventDetail']);
         add_action('wp_ajax_nopriv_my_events_render_calendar_event_detail', [__CLASS__, 'renderEventDetail']);
+        add_action('updated_post_meta', [__CLASS__, 'updatedPostMeta'], 0, 4);
+        add_action('transition_post_status', [__CLASS__, 'transitionPostStatus'], 0, 3);
+    }
+
+    public static function updatedPostMeta($meta_id, $object_id, $meta_key, $meta_value)
+    {
+        if (get_post_type($object_id) === 'event' && get_post_status($object_id) === 'publish') {
+            if ($meta_key === 'start' || $meta_key === 'end') {
+                delete_transient(self::TRANSIENT);
+            }
+        }
+    }
+
+    public static function transitionPostStatus($new_status, $old_status, $post)
+    {
+        if (get_post_type($post) === 'event') {
+            if ($old_status !== $new_status && ($old_status === 'publish' || $new_status == 'publish')) {
+                delete_transient(self::TRANSIENT);
+            }
+        }
     }
 
     public static function isActive()
@@ -116,7 +138,26 @@ class Calendar
         $start = $_POST['start'];
         $end   = $_POST['end'];
 
-        $posts = Model::getEventsBetween($start, $end);
+        // Check transient.
+
+        $key = sprintf('%s|%s', $start, $end);
+
+        $transient = get_transient(self::TRANSIENT);
+
+        if (! is_array($transient)) {
+            $transient = [];
+        }
+
+        if (isset($transient[$key])) {
+            // Cached
+            $posts = $transient[$key];
+        } else {
+            // Not cached
+            $posts = Model::getEventsBetween($start, $end);
+            // Save to cache
+            $transient[$key] = $posts;
+            set_transient(self::TRANSIENT, $transient);
+        }
 
         $events = [];
         foreach ($posts as $post) {
