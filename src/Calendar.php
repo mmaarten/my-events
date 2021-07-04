@@ -36,6 +36,7 @@ class Calendar
     {
         if (get_post_type($object_id) === 'event' && get_post_status($object_id) === 'publish') {
             if ($meta_key === 'start' || $meta_key === 'end') {
+                // TODO : Don't delete all.
                 delete_transient(self::TRANSIENT);
             }
         }
@@ -45,6 +46,7 @@ class Calendar
     {
         if (get_post_type($post) === 'event') {
             if ($old_status !== $new_status && ($old_status === 'publish' || $new_status == 'publish')) {
+                // TODO : Don't delete all.
                 delete_transient(self::TRANSIENT);
             }
         }
@@ -140,7 +142,7 @@ class Calendar
 
         // Check transient.
 
-        $key = sprintf('%s|%s', $start, $end);
+        $transient_key = sprintf('%s|%s', $start, $end);
 
         $transient = get_transient(self::TRANSIENT);
 
@@ -148,14 +150,14 @@ class Calendar
             $transient = [];
         }
 
-        if (isset($transient[$key])) {
+        if (isset($transient[$transient_key])) {
             // Cached
-            $posts = $transient[$key];
+            $posts = $transient[$transient_key];
         } else {
             // Not cached
             $posts = Model::getEventsBetween($start, $end);
             // Save to cache
-            $transient[$key] = $posts;
+            $transient[$transient_key] = $posts;
             set_transient(self::TRANSIENT, $transient);
         }
 
