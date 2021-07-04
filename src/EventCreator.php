@@ -13,11 +13,23 @@ class EventCreator
         add_action('init', [__CLASS__, 'removeFields']);
         add_action('acf/init', [__CLASS__, 'addOptionsPage']);
         add_action('acf/save_post', [__CLASS__, 'savePost']);
+        add_action('admin_notices', [__CLASS__, 'adminNotices']);
+    }
+
+    public static function adminNotices()
+    {
+        $screen = get_current_screen();
+
+        if ($screen->id !== 'tools_page_my-events-event-creator') {
+            return;
+        }
+
+        echo Helpers::adminNotice(__('Create multiple events based on repeat settings.', 'my-events'));
     }
 
     public static function addOptionsPage()
     {
-        acf_add_options_page([
+        $x = acf_add_options_page([
             'page_title'    => __('Event Creator', 'my-events'),
             'menu_title'    => __('Event Creator', 'my-events'),
             'menu_slug'     => 'my-events-event-creator',

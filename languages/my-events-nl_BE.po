@@ -8,8 +8,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-07-04 19:18+0200\n"
-"PO-Revision-Date: 2021-07-04 19:22+0200\n"
+"POT-Creation-Date: 2021-07-04 20:34+0200\n"
+"PO-Revision-Date: 2021-07-04 20:38+0200\n"
 "X-Generator: Poedit 1.8.7\n"
 "X-Domain: my-events\n"
 "Last-Translator: \n"
@@ -43,7 +43,7 @@ msgstr "%1$s installatie is niet volledig. Run %2$s binnenin de %3$s folder."
 msgid "Time of day"
 msgstr "Tijdstip"
 
-#: src/AdminColumns.php:34 src/Fields.php:296 templates/event-detail.php:47
+#: src/AdminColumns.php:34 src/Fields.php:253 templates/event-detail.php:47
 msgid "Organisers"
 msgstr "Organisatoren"
 
@@ -55,7 +55,7 @@ msgstr "Deelnemers"
 msgid "Number of participants"
 msgstr "Aantal deelnemers"
 
-#: src/AdminColumns.php:37 src/Fields.php:395 templates/event-detail.php:38
+#: src/AdminColumns.php:37 src/Fields.php:368 templates/event-detail.php:38
 msgid "Location"
 msgstr "Locatie"
 
@@ -63,19 +63,19 @@ msgstr "Locatie"
 msgid "Over"
 msgstr "Voorbij"
 
-#: src/AdminColumns.php:39 src/Fields.php:450
+#: src/AdminColumns.php:39 src/Fields.php:424
 msgid "Private"
 msgstr "Privé"
 
-#: src/AdminColumns.php:94 src/Fields.php:515
+#: src/AdminColumns.php:94 src/Fields.php:489
 msgid "User"
 msgstr "Gebruiker"
 
-#: src/AdminColumns.php:95 src/Fields.php:502
+#: src/AdminColumns.php:95 src/Fields.php:476
 msgid "Event"
 msgstr "Evenement"
 
-#: src/AdminColumns.php:96 src/Fields.php:527
+#: src/AdminColumns.php:96 src/Fields.php:501
 msgid "Status"
 msgstr "Status"
 
@@ -87,7 +87,7 @@ msgstr "E-mail verzonden"
 msgid "Users"
 msgstr "Gebruikers"
 
-#: src/AdminColumns.php:153 src/Fields.php:567
+#: src/AdminColumns.php:153 src/Fields.php:541
 msgid "Address"
 msgstr "Adres"
 
@@ -126,17 +126,21 @@ msgstr "Bericht is verplicht."
 
 #: src/Emails.php:92
 msgid "Announcement for event \"%s\"."
-msgstr "Aankondiging voor evenement \"%s\"."
+msgstr "Aankondiging voor evenement “%s”."
 
 #: src/Emails.php:102
 msgid "Email send."
 msgstr "E-mail verzonden."
 
-#: src/EventCreator.php:21 src/EventCreator.php:22
+#: src/EventCreator.php:27
+msgid "Create multiple events based on repeat settings."
+msgstr "Maak meerdere evenementen op basis van herhaal instellingen."
+
+#: src/EventCreator.php:33 src/EventCreator.php:34
 msgid "Event Creator"
 msgstr "Evenementmaker"
 
-#: src/Events.php:303 src/Posts/Event.php:396 src/Posts/Event.php:427
+#: src/Events.php:293 src/Posts/Event.php:387 src/Posts/Event.php:418
 msgid "This event is over."
 msgstr "Dit evenement is voorbij."
 
@@ -164,97 +168,71 @@ msgstr "Concept"
 msgid "Publish"
 msgstr "Publiceren"
 
-#: src/Fields.php:66
-msgid "Invitee status"
-msgstr "Status van genodigde"
-
-#: src/Fields.php:67
-msgid "Pending invitees will receive an invitation email per created event."
-msgstr ""
-"Genodigden die in behandeling zijn, ontvangen een mail met een uitnodiging "
-"per aangemaakt evenement."
-
-#: src/Fields.php:71 templates/event-edit-invitees.php:33
-msgid "pending"
-msgstr "in afwachting"
-
-#: src/Fields.php:72 src/Helpers.php:61
-msgid "Accepted"
-msgstr "Aanvaard"
-
-#: src/Fields.php:81 src/Fields.php:91
+#: src/Fields.php:66 src/Fields.php:76
 msgid "Repeat"
 msgstr "Herhaal"
 
-#: src/Fields.php:87
+#: src/Fields.php:72
 msgid "Create events based on the following settings:"
 msgstr "Maak evenementen op basis van de volgende instellingen:"
 
-#: src/Fields.php:94
+#: src/Fields.php:79
 msgid "Repeat the start and end time."
 msgstr "Herhaal de begin- en eindtijd."
 
-#: src/Fields.php:116
+#: src/Fields.php:101
 msgid "End repeat"
 msgstr "Einde herhaling"
 
-#: src/Fields.php:133
+#: src/Fields.php:118
 msgid "Exclude"
 msgstr "Uitsluiten"
 
-#: src/Fields.php:136
+#: src/Fields.php:121
 msgid "Exclude days from repeat settings."
-msgstr "Sluit dagen uit van de herhaalinstellingen."
+msgstr "Sluit dagen uit van de herhaal instellingen."
 
-#: src/Fields.php:148
+#: src/Fields.php:133
 msgid "Add day"
 msgstr "Dag toevoegen"
 
-#: src/Fields.php:152 src/Fields.php:239
+#: src/Fields.php:137 src/Fields.php:214
 msgid "Date"
 msgstr "Datum"
 
-#: src/Fields.php:194 src/Fields.php:487 src/Fields.php:552 src/Fields.php:580
+#: src/Fields.php:179 src/Fields.php:461 src/Fields.php:526 src/Fields.php:554
 msgid "Settings"
 msgstr "Instellingen"
 
-#: src/Fields.php:217 templates/event-detail.php:24
+#: src/Fields.php:202 templates/event-detail.php:24
 msgid "Description"
 msgstr "Omschrijving"
 
-#: src/Fields.php:218
+#: src/Fields.php:203
 msgid "A brief description of this event."
 msgstr "Een korte beschrijving van dit evenement."
 
-#: src/Fields.php:229
-msgid "All day"
-msgstr "Volledige dag"
-
-#: src/Fields.php:230
-msgid "This event takes place a whole day."
-msgstr "Dit evenement duurt een hele dag."
-
-#: src/Fields.php:240
+#: src/Fields.php:215
 msgid "The day the event takes place."
 msgstr "De dag waarop het evenement plaatsvindt."
 
-#: src/Fields.php:252
+#: src/Fields.php:227
 msgid "Start time"
 msgstr "Start tijd"
 
-#: src/Fields.php:253
+#: src/Fields.php:228
 msgid "The time when the event starts."
 msgstr "Het tijdstip waarop het evenement begint."
 
-#: src/Fields.php:274
+#: src/Fields.php:240
 msgid "End time"
 msgstr "Eind tijd"
 
-#: src/Fields.php:275
+#: src/Fields.php:241
 msgid "The time when the event ends."
 msgstr "Het tijdstip waarop het evenement eindigt."
 
-#: src/Fields.php:297
+#: src/Fields.php:254
 msgid ""
 "The organizers receive an email when an invitee accepts or declines an "
 "invitation."
@@ -262,12 +240,12 @@ msgstr ""
 "De organisatoren ontvangen een e-mail wanneer een genodigde een uitnodiging "
 "accepteert of weigert."
 
-#: src/Fields.php:308 src/Fields.php:460 src/Fields.php:595
+#: src/Fields.php:265 src/Fields.php:434 src/Fields.php:569
 #: src/PostTypes.php:68
 msgid "Invitees"
 msgstr "Genodigden"
 
-#: src/Fields.php:309
+#: src/Fields.php:266
 msgid ""
 "The invitees will receive an email about the event when published. They can "
 "accept or decline the invitation."
@@ -275,66 +253,83 @@ msgstr ""
 "De genodigden ontvangen een e-mail over het evenement bij publicatie. Ze "
 "kunnen de uitnodiging accepteren of weigeren."
 
-#: src/Fields.php:313 src/Fields.php:322
+#: src/Fields.php:270 src/Fields.php:280
 msgid "Individual"
 msgstr "Individueel"
 
-#: src/Fields.php:314
+#: src/Fields.php:271
 msgid "Choose from a group"
 msgstr "Kies uit een groep"
 
-#: src/Fields.php:323
+#: src/Fields.php:281
 msgid "A list of people you want to invite."
 msgstr "Een lijst met mensen die je wilt uitnodigen."
 
-#: src/Fields.php:343
+#: src/Fields.php:301
 msgid "Group"
 msgstr "Groep"
 
-#: src/Fields.php:344
+#: src/Fields.php:302
 msgid "A group of people you like to invite."
 msgstr "Een groep mensen die je graag uitnodigt."
 
-#: src/Fields.php:365
+#: src/Fields.php:323
+msgid "Default invitee status"
+msgstr "Standaard genodigdenstatus"
+
+#: src/Fields.php:324
+msgid "Invitees with a status \"pending\" will receive an invitation email."
+msgstr ""
+"Genodigden met de status 'in behandeling' ontvangen een uitnodigingsmail."
+
+#: src/Fields.php:328 templates/event-edit-invitees.php:33
+msgid "pending"
+msgstr "in afwachting"
+
+#: src/Fields.php:329 src/Helpers.php:61
+msgid "Accepted"
+msgstr "Aanvaard"
+
+#: src/Fields.php:338
 msgid "Limited subscriptions"
 msgstr "Beperkte inschrijvingen"
 
-#: src/Fields.php:366
+#: src/Fields.php:339
 msgid "Limit the amount of invitees who can subscribe."
 msgstr "Beperk het aantal genodigden die zich kunnen inschrijven."
 
-#: src/Fields.php:375
+#: src/Fields.php:348
 msgid "Amount"
 msgstr "Hoeveelheid"
 
-#: src/Fields.php:396
+#: src/Fields.php:369
 msgid "The geographical location of the event."
 msgstr "De geografische locatie van het evenement."
 
-#: src/Fields.php:400 src/Fields.php:409
+#: src/Fields.php:373 src/Fields.php:383
 msgid "Custom"
 msgstr "Aangepast"
 
-#: src/Fields.php:401
+#: src/Fields.php:374
 msgid "Choose from a list"
 msgstr "Kies uit een lijst"
 
-#: src/Fields.php:428
+#: src/Fields.php:402
 msgid "List"
 msgstr "Lijst"
 
-#: src/Fields.php:451
+#: src/Fields.php:425
 msgid ""
 "Only organisers and participants of this event have access to this event."
 msgstr ""
 "Alleen organisatoren en deelnemers van dit evenement hebben toegang tot dit "
 "evenement."
 
-#: src/Fields.php:539
+#: src/Fields.php:513
 msgid "Email Sent"
 msgstr "E-mail verzonden"
 
-#: src/Fields.php:568
+#: src/Fields.php:542
 msgid "The geographical location."
 msgstr "De geografische ligging."
 
@@ -370,23 +365,23 @@ msgstr "U bent uitgenodigd voor het evenement: “%1$s”."
 msgid "You are no longer invited for the event: \"%1$s\"."
 msgstr "Je bent niet langer uitgenodigd voor het evenement: “%1$s”."
 
-#: src/Posts/Event.php:97
+#: src/Posts/Event.php:92
 msgid "%1$s from %2$s until %3$s"
 msgstr "%1$s van %2$s tot %3$s"
 
-#: src/Posts/Event.php:106 src/Posts/Event.php:113
+#: src/Posts/Event.php:100
 msgid "from %1$s until %2$s"
 msgstr "van %1$s tot %2$s"
 
-#: src/Posts/Event.php:392 src/Posts/Event.php:423 src/Subscriptions.php:33
+#: src/Posts/Event.php:383 src/Posts/Event.php:414 src/Subscriptions.php:33
 msgid "You have no access to this event."
 msgstr "Je hebt geen toegang tot dit evenement."
 
-#: src/Posts/Event.php:402 src/Posts/Event.php:433 src/Subscriptions.php:45
+#: src/Posts/Event.php:393 src/Posts/Event.php:424 src/Subscriptions.php:45
 msgid "You are not invited to this event."
 msgstr "U bent niet uitgenodigd op dit evenement."
 
-#: src/Posts/Event.php:410
+#: src/Posts/Event.php:401
 msgid "The maximum amount of participants is reached"
 msgstr "Het maximum aantal deelnemers is bereikt"
 
@@ -439,7 +434,7 @@ msgstr "Zoek evenementen"
 msgid "Parent events:"
 msgstr "Parent evenementen:"
 
-#: src/PostTypes.php:28 templates/event-group-edit-events.php:8
+#: src/PostTypes.php:28
 msgid "No events found."
 msgstr "Geen evenementen gevonden."
 
@@ -929,7 +924,3 @@ msgstr "aanvaard"
 #: templates/event-edit-invitees.php:43
 msgid "declined"
 msgstr "geweigerd"
-
-#: templates/event-group-edit-events.php:12
-msgid "Events created by this group:"
-msgstr "Evenementen gemaakt door deze groep:"
