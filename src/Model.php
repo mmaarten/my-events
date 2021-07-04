@@ -18,9 +18,9 @@ class Model
 
     public static function getEvents($args = [])
     {
-        return self::getPosts([
+        return self::getPosts($args + [
             'post_type' => 'event',
-        ] + $args);
+        ]);
     }
 
     public static function orderEventsByStartTime($event_ids, $order = 'ASC', $args = [])
@@ -67,7 +67,7 @@ class Model
      */
     public static function getEventsBetween($start, $end, $args = [])
     {
-        return self::getEvents([
+        return self::getEvents($args + [
             'meta_query' => [
                 'relation' => 'OR',
                 [
@@ -101,7 +101,7 @@ class Model
                     ],
                 ],
             ],
-        ] + $args);
+        ]);
     }
 
     /**
@@ -113,7 +113,7 @@ class Model
      */
     public static function getEventsByInviteeGroup($group_id, $args = [])
     {
-        return self::getEvents([
+        return self::getEvents($args + [
             'meta_query' => [
                 'relation' => 'AND',
                 [
@@ -127,7 +127,7 @@ class Model
                     'value'   => $group_id,
                 ],
             ],
-        ] + $args);
+        ]);
     }
 
     /**
@@ -179,9 +179,9 @@ class Model
      */
     public static function getInvitees($args = [])
     {
-        return self::getPosts([
+        return self::getPosts($args + [
             'post_type' => 'invitee',
-        ] + $args);
+        ]);
     }
 
     /**

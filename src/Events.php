@@ -94,7 +94,7 @@ class Events
     {
         switch (get_post_type($post_id)) {
             case 'invitee_group':
-                $events = Model::getEventsByInviteeGroup($post_id);
+                $events = Model::getEventsByInviteeGroup($post_id, ['post_status' => 'any']);
                 foreach ($events as $event) {
                     $event = new Event($event);
                     // Set invitee type to 'individual'.
@@ -106,7 +106,7 @@ class Events
                 // Get address setting from location
                 $location = new Post($post_id);
                 $address = $location->getField('address');
-                $events = Model::getEventsByLocation($post_id);
+                $events = Model::getEventsByLocation($post_id, ['post_status' => 'any']);
                 foreach ($events as $event) {
                     // Switch to 'input' and save location address.
                     $event = new Event($event);
@@ -235,10 +235,11 @@ class Events
         $added_users   = array_diff($current_users, $prev_users);
         $removed_users = array_diff($prev_users, $current_users);
 
+        $events = Model::getEventsByInviteeGroup($group->ID, ['post_status' => 'any']);
+
         // Add invitees
 
         foreach ($added_users as $user_id) {
-            $events = Model::getEventsByInviteeGroup($group->ID);
             foreach ($events as $event) {
                 $event = new Event($event);
                 if (! $event->isOver()) {
@@ -250,7 +251,6 @@ class Events
         // Remove invitees
 
         foreach ($removed_users as $user_id) {
-            $events = Model::getEventsByInviteeGroup($group->ID);
             foreach ($events as $event) {
                 $event = new Event($event);
                 if (! $event->isOver()) {
