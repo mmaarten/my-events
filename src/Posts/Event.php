@@ -269,7 +269,7 @@ class Event extends Post
 
     public function getDefaultInviteeStatus()
     {
-        return $this->getField('default_invitee_status');
+        return $this->getField('invitee_default_status');
     }
 
     public function setInvitees($user_ids, $status = null)
