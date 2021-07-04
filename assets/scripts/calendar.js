@@ -31,6 +31,7 @@ import './components/breakpoints';
       this.options.datesSet   = this.datesSet.bind(this);
       this.options.dateClick  = this.onMonthDayClick.bind(this);
       this.options.eventClick = this.eventClick.bind(this);
+      this.options.eventDidMount = this.eventDidMount.bind(this);
 
       this.calendar = new Calendar(this.$elem.get(0), this.options);
       this.calendar.render();
@@ -79,6 +80,11 @@ import './components/breakpoints';
           this.showEventDetail(eventId);
         }
       }
+    },
+
+    eventDidMount: function (info) {
+      // Set title attribute.
+      jQuery(info.el).attr('title', info.event.title);
     },
 
     breakpointChange : function(event, breakpoint) {
