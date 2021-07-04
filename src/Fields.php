@@ -225,6 +225,16 @@ class Fields
         ]);
 
         acf_add_local_field([
+            'key'            => 'my_events_event_is_all_day',
+            'label'          => __('All day', 'my-events'),
+            'instructions'   => __('This event takes place a whole day.', 'my-events'),
+            'name'           => 'is_all_day',
+            'type'           => 'true_false',
+            'required'       => false,
+            'parent'         => 'my_events_event_group',
+        ]);
+
+        acf_add_local_field([
             'key'            => 'my_events_event_date',
             'label'          => __('Date', 'my-events'),
             'instructions'   => __('The day the event takes place.', 'my-events'),
@@ -248,6 +258,15 @@ class Fields
             'required'       => true,
             'wrapper'        => ['width' => '50%'],
             'parent'         => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_is_all_day',
+                        'operator' => '==',
+                        'value'    => 0
+                    ],
+                ],
+            ],
         ]);
 
         acf_add_local_field([
@@ -261,6 +280,15 @@ class Fields
             'required'       => true,
             'wrapper'        => ['width' => '50%'],
             'parent'         => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_is_all_day',
+                        'operator' => '==',
+                        'value'    => 0
+                    ],
+                ],
+            ],
         ]);
 
         acf_add_local_field([

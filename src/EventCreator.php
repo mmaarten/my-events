@@ -63,6 +63,7 @@ class EventCreator
             $event = new Event($post_id);
 
             $event->updateField('date', $date);
+            $event->updateField('is_all_day', self::getField('is_all_day', false));
             $event->updateField('start_time', self::getField('start_time', false));
             $event->updateField('end_time', self::getField('end_time', false));
             $event->updateField('description', self::getField('description', false));

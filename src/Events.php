@@ -36,6 +36,10 @@ class Events
             $classes[] = 'is-private-event';
         }
 
+        if ($event->isAllDay()) {
+            $classes[] = 'is-all-day-event';
+        }
+
         if (is_user_logged_in()) {
             $invitee = $event->getInviteeByUser(get_current_user_id());
             if ($invitee) {
@@ -67,7 +71,13 @@ class Events
         $event = new Event($post_id);
 
         // Update time.
-        $date       = $event->getField('date');
+        $date = $event->getField('date');
+
+        if ($event->isAllDay()) {
+            $event->updateField('start_time', '00:00:00');
+            $event->updateField('end_time', '23:59:00');
+        }
+
         $start_time = $event->getField('start_time');
         $end_time   = $event->getField('end_time');
 

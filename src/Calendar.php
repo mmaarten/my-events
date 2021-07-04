@@ -215,6 +215,7 @@ class Calendar
             'start'     => $post->getStartTime('Y-m-d\TH:i:s'),
             'end'       => $post->getEndTime('Y-m-d\TH:i:s'),
             'url'       => get_permalink($post->ID),
+            'allDay'    => $post->isAllDay(),
             'className' => implode(' ', Events::getEventClasses($post->ID)),
         ];
 
