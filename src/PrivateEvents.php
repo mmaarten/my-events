@@ -63,7 +63,7 @@ class PrivateEvents
     {
         $screen = get_current_screen();
 
-        if ($screen->id !== 'event') {
+        if ($screen->id !== 'event' || ! isset($_GET['post'])) {
             return;
         }
 
