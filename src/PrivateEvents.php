@@ -94,7 +94,7 @@ class PrivateEvents
     {
         $screen = get_current_screen();
 
-        if ($screen->id === 'event') {
+        if ($screen->id === 'event' && isset($_GET['post'])) {
             $event = new Event($_GET['post']);
             if ($event->isPrivate()) {
                 echo Helpers::adminNotice(__('This event is only accessible to organisers and invitees of this event.', 'my-events'));

@@ -109,7 +109,7 @@ class Fields
                         'class' => '',
                         'id' => '',
                     ),
-                    'display_format' => 'd/m/Y',
+                    'display_format' => get_option('date_format'),
                     'return_format' => 'Y-m-d',
                     'first_day' => 1,
                 ),
@@ -145,7 +145,7 @@ class Fields
                                 'class' => '',
                                 'id' => '',
                             ),
-                            'display_format' => 'd/m/Y',
+                            'display_format' => get_option('date_format'),
                             'return_format' => 'Y-m-d',
                             'first_day' => 1,
                         ),
@@ -427,30 +427,6 @@ class Fields
             'type'         => 'true_false',
             'required'      => false,
             'parent'        => 'my_events_event_group',
-        ]);
-
-        acf_add_local_field_group([
-            'key'      => 'my_events_event_invitees_group',
-            'title'    => __('Invitees', 'my-events'),
-            'fields'   => [],
-            'position' => 'side',
-            'location' => [
-                [
-                    [
-                        'param'    => 'post_type',
-                        'operator' => '==',
-                        'value'    => 'event',
-                    ],
-                ],
-            ],
-        ]);
-
-        acf_add_local_field([
-            'key'           => 'my_events_event_invitees_list',
-            'label'         => __('', 'my-events'),
-            'instructions'  => __(''),
-            'type'         => 'message',
-            'parent'        => 'my_events_event_invitees_group',
         ]);
     }
 

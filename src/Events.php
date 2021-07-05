@@ -14,10 +14,10 @@ class Events
         add_action('wp_trash_post', [__CLASS__, 'trashPost']);
         add_action('before_delete_post', [__CLASS__, 'beforeDeletePost']);
         add_action('delete_user', [__CLASS__, 'beforeDeleteUser'], 10, 3);
+        add_action('add_meta_boxes', [__CLASS__, 'addMetaBoxes']);
         add_action('admin_notices', [__CLASS__, 'adminNotices']);
 
         add_filter('acf/load_value/key=my_events_event_invitees_individual', [__CLASS__, 'updateInvitiesField'], 10, 3);
-        add_filter('acf/load_field/key=my_events_event_invitees_list', [__CLASS__, 'renderInvities'], 10, 2);
         add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
         add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
     }
@@ -75,6 +75,16 @@ class Events
         $event->updateField('end', "$date $end_time");
     }
 
+    public static function updateEventPostName($post_id)
+    {
+        $event = new Event($post_id);
+
+        wp_update_post([
+            'ID'        => $post_id,
+            'post_name' => sanitize_title($event->post_title . '-' . $event->getStartTime()),
+        ]);
+    }
+
     public static function savePost($post_id)
     {
         switch (get_post_type($post_id)) {
@@ -82,6 +92,8 @@ class Events
                 self::updateEventTime($post_id);
                 // Update invitees.
                 self::setInviteesFromSettingsFields($post_id);
+                // Update post name.
+                self::updateEventPostName($post_id);
                 break;
             case 'invitee_group':
                 // Update invitees.
@@ -264,21 +276,44 @@ class Events
         $group->updateMeta('prev_users', $current_users);
     }
 
-    public static function renderInvities($field)
+    public static function renderInvities($post)
+    {
+        $event = new Event($post);
+
+        Helpers::loadTemplate('event-edit-invitees', [
+            'event' => $event,
+        ]);
+    }
+
+
+    public static function addMetaBoxes($post_type)
     {
         $screen = get_current_screen();
 
-        if ($screen->base != 'post' || $screen->post_type != 'event' || ! isset($_GET['post'])) {
-            return $field;
+        // Only show metabox when there are invitees.
+        if ($screen->base = 'post' && $screen->post_type == 'event') {
+            if ($screen->action == 'add') {
+                return;
+            }
+
+            if (isset($_GET['post'])) {
+                $event = new Event($_GET['post']);
+
+                $invitees = $event->getInvitees();
+
+                if (! $invitees) {
+                    return;
+                }
+            }
+
+            add_meta_box(
+                'my-events-invitees',
+                __('Invitees', 'my-events'),
+                [__CLASS__, 'renderInvities'],
+                $screen,
+                'side'
+            );
         }
-
-        $event = new Event($_GET['post']);
-
-        $field['message'] = Helpers::loadTemplate('event-edit-invitees', [
-            'event' => $event,
-        ], true);
-
-        return $field;
     }
 
     public static function adminNotices()

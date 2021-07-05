@@ -91,11 +91,7 @@ class EventCreator
 
             Events::updateEventTime($event->ID);
             Events::setInviteesFromSettingsFields($event->ID);
-
-            wp_update_post([
-                'ID'        => $event->ID,
-                'post_name' => sanitize_title($event->post_title . '-' . $event->getTimeFromUntil()),
-            ]);
+            Events::updateEventPostName($event->ID);
         }
     }
 
