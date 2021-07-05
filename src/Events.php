@@ -268,7 +268,7 @@ class Events
     {
         $screen = get_current_screen();
 
-        if ($screen->base !== 'post' || $screen->post_type !== 'event' || ! isset($_GET['post'])) {
+        if ($screen->base != 'post' || $screen->post_type != 'event' || ! isset($_GET['post'])) {
             return $field;
         }
 
