@@ -165,7 +165,7 @@ class Model
     public static function getPrivateEvents($args = [])
     {
         return self::getEvents($args + [
-            'meta_key'     => 'private',
+            'meta_key'     => 'is_private',
             'meta_compare' => '=',
             'meta_value'   => true,
         ]);
