@@ -77,6 +77,12 @@ class Events
 
     public static function updateEventPostName($post_id)
     {
+        $update = apply_filters('my_events/update_event_post_name', true, $post_id);
+
+        if (! $update) {
+            return;
+        }
+
         $event = new Event($post_id);
 
         wp_update_post([
@@ -145,7 +151,7 @@ class Events
         // Get invitees by user.
         $invitees = Model::getInviteesByUser($user_id);
 
-        // Remove user related invitees.
+        // Remove all user related invitees.
         foreach ($invitees as $invitee) {
             $invitee = new Invitee($invitee);
             $event_id = $invitee->getEvent();
@@ -169,12 +175,12 @@ class Events
         $user_ids = [];
 
         // Get user ids from individual invitees field
-        if ($type === 'individual') {
+        if ($type == 'individual') {
             $user_ids = $event->getField('invitees_individual');
         }
 
         // Get user ids from invitees group
-        if ($type === 'group') {
+        if ($type == 'group') {
             $group_id = $event->getField('invitees_group');
             if ($group_id && get_post_type($group_id)) {
                 $group = new Post($group_id);
@@ -209,16 +215,18 @@ class Events
 
     public static function updateInvitiesField($value, $post_id, $field)
     {
+        // Don't change field value on post save. We need to access the field settings.
         if (did_action('acf/save_post')) {
             return $value;
         }
 
         // Populates field with invitees from our post type.
-        if (get_post_type($post_id) === 'event') {
+        if (get_post_type($post_id) == 'event') {
             $event = new Event($post_id);
             return $event->getInviteesUsers(null, ['fields' => 'ID']);
         }
 
+        // Return.
         return $value;
     }
 
@@ -285,7 +293,6 @@ class Events
         ]);
     }
 
-
     public static function addMetaBoxes($post_type)
     {
         $screen = get_current_screen();
@@ -320,7 +327,7 @@ class Events
     {
         $screen = get_current_screen();
 
-        if ($screen->base !== 'post' || ! isset($_GET['post'])) {
+        if ($screen->base != 'post' || ! isset($_GET['post'])) {
             return;
         }
 
@@ -354,7 +361,7 @@ class Events
     {
         $screen = get_current_screen();
 
-        if ($screen->base !== 'post' || ! isset($_GET['post'])) {
+        if ($screen->base != 'post' || ! isset($_GET['post'])) {
             return $classes;
         }
 
