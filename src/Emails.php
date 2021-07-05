@@ -15,17 +15,32 @@ class Emails
 
     public static function addMetaBoxes($post_type)
     {
-        if ($post_type !== 'event') {
-            return;
-        }
+        $screen = get_current_screen();
 
-        add_meta_box(
-            'my-events-send-email',
-            __('Send email', 'my-events'),
-            [__CLASS__, 'renderMetaBox'],
-            $post_type,
-            'side'
-        );
+        // Only show metabox when there are invitees.
+        if ($screen->base = 'post' && $screen->post_type == 'event') {
+            if ($screen->action == 'add') {
+                return;
+            }
+
+            if (isset($_GET['post'])) {
+                $event = new Event($_GET['post']);
+
+                $invitees = $event->getInvitees();
+
+                if (! $invitees) {
+                    return;
+                }
+            }
+
+            add_meta_box(
+                'my-events-send-email',
+                __('Send email', 'my-events'),
+                [__CLASS__, 'renderMetaBox'],
+                $screen,
+                'side'
+            );
+        }
     }
 
     public static function renderMetaBox($post)
@@ -33,6 +48,11 @@ class Emails
         $event = new Event($post);
 
         $invitees = $event->getInviteesUsers();
+
+        if (! $invitees) {
+            echo Helpers::adminNotice(__('No invitees found.', 'my-events'), 'info', true);
+            return;
+        }
 
         $atts = [
             'class'          => 'my-events-send-email',
