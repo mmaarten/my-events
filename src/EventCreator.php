@@ -111,10 +111,14 @@ class EventCreator
             return;
         }
 
+        $keep = ['repeat_end', 'repeat_exclude'];
+
         $fields = array_keys($fields);
 
         foreach ($fields as $field) {
-            delete_field($field, self::POST_ID);
+            if (! in_array($field, $keep)) {
+                delete_field($field, self::POST_ID);
+            }
         }
     }
 }
