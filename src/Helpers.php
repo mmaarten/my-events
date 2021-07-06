@@ -4,6 +4,23 @@ namespace My\Events;
 
 class Helpers
 {
+    public static function unautop($value)
+    {
+        //remove any new lines already in there
+        $value = str_replace('\n', '', $value);
+
+        //remove all <p>
+        $value = str_replace('<p>', '', $value);
+
+        //replace <br /> with \n
+        $value = str_replace(['<br />', '<br>', '<br/>'], '\n', $value);
+
+        //replace </p> with \n\n
+        $value = str_replace('</p>', '\n\n', $value);
+
+        return $value;
+    }
+
     public static function getPostByName($post_name, $post_type = 'post')
     {
         return current(get_posts([
@@ -89,7 +106,7 @@ class Helpers
             $post = $post_id ? get_post($post_id) : null;
             if ($post) {
                 $return[] = sprintf(
-                    '<a href="%1$s">%2$s</a>',
+                    "<a href='%1$s'>%2$s</a>",
                     esc_url(get_edit_post_link($post->ID)),
                     esc_html($post->post_title)
                 );

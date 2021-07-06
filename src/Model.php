@@ -4,6 +4,7 @@ namespace My\Events;
 
 use My\Events\Posts\Post;
 use My\Events\Posts\Event;
+use My\Events\Posts\Invitee;
 
 class Model
 {
@@ -21,6 +22,39 @@ class Model
         return self::getPosts($args + [
             'post_type' => 'event',
         ]);
+    }
+
+    public static function getUserEvents($user_id, $status = null, $args = [])
+    {
+        if ($status) {
+            $invitees = self::getInviteesByUser($user_id, ['fields' => 'ids']);
+
+            if ($invitees) {
+                $invitees = self::getInviteesByStatus($status, ['include' => $invitees, 'fields' => 'ids']);
+            }
+
+        } else {
+            $invitees = self::getInviteesByUser($user_id, ['fields' => 'ids']);
+        }
+
+        if (! $invitees) {
+            return [];
+        }
+
+        $events = [];
+
+        foreach ($invitees as $invitee) {
+            $invitee = new Invitee($invitee);
+            $events[] = $invitee->getEvent();
+        }
+
+        if (! $events) {
+            return;
+        }
+
+        return self::getEvents([
+            'include' => $events,
+        ] + $args);
     }
 
     public static function orderEventsByStartTime($event_ids, $order = 'ASC', $args = [])

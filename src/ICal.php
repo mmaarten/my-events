@@ -17,6 +17,8 @@ class ICal
                 file_put_contents(self::getEventFile($post_id), $calendar->get());
             }
         });
+
+        add_action('template_redirect', [__CLASS__, 'maybeOutputUserCalendar']);
     }
 
     public static function getEventFile($event_id, $url = false)
@@ -34,7 +36,7 @@ class ICal
 
         $event = Event::create();
         $event->name($post->post_title);
-        $event->description($post->getDescription());
+        $event->description(Helpers::unautop($post->getDescription()));
         $event->uniqueIdentifier("my-events-{$post->ID}");
         $event->createdAt(new \DateTime($post->post_date, $timezone));
         $event->startsAt(new \DateTime($post->getStartTime('Y-m-d H:i:s'), $timezone));
@@ -63,6 +65,50 @@ class ICal
         }
 
         return $event;
+    }
+
+    public static function getOutputUserCalendarFileURL()
+    {
+        global $wp;
+
+        return add_query_arg([
+            MY_EVENTS_NONCE_NAME => wp_create_nonce('user_ical_file'),
+        ], home_url($wp->request));
+    }
+
+    public static function maybeOutputUserCalendar($user_id)
+    {
+        if (empty($_GET[MY_EVENTS_NONCE_NAME])) {
+            return;
+        }
+
+        if (! wp_verify_nonce($_GET[MY_EVENTS_NONCE_NAME], 'user_ical_file')) {
+            return;
+        }
+
+        if (! is_user_logged_in()) {
+            wp_die(__('Invalid user', 'my-events'));
+        }
+
+        $user_id = get_current_user_id();
+
+        $events = Model::getUserEvents($user_id, 'accepted', ['fields', 'ids']);
+
+        if (! $events) {
+            wp_die(__('No events found.', 'my-events'));
+        }
+
+        $calendar = self::createCalendar($events, $user_id);
+
+        //
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: text/calendar');
+        header('Content-Disposition: attachment; filename=tcalendar.ics');
+
+        echo $calendar->get();
+
+        exit;
     }
 
     public static function createCalendar($post_ids, $user_id = 0)
