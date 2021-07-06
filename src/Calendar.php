@@ -10,13 +10,6 @@ class Calendar
 
     public static function init()
     {
-        add_filter('post_type_link', function ($permalink, $post, $leavename) {
-            if (self::isActive() && get_post_type($post) === 'event') {
-                return self::getEventURL($post->ID);
-            }
-            return $permalink;
-        }, 10, 3);
-
         add_shortcode('calendar', function () {
             ob_start();
             self::render();
@@ -28,28 +21,83 @@ class Calendar
         add_action('wp_ajax_nopriv_my_events_get_events', [__CLASS__, 'getEvents']);
         add_action('wp_ajax_my_events_render_calendar_event_detail', [__CLASS__, 'renderEventDetail']);
         add_action('wp_ajax_nopriv_my_events_render_calendar_event_detail', [__CLASS__, 'renderEventDetail']);
-        add_action('updated_post_meta', [__CLASS__, 'updatedPostMeta'], 0, 4);
+        add_action('save_post', [__CLASS__, 'savePost'], 0);
+        add_action('acf/save_post', [__CLASS__, 'acfSavePost'], PHP_INT_MAX);
         add_action('transition_post_status', [__CLASS__, 'transitionPostStatus'], 0, 3);
+
+        add_filter('post_type_link', [__CLASS__, 'updateEventLink'], 10, 3);
     }
 
-    public static function updatedPostMeta($meta_id, $object_id, $meta_key, $meta_value)
+    public static function updateEventLink($permalink, $post, $leavename)
     {
-        if (get_post_type($object_id) === 'event' && get_post_status($object_id) === 'publish') {
-            if (in_array($meta_key, ['date', 'start_time', 'end_time', 'start', 'end'])) {
-                // TODO : Don't delete all.
-                delete_transient(self::TRANSIENT);
-            }
+        if (self::isActive() && get_post_type($post) == 'event') {
+            return self::getEventURL($post->ID);
+        }
+        return $permalink;
+    }
+
+    public static function savePost($post_id)
+    {
+        static $processed = false;
+
+        if (get_post_type($post_id) == 'event' && ! $processed) {
+            // update_post_meta($post_id, 'prev_start', get_field('start', $post_id));
+            // update_post_meta($post_id, 'prev_end', get_field('end', $post_id));
+            // self::sanitizeTransient($post_id);
+
+            $processed = true;
+        }
+    }
+
+    public static function acfSavePost($post_id)
+    {
+        if (get_post_type($post_id) == 'event') {
+            //self::sanitizeTransient($post_id);
         }
     }
 
     public static function transitionPostStatus($new_status, $old_status, $post)
     {
-        if (get_post_type($post) === 'event') {
-            if ($old_status !== $new_status && ($old_status === 'publish' || $new_status == 'publish')) {
-                // TODO : Don't delete all.
-                delete_transient(self::TRANSIENT);
+        if (get_post_type($post) == 'event') {
+            if ($old_status != $new_status && ($old_status == 'publish' || $new_status == 'publish')) {
+                //self::sanitizeTransient($post);
             }
         }
+    }
+
+    public static function sanitizeTransient($post_id)
+    {
+        $transient = get_transient(self::TRANSIENT);
+
+        if (! $transient || ! is_array($transient)) {
+            return;
+        }
+
+        $event = new Event($post_id);
+
+        $event_start = $event->getStartTime('Y-m-d');
+        $event_end   = $event->getEndTime('Y-m-d');
+
+        if (! $event_start || ! $event_end) {
+            return;
+        }
+
+        $sanitized = [];
+
+        foreach ($transient as $key => $events) {
+            list($start, $end) = explode('|', $key);
+
+            $start = date('Y-m-d', strtotime($start));
+            $end   = date('Y-m-d', strtotime($end));
+
+            if (Helpers::doDatesIntersect($event_start, $event_end, $start, $end)) {
+                continue;
+            }
+
+            $sanitized[$key] = $events;
+        }
+
+        set_transient(self::TRANSIENT, $sanitized);
     }
 
     public static function isActive()

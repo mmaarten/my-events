@@ -123,4 +123,20 @@ class Helpers
 
         return $dates;
     }
+
+    /**
+     * @link https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
+     */
+    public static function doDatesIntersect($a_start, $a_end, $b_start, $b_end)
+    {
+        if ($a_start <= $b_end && $b_start <= $a_end && $a_start <= $a_end && $b_start <= $b_end) {
+            return true;
+        }
+
+        if ($a_start <= $b_end && $a_start <= $a_end && $b_start <= $a_end && $b_start <= $b_end) {
+            return true;
+        }
+
+        return false;
+    }
 }

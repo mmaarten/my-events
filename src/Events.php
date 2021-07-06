@@ -75,22 +75,6 @@ class Events
         $event->updateField('end', "$date $end_time");
     }
 
-    public static function updateEventPostName($post_id)
-    {
-        $update = apply_filters('my_events/update_event_post_name', true, $post_id);
-
-        if (! $update) {
-            return;
-        }
-
-        $event = new Event($post_id);
-
-        wp_update_post([
-            'ID'        => $post_id,
-            'post_name' => sanitize_title($event->post_title . '-' . $event->getStartTime()),
-        ]);
-    }
-
     public static function savePost($post_id)
     {
         switch (get_post_type($post_id)) {
@@ -98,8 +82,6 @@ class Events
                 self::updateEventTime($post_id);
                 // Update invitees.
                 self::setInviteesFromSettingsFields($post_id);
-                // Update post name.
-                self::updateEventPostName($post_id);
                 break;
             case 'invitee_group':
                 // Update invitees.

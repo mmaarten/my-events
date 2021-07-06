@@ -91,7 +91,6 @@ class EventCreator
 
             Events::updateEventTime($event->ID);
             Events::setInviteesFromSettingsFields($event->ID);
-            Events::updateEventPostName($event->ID);
         }
     }
 

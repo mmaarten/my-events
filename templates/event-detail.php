@@ -9,6 +9,12 @@ $description = $event->getDescription();
 $location = $event->getLocation();
 $organisers = wp_list_pluck($event->getOrganisers(), 'display_name', 'ID');
 $participants = wp_list_pluck($event->getParticipants(), 'display_name', 'ID');
+
+$file = null;
+if (file_exists(ICal::getEventFile($event->ID))) {
+    $file = ICal::getEventFile($event->ID, true);
+}
+
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -57,6 +63,13 @@ $participants = wp_list_pluck($event->getParticipants(), 'display_name', 'ID');
         <p>
             <?php echo esc_html(implode(', ', $participants)); ?>
         </p>
+    </section>
+    <?php endif; ?>
+
+    <?php if ($file) : ?>
+    <section id="event-file">
+        <h2><?php esc_html_e('Calendar file', 'my-events'); ?></h2>
+        <p><a href="<?php echo esc_url($file); ?>"><?php esc_html_e('Download', 'my-events'); ?></a></p>
     </section>
     <?php endif; ?>
 

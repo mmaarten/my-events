@@ -22,6 +22,7 @@ class App
             'Emails',
             'Calendar',
             'EventCreator',
+            'ICal',
         ]);
 
         add_action('init', [__CLASS__, 'loadTextdomain'], 0);

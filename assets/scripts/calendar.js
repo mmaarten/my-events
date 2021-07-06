@@ -105,16 +105,16 @@ import './components/breakpoints';
       this.start = start;
       this.end = end;
 
+      // Remove previous loaded events.
+      jQuery.each(this.loadedEvents, function(index, event){
+        this.calendar.getEventById(event.id).remove();
+      }.bind(this));
+
       var data = { action: 'my_events_get_events', start: start, end: end };
 
       this.$elem.addClass('is-loading');
 
       jQuery.post(MyEvents.ajaxurl, data ,function(response){
-
-        // Remove previous loaded events.
-        jQuery.each(this.loadedEvents, function(index, event){
-          this.calendar.getEventById(event.id).remove();
-        }.bind(this));
 
         // Store loaded events
         this.loadedEvents = response.events;
