@@ -91,7 +91,7 @@ class Notifications
             'event'   => $event,
         ], true);
 
-        return self::sendNotification($to, $subject, $message);
+        return self::sendNotification($to, $subject, $message, [], [], $event);
     }
 
     public static function sendInviteeDeclinedNotification($invitee, $user_id, $event)
@@ -124,7 +124,7 @@ class Notifications
             'event'   => $event,
         ], true);
 
-        return self::sendNotification($to, $subject, $message);
+        return self::sendNotification($to, $subject, $message, [], [], $event);
     }
 
     public static function sendInviteeInvitationNotification($invitee, $user_id, $event)
@@ -156,7 +156,7 @@ class Notifications
             'event'   => $event,
         ], true);
 
-        return self::sendNotification($to, $subject, $message);
+        return self::sendNotification($to, $subject, $message, [], [], $event);
     }
 
     public static function sendInviteeRemovedNotification($invitee, $user_id, $event)
@@ -192,14 +192,17 @@ class Notifications
             'event'   => $event,
         ], true);
 
-        return self::sendNotification($to, $subject, $message);
+        return self::sendNotification($to, $subject, $message, [], [], $event);
     }
 
-    public static function sendNotification($to, $subject, $message, $headers = [], $attachments = [])
+    public static function sendNotification($to, $subject, $message, $headers = [], $attachments = [], $event = null)
     {
+        $args = compact('to', 'subject', 'message', 'headers', 'attachments');
+        $args = apply_filters('my_events/notification_args', $args, $event);
+
         add_filter('wp_mail_content_type', [__CLASS__, 'mailContentType']);
 
-        $send = wp_mail($to, $subject, $message, $headers, $attachments);
+        $send = wp_mail($args['to'], $args['subject'], $args['message'], $args['headers'], $args['attachments']);
 
         remove_filter('wp_mail_content_type', [__CLASS__, 'mailContentType']);
 

@@ -11,14 +11,14 @@ class ICal
 {
     public static function init()
     {
-        add_action('acf/save_post', function ($post_id) {
-            if (get_post_type($post_id) == 'event') {
-                $calendar = self::createCalendar($post_id);
-                file_put_contents(self::getEventFile($post_id), $calendar->get());
-            }
-        });
-
+        add_action('acf/save_post', [__CLASS__, 'savePost']);
         add_action('template_redirect', [__CLASS__, 'maybeOutputUserCalendar']);
+
+        add_filter('my_events/notification_args', [__CLASS__, 'notificationArgs'], 10, 2);
+
+        add_shortcode('my-events-download-user-calendar-file-url', function () {
+            return self::getDownloadUserCalendarFileURL();
+        });
     }
 
     public static function getEventFile($event_id, $url = false)
@@ -26,6 +26,15 @@ class ICal
         $upload_dir = wp_get_upload_dir();
 
         return $upload_dir[$url ? 'baseurl' : 'basedir'] . '/calendar-' . get_post_field('post_name', $event_id) . '.ics';
+    }
+
+    public static function getDownloadUserCalendarFileURL()
+    {
+        global $wp;
+
+        return add_query_arg([
+            MY_EVENTS_NONCE_NAME => wp_create_nonce('user_ical_file'),
+        ], home_url($wp->request));
     }
 
     protected static function createEvent($post_id, $user_id = 0)
@@ -67,13 +76,20 @@ class ICal
         return $event;
     }
 
-    public static function getOutputUserCalendarFileURL()
+    public static function createCalendar($post_ids, $user_id = 0)
     {
-        global $wp;
+        $calendar = Calendar::create(get_bloginfo('name'));
 
-        return add_query_arg([
-            MY_EVENTS_NONCE_NAME => wp_create_nonce('user_ical_file'),
-        ], home_url($wp->request));
+        $events = [];
+        foreach ((array) $post_ids as $post_id) {
+            if ($post_id && get_post_type($post_id) == 'event') {
+                $events[] = self::createEvent($post_id, $user_id);
+            }
+        }
+
+        $calendar->event($events);
+
+        return $calendar;
     }
 
     public static function maybeOutputUserCalendar($user_id)
@@ -113,19 +129,24 @@ class ICal
         exit;
     }
 
-    public static function createCalendar($post_ids, $user_id = 0)
+    public static function savePost($post_id)
     {
-        $calendar = Calendar::create(get_bloginfo('name'));
+        if (get_post_type($post_id) == 'event') {
+            $calendar = self::createCalendar($post_id);
+            file_put_contents(self::getEventFile($post_id), $calendar->get());
+        }
+    }
 
-        $events = [];
-        foreach ((array) $post_ids as $post_id) {
-            if ($post_id && get_post_type($post_id) == 'event') {
-                $events[] = self::createEvent($post_id, $user_id);
+    public static function notificationArgs($args, $event)
+    {
+        if ($event) {
+            $file = self::getEventFile($event->ID);
+
+            if (file_exists($file)) {
+                $args['attachments'][] = $file;
             }
         }
 
-        $calendar->event($events);
-
-        return $calendar;
+        return $args;
     }
 }
