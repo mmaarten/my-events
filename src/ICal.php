@@ -104,7 +104,9 @@ class ICal
 
         header('Content-Description: File Transfer');
         header('Content-Type: text/calendar');
-        header('Content-Disposition: attachment; filename=tcalendar.ics');
+        header(
+            sprintf('Content-Disposition: attachment; filename=%s.ics', sanitize_title(__('calendar', 'my-events')))
+        );
 
         echo $calendar->get();
 
