@@ -111,7 +111,7 @@ class ICal
         $events = Model::getUserEvents($user_id, 'accepted', ['fields', 'ids']);
 
         if (! $events) {
-            wp_die(__('No events found.', 'my-events'));
+            wp_die(__("It appears you don't have any accepted invitations.", 'my-events'));
         }
 
         $calendar = self::createCalendar($events, $user_id);
