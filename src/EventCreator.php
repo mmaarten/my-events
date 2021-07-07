@@ -10,7 +10,7 @@ class EventCreator
 
     public static function init()
     {
-        //add_action('init', [__CLASS__, 'removeFields']);
+        add_action('init', [__CLASS__, 'removeFields']);
         add_action('acf/init', [__CLASS__, 'addOptionsPage']);
         add_action('acf/save_post', [__CLASS__, 'savePost']);
         add_action('admin_notices', [__CLASS__, 'adminNotices']);
