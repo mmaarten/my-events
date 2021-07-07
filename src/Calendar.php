@@ -32,6 +32,7 @@ class Calendar
         if (self::isActive() && get_post_type($post) == 'event') {
             return self::getEventURL($post->ID);
         }
+
         return $permalink;
     }
 
