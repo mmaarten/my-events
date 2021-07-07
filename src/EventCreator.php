@@ -91,6 +91,8 @@ class EventCreator
 
             Events::updateEventTime($event->ID);
             Events::setInviteesFromSettingsFields($event->ID);
+
+            ICal::createCalendarFile($event->ID);
         }
     }
 

@@ -13,7 +13,7 @@ class ICal
     {
         add_action('acf/save_post', [__CLASS__, 'savePost']);
         add_action('template_redirect', [__CLASS__, 'maybeOutputUserCalendar']);
-
+        add_action('before_delete_post', [__CLASS__, 'beforeDeletePost']);
         add_filter('my_events/notification_args', [__CLASS__, 'notificationArgs'], 10, 2);
 
         add_shortcode('my-events-download-user-calendar-file-url', function () {
@@ -132,9 +132,41 @@ class ICal
     public static function savePost($post_id)
     {
         if (get_post_type($post_id) == 'event') {
-            $calendar = self::createCalendar($post_id);
-            file_put_contents(self::getEventFile($post_id), $calendar->get());
+            self::createCalendarFile($post_id);
         }
+    }
+
+    public static function beforeDeletePost($post_id)
+    {
+        if (get_post_type($post_id) == 'event') {
+            self::removeCalendarFile($post_id);
+        }
+    }
+
+    public static function createCalendarFile($post_id)
+    {
+        if (get_post_type($post_id) != 'event') {
+            return false;
+        }
+
+        $calendar = self::createCalendar($post_id);
+
+        return file_put_contents(self::getEventFile($post_id), $calendar->get());
+    }
+
+    public static function removeCalendarFile($post_id)
+    {
+        if (get_post_type($post_id) != 'event') {
+            return false;
+        }
+
+        $file = self::getEventFile($post_id);
+
+        if (file_exists($file)) {
+            return unlink($file);
+        }
+
+        return false;
     }
 
     public static function notificationArgs($args, $event)

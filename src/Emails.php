@@ -155,7 +155,7 @@ class Emails
                 'message' => $message,
             ], true);
 
-            wp_mail($to, $subject, $email_message);
+            Notifications::sendNotification($to, $subject, $email_message, [], [], $event);
         }
 
         wp_send_json_success(Helpers::adminNotice(__('Email send.', 'my-events'), 'success', true));
