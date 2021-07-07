@@ -68,7 +68,7 @@ class Events
 
         if ($event->isAllDay()) {
             $start_date = $event->getField('all_day_start');
-            $end_date = $event->getField('all_day_end');
+            $end_date   = $event->getField('all_day_end');
 
             $event->updateField('start', "$start_date 00:00:00");
             $event->updateField('end', "$end_date 23:59:59");
