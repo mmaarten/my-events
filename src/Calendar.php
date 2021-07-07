@@ -190,24 +190,24 @@ class Calendar
 
         // Check transient.
 
-        $transient_key = sprintf('%s|%s', $start, $end);
+        // $transient_key = sprintf('%s|%s', $start, $end);
 
-        $transient = get_transient(self::TRANSIENT);
+        // $transient = get_transient(self::TRANSIENT);
 
-        if (! is_array($transient)) {
-            $transient = [];
-        }
+        // if (! is_array($transient)) {
+        //     $transient = [];
+        // }
 
-        if (isset($transient[$transient_key])) {
-            // Cached
-            $posts = $transient[$transient_key];
-        } else {
+        // if (isset($transient[$transient_key])) {
+        //     // Cached
+        //     $posts = $transient[$transient_key];
+        // } else {
             // Not cached
             $posts = Model::getEventsBetween($start, $end);
             // Save to cache
-            $transient[$transient_key] = $posts;
-            set_transient(self::TRANSIENT, $transient);
-        }
+        //     $transient[$transient_key] = $posts;
+        //     set_transient(self::TRANSIENT, $transient);
+        // }
 
         $events = [];
         foreach ($posts as $post) {
@@ -256,12 +256,20 @@ class Calendar
     {
         $post = new Event($post_id);
 
+        $start = new \DateTime($post->getStartTime('Y-m-d H:i:s'));
+        $end = new \DateTime($post->getEndTime('Y-m-d H:i:s'));
+
+        if ($post->isAllDay()) {
+            $end->modify('+1 day');
+        }
+
         // Create event
         $event = [
             'id'        => $post->ID,
             'title'     => $post->post_title,
-            'start'     => $post->getStartTime('Y-m-d\TH:i:s'),
-            'end'       => $post->getEndTime('Y-m-d\TH:i:s'),
+            'start'     => $start->format('Y-m-d\TH:i:s'),
+            'end'       => $end->format('Y-m-d\TH:i:s'),
+            'allDay'    => $post->isAllDay(),
             'url'       => get_permalink($post->ID),
             'className' => implode(' ', Events::getEventClasses($post->ID)),
         ];

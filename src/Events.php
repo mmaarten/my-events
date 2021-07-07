@@ -66,13 +66,13 @@ class Events
     {
         $event = new Event($post_id);
 
-        // Update time.
-        $date       = $event->getField('date');
-        $start_time = $event->getField('start_time');
-        $end_time   = $event->getField('end_time');
+        if ($event->isAllDay()) {
+            $start_date = $event->getField('all_day_start');
+            $end_date = $event->getField('all_day_end');
 
-        $event->updateField('start', "$date $start_time");
-        $event->updateField('end', "$date $end_time");
+            $event->updateField('start', "$start_date 00:00:00");
+            $event->updateField('end', "$end_date 23:59:59");
+        }
     }
 
     public static function savePost($post_id)

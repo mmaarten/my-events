@@ -45,11 +45,15 @@ class ICal
         $start   = new \DateTime($post->getStartTime('Y-m-d H:i:s'));
         $end     = new \DateTime($post->getEndTime('Y-m-d H:i:s'));
 
-        // Fix: 10:00 will be set to 12:00. So convert it back to 8:00 (UTC)
-        $timezone_str = str_replace('+', '-', wp_timezone_string());
-        $created->setTimeZone(new \DateTimeZone($timezone_str));
-        $start->setTimeZone(new \DateTimeZone($timezone_str));
-        $end->setTimeZone(new \DateTimeZone($timezone_str));
+        if (! $post->isAllDay()) {
+            // Fix: 10:00 will be set to 12:00. So convert it back to 8:00 (UTC)
+            $timezone_str = str_replace('+', '-', wp_timezone_string());
+            $created->setTimeZone(new \DateTimeZone($timezone_str));
+            $start->setTimeZone(new \DateTimeZone($timezone_str));
+            $end->setTimeZone(new \DateTimeZone($timezone_str));
+        } else {
+            $end->modify('+1 day');
+        }
 
         $event = Event::create();
         $event->name($post->post_title);
@@ -64,6 +68,10 @@ class ICal
             $event->classification(Classification::private());
         } else {
             $event->classification(Classification::public());
+        }
+
+        if ($post->isAllDay()) {
+            $event->fullDay();
         }
 
         if ($user_id) {

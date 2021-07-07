@@ -111,7 +111,7 @@ class Fields
                     ),
                     'display_format' => get_option('date_format'),
                     'return_format' => 'Y-m-d',
-                    'first_day' => 1,
+                    'first_day' => get_option('start_of_week', 0),
                 ),
                 array(
                     'key' => 'field_60db3842348af',
@@ -147,7 +147,7 @@ class Fields
                             ),
                             'display_format' => get_option('date_format'),
                             'return_format' => 'Y-m-d',
-                            'first_day' => 1,
+                            'first_day' => get_option('start_of_week', 0),
                         ),
                     ),
                 ),
@@ -210,42 +210,105 @@ class Fields
         ]);
 
         acf_add_local_field([
-            'key'            => 'my_events_event_date',
-            'label'          => __('Date', 'my-events'),
-            'instructions'   => __('The day the event takes place.', 'my-events'),
-            'name'           => 'date',
+            'key'            => 'my_events_event_is_all_day',
+            'label'          => __('All day', 'my-events'),
+            'instructions'   => __('This event takes a full day.', 'my-events'),
+            'name'           => 'is_all_day',
+            'type'           => 'true_false',
+            'required'       => false,
+            'parent'         => 'my_events_event_group',
+        ]);
+
+        acf_add_local_field([
+            'key'            => 'my_events_event_all_day_start',
+            'label'          => __('Start date', 'my-events'),
+            'instructions'   => __('The date when the event starts.', 'my-events'),
+            'name'           => 'all_day_start',
             'type'           => 'date_picker',
             'display_format' => get_option('date_format'),
             'return_format'  => 'Y-m-d',
-            'first_day'      => get_option('start_of_week'),
+            'first_day'      => get_option('start_of_week', 0),
             'required'       => true,
+            'wrapper'        => ['width' => '50%'],
             'parent'         => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_is_all_day',
+                        'operator' => '==',
+                        'value'    => 1
+                    ],
+                ],
+            ],
         ]);
 
         acf_add_local_field([
-            'key'            => 'my_events_event_start_time',
+            'key'            => 'my_events_event_all_day_end',
+            'label'          => __('End date', 'my-events'),
+            'instructions'   => __('The date when the event ends.', 'my-events'),
+            'name'           => 'all_day_end',
+            'type'           => 'date_picker',
+            'display_format' => get_option('date_format'),
+            'return_format'  => 'Y-m-d',
+            'first_day'      => get_option('start_of_week', 0),
+            'required'       => true,
+            'wrapper'        => ['width' => '50%'],
+            'parent'         => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_is_all_day',
+                        'operator' => '==',
+                        'value'    => 1
+                    ],
+                ],
+            ],
+        ]);
+
+        acf_add_local_field([
+            'key'            => 'my_events_event_start',
             'label'          => __('Start time', 'my-events'),
             'instructions'   => __('The time when the event starts.', 'my-events'),
-            'name'           => 'start_time',
-            'type'           => 'time_picker',
-            'display_format' => get_option('time_format'),
-            'return_format'  => 'H:i:s',
+            'name'           => 'start',
+            'type'           => 'date_time_picker',
+            'display_format' => get_option('date_format') . ' ' . get_option('time_format'),
+            'return_format'  => 'Y-m-d H:i:s',
+            'first_day'      => get_option('start_of_week', 0),
             'required'       => true,
             'wrapper'        => ['width' => '50%'],
             'parent'         => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_is_all_day',
+                        'operator' => '==',
+                        'value'    => 0
+                    ],
+                ],
+            ],
         ]);
 
         acf_add_local_field([
-            'key'            => 'my_events_event_end_time',
+            'key'            => 'my_events_event_end',
             'label'          => __('End time', 'my-events'),
             'instructions'   => __('The time when the event ends.', 'my-events'),
-            'name'           => 'end_time',
-            'type'           => 'time_picker',
-            'display_format' => get_option('time_format'),
-            'return_format'  => 'H:i:s',
+            'name'           => 'end',
+            'type'           => 'date_time_picker',
+            'display_format' => get_option('date_format') . ' ' . get_option('time_format'),
+            'return_format'  => 'Y-m-d H:i:s',
+            'first_day'      => get_option('start_of_week', 0),
             'required'       => true,
             'wrapper'        => ['width' => '50%'],
             'parent'         => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_is_all_day',
+                        'operator' => '==',
+                        'value'    => 0
+                    ],
+                ],
+            ],
         ]);
 
         acf_add_local_field([
