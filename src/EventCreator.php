@@ -10,7 +10,7 @@ class EventCreator
 
     public static function init()
     {
-        add_action('init', [__CLASS__, 'removeFields']);
+        //add_action('init', [__CLASS__, 'removeFields']);
         add_action('acf/init', [__CLASS__, 'addOptionsPage']);
         add_action('acf/save_post', [__CLASS__, 'savePost']);
         add_action('admin_notices', [__CLASS__, 'adminNotices']);
@@ -50,16 +50,26 @@ class EventCreator
             return;
         }
 
-        $start_date     = self::getField('date');
+        $is_all_day     = self::getField('is_all_day');
         $repeat_end     = self::getField('repeat_end');
         $repeat_exclude = self::getField('repeat_exclude');
         $repeat         = self::getField('repeat');
+
+        if ($is_all_day) {
+            $start = self::getField('all_day_start');
+            $end   = self::getField('all_day_end');
+        } else {
+            $start = self::getField('start');
+            $end   = self::getField('end');
+        }
 
         if (! is_array($repeat_exclude)) {
             $repeat_exclude = [];
         }
 
-        $dates = Helpers::generateDates($start_date, $repeat_end, $repeat, $repeat_exclude);
+        $repeat_exclude = wp_list_pluck($repeat_exclude, 'date');
+
+        $dates = Helpers::generateDates($start, $end, $repeat_end, $repeat, $repeat_exclude);
         $dates = array_slice($dates, 0, 50);
 
         foreach ($dates as $date) {
@@ -74,12 +84,18 @@ class EventCreator
 
             $event = new Event($post_id);
 
-            $event->updateField('date', $date);
+            if ($is_all_day) {
+                $event->updateField('all_day_start', $date['start']);
+                $event->updateField('all_day_end', $date['end']);
+            } else {
+                $start_time = date('H:i:s', strtotime(self::getField('start')));
+                $end_time = date('H:i:s', strtotime(self::getField('end')));
+
+                $event->updateField('start', "{$date['start']} $start_time");
+                $event->updateField('end', "{$date['end']} $end_time");
+            }
+
             $event->updateField('is_all_day', self::getField('is_all_day', false));
-            $event->updateField('all_day_start', self::getField('all_day_start', false));
-            $event->updateField('all_day_end', self::getField('all_day_end', false));
-            $event->updateField('start', self::getField('start', false));
-            $event->updateField('end', self::getField('end', false));
             $event->updateField('description', self::getField('description', false));
             $event->updateField('organisers', self::getField('organisers', false));
             $event->updateField('invitees_type', self::getField('invitees_type', false));

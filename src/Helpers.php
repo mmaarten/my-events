@@ -121,21 +121,34 @@ class Helpers
         return $value ? esc_html__('yes', 'my-events') : esc_html__('no', 'my-events');
     }
 
-    public static function generateDates($start_date, $end_date, $modifier, $exclude = [])
+    public static function generateDates($start, $end, $end_repeat, $modifier, $exclude = [])
     {
-        $date     = new \DateTime($start_date);
-        $end_date = new \DateTime($end_date);
+        $start      = new \DateTime($start);
+        $end        = new \DateTime($end);
+        $end_repeat = new \DateTime($end_repeat);
 
         $dates = [];
 
-        while ($date->format('U') <= $end_date->format('U') && $date && $end_date) {
-            $include = $date->format('Y-m-d');
+        while ($start->format('U') <= $end_repeat->format('U') && $start && $end && $end_repeat) {
+            $date = [
+                'start' => $start->format('Y-m-d'),
+                'end'   => $end->format('Y-m-d'),
+            ];
 
-            if (! in_array($include, $exclude)) {
-                $dates[] = $include;
+            $include = true;
+            foreach ($exclude as $value) {
+                if (self::doDatesIntersect($date['start'], $date['end'], $value, $value)) {
+                    $include = false;
+                    break;
+                }
             }
 
-            $date->modify($modifier);
+            if ($include) {
+                $dates[] = $date;
+            }
+
+            $start->modify($modifier);
+            $end->modify($modifier);
         }
 
         return $dates;
