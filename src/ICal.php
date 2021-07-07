@@ -51,8 +51,6 @@ class ICal
         $start->setTimeZone(new \DateTimeZone($timezone_str));
         $end->setTimeZone(new \DateTimeZone($timezone_str));
 
-        error_log($start->format('H:i:s'));
-
         $event = Event::create();
         $event->name($post->post_title);
         $event->description(Helpers::unautop($post->getDescription()));
@@ -119,6 +117,10 @@ class ICal
         $user_id = get_current_user_id();
 
         $events = Model::getUserEvents($user_id, 'accepted', ['fields', 'ids']);
+
+        if ($events) {
+            $events = Model::excludeEventsThatAreOver($events, ['fields', 'ids']);
+        }
 
         if (! $events) {
             wp_die(__("It appears you don't have any accepted invitations.", 'my-events'));
