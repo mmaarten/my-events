@@ -37,6 +37,7 @@ class AdminColumns
             'location'         => __('Location', 'my-events'),
             'over'             => __('Over', 'my-events'),
             'private'          => __('Private', 'my-events'),
+            'subscriptions_enabled' => __('Subscriptions enabled', 'my-events'),
         ] + $columns;
     }
 
@@ -82,6 +83,9 @@ class AdminColumns
                 break;
             case 'private':
                 echo Helpers::renderBoolean($event->isPrivate());
+                break;
+            case 'subscriptions_enabled':
+                echo Helpers::renderBoolean($event->subscriptionsEnabled());
                 break;
         }
     }

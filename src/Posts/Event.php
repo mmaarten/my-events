@@ -394,6 +394,11 @@ class Event extends Post
         return $this->getField('max_subscriptions');
     }
 
+    public function subscriptionsEnabled()
+    {
+        return $this->getField('enable_subscriptions') ? true : false;
+    }
+
     public function acceptInvitation($user_id)
     {
         if (! $this->hasAccess($user_id)) {

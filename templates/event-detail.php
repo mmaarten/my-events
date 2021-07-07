@@ -19,7 +19,7 @@ if (file_exists(ICal::getEventFile($event->ID))) {
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-    <?php the_title('<h1>', '</h1>'); ?>
+    <h1><?php echo esc_html($event->post_title); ?><?php edit_post_link(__('Edit', 'my-events'), ' <small>', '</small>'); ?></h1>
 
     <section id="event-notices">
         <?php Subscriptions::notices(); ?>
@@ -66,6 +66,44 @@ if (file_exists(ICal::getEventFile($event->ID))) {
     </section>
     <?php endif; ?>
 
+    <section id="event-accessibility">
+        <h2><?php esc_html_e('Accessibility', 'my-events'); ?></h2>
+        <?php if ($event->isPrivate()) : ?>
+        <p><?php esc_html_e('This event is only accessible to organisers and invitees of this event.', 'my-events'); ?></p>
+        <?php else : ?>
+        <p><?php esc_html_e('Anyone has access to this event.', 'my-events'); ?></p>
+        <?php endif; ?>
+    </section>
+
+    <section id="event-subscriptions">
+        <h2><?php esc_html_e('Subscriptions', 'my-events'); ?></h2>
+        <?php
+
+        if ($event->subscriptionsEnabled()) {
+            if ($event->isLimitedParticipants()) {
+                $max_available_places = $event->getMaxParticipants();
+                $available_places = $max_available_places - count($event->getParticipants());
+
+                if ($available_places) {
+                    $limited_text = sprintf(esc_html__('%1$s of %2$s places available.', 'my-events'), $available_places, $max_available_places);
+                } else {
+                    $limited_text = esc_html__('No available places.', 'my-events');
+                }
+
+                printf(
+                    '<p>%s</p>',
+                    sprintf(esc_html__('Subscriptions are limited: %s', 'my-events'), $limited_text)
+                );
+            } else {
+                printf('<p>%s</p>', esc_html__('Subscriptions are enabled.', 'my-events'));
+            }
+        } else {
+            printf('<p>%s</p>', esc_html__('Subscriptions are disabled.', 'my-events'));
+        }
+
+        ?>
+    </section>
+
     <?php if ($file) : ?>
     <section id="event-file">
         <h2><?php esc_html_e('Calendar file', 'my-events'); ?></h2>
@@ -76,7 +114,5 @@ if (file_exists(ICal::getEventFile($event->ID))) {
     <section id="event-subscription">
         <?php Subscriptions::form(); ?>
     </section>
-
-    <?php edit_post_link(__('Edit this event', 'my-events', '<p>', '</p>')); ?>
 
 </article>

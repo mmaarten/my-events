@@ -97,6 +97,7 @@ class EventCreator
 
             $event->updateField('is_all_day', self::getField('is_all_day', false));
             $event->updateField('description', self::getField('description', false));
+            $event->updateField('enable_subscriptions', self::getField('enable_subscriptions', false));
             $event->updateField('organisers', self::getField('organisers', false));
             $event->updateField('invitees_type', self::getField('invitees_type', false));
             $event->updateField('invitees_individual', self::getField('invitees_individual', false));
@@ -107,8 +108,7 @@ class EventCreator
             $event->updateField('location_input', self::getField('location_input', false));
             $event->updateField('location_id', self::getField('location_id', false));
 
-            Events::updateEventTime($event->ID);
-            Events::setInviteesFromSettingsFields($event->ID);
+            Events::updateEventFields($event->ID);
 
             // TODO : Use hook.
             ICal::createCalendarFile($event->ID);

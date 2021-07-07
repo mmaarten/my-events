@@ -62,26 +62,11 @@ class Events
         return apply_filters('my_events/invitee_class', $classes, $invitee, $event);
     }
 
-    public static function updateEventTime($post_id)
-    {
-        $event = new Event($post_id);
-
-        if ($event->isAllDay()) {
-            $start_date = $event->getField('all_day_start');
-            $end_date   = $event->getField('all_day_end');
-
-            $event->updateField('start', "$start_date 00:00:00");
-            $event->updateField('end', "$end_date 23:59:59");
-        }
-    }
-
     public static function savePost($post_id)
     {
         switch (get_post_type($post_id)) {
             case 'event':
-                self::updateEventTime($post_id);
-                // Update invitees.
-                self::setInviteesFromSettingsFields($post_id);
+                self::updateEventFields($post_id);
                 break;
             case 'invitee_group':
                 // Update invitees.
@@ -181,18 +166,37 @@ class Events
         ]);
     }
 
-    public static function setInviteesFromSettingsFields($event_id)
+    public static function updateEventFields($post_id)
     {
-        // Get event.
-        $event = new Event($event_id);
+        $event = new Event($post_id);
 
-        $user_ids = self::getInviteesFromSettingsField($event->ID);
+        if ($event->isAllDay()) {
+            // Set event 'start' and 'end'.
+            $start_date = $event->getField('all_day_start');
+            $end_date   = $event->getField('all_day_end');
+            $event->updateField('start', "$start_date 00:00:00");
+            $event->updateField('end', "$end_date 23:59:59");
+        }
 
-        // Create invitees
-        $event->setInvitees($user_ids);
-
-        // Remove settings (will be refilled with invitees from our custom post type).
-        $event->deleteField('invitees_individual');
+        if ($event->subscriptionsEnabled()) {
+            // Get invitees from settings field.
+            $user_ids = self::getInviteesFromSettingsField($event->ID);
+            // Create invitees
+            $event->setInvitees($user_ids);
+            // Remove settings (will be refilled with invitees from our custom post type).
+            $event->deleteField('invitees_individual');
+        } else {
+            // Delete subscription related settings.
+            $event->deleteField('organisers');
+            $event->deleteField('invitees_type');
+            $event->deleteField('invitees_individual');
+            $event->deleteField('invitees_group');
+            $event->deleteField('invitee_default_status');
+            $event->deleteField('is_private');
+            $event->deleteField('location_type');
+            $event->deleteField('location_input');
+            $event->deleteField('location_id');
+        }
     }
 
     public static function updateInvitiesField($value, $post_id, $field)
