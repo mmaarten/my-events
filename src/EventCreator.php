@@ -76,8 +76,10 @@ class EventCreator
 
             $event->updateField('date', $date);
             $event->updateField('is_all_day', self::getField('is_all_day', false));
-            $event->updateField('start_time', self::getField('start_time', false));
-            $event->updateField('end_time', self::getField('end_time', false));
+            $event->updateField('all_day_start', self::getField('all_day_start', false));
+            $event->updateField('all_day_end', self::getField('all_day_end', false));
+            $event->updateField('start', self::getField('start', false));
+            $event->updateField('end', self::getField('end', false));
             $event->updateField('description', self::getField('description', false));
             $event->updateField('organisers', self::getField('organisers', false));
             $event->updateField('invitees_type', self::getField('invitees_type', false));
