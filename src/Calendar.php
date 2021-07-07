@@ -21,7 +21,6 @@ class Calendar
         add_action('wp_ajax_nopriv_my_events_get_events', [__CLASS__, 'getEvents']);
         add_action('wp_ajax_my_events_render_calendar_event_detail', [__CLASS__, 'renderEventDetail']);
         add_action('wp_ajax_nopriv_my_events_render_calendar_event_detail', [__CLASS__, 'renderEventDetail']);
-        add_action('save_post', [__CLASS__, 'savePost'], 0);
         add_action('acf/save_post', [__CLASS__, 'acfSavePost'], PHP_INT_MAX);
         add_action('transition_post_status', [__CLASS__, 'transitionPostStatus'], 0, 3);
 
@@ -36,23 +35,12 @@ class Calendar
         return $permalink;
     }
 
-    public static function savePost($post_id)
-    {
-        static $processed = false;
-
-        if (get_post_type($post_id) == 'event' && ! $processed) {
-            // update_post_meta($post_id, 'prev_start', get_field('start', $post_id));
-            // update_post_meta($post_id, 'prev_end', get_field('end', $post_id));
-            // self::sanitizeTransient($post_id);
-
-            $processed = true;
-        }
-    }
-
     public static function acfSavePost($post_id)
     {
         if (get_post_type($post_id) == 'event') {
-            //self::sanitizeTransient($post_id);
+            // TODO: Do not delete all.
+            delete_transient(self::TRANSIENT);
+            error_log('delete_transient');
         }
     }
 
@@ -60,44 +48,11 @@ class Calendar
     {
         if (get_post_type($post) == 'event') {
             if ($old_status != $new_status && ($old_status == 'publish' || $new_status == 'publish')) {
-                //self::sanitizeTransient($post);
+                // TODO: Do not delete all.
+                delete_transient(self::TRANSIENT);
+                error_log('delete_transient');
             }
         }
-    }
-
-    public static function sanitizeTransient($post_id)
-    {
-        $transient = get_transient(self::TRANSIENT);
-
-        if (! $transient || ! is_array($transient)) {
-            return;
-        }
-
-        $event = new Event($post_id);
-
-        $event_start = $event->getStartTime('Y-m-d');
-        $event_end   = $event->getEndTime('Y-m-d');
-
-        if (! $event_start || ! $event_end) {
-            return;
-        }
-
-        $sanitized = [];
-
-        foreach ($transient as $key => $events) {
-            list($start, $end) = explode('|', $key);
-
-            $start = date('Y-m-d', strtotime($start));
-            $end   = date('Y-m-d', strtotime($end));
-
-            if (Helpers::doDatesIntersect($event_start, $event_end, $start, $end)) {
-                continue;
-            }
-
-            $sanitized[$key] = $events;
-        }
-
-        set_transient(self::TRANSIENT, $sanitized);
     }
 
     public static function isActive()
@@ -179,6 +134,39 @@ class Calendar
         self::enqueueAssets();
     }
 
+    public static function getTransientKey($start, $end)
+    {
+        return sprintf('%s|%s', $start, $end);
+    }
+
+    public static function getEventsFromTransient($start, $end)
+    {
+        $key = self::getTransientKey($start, $end);
+
+        $transient = get_transient(self::TRANSIENT);
+
+        if (! is_array($transient)) {
+            $transient = [];
+        }
+
+        return isset($transient[$key]) ? $transient[$key] : false;
+    }
+
+    public static function saveEventsToTransient($posts, $start, $end)
+    {
+        $key = self::getTransientKey($start, $end);
+
+        $transient = get_transient(self::TRANSIENT);
+
+        if (! is_array($transient)) {
+            $transient = [];
+        }
+
+        $transient[$key] = $posts;
+
+        return set_transient(self::TRANSIENT, $transient);
+    }
+
     public static function getEvents()
     {
         if (! wp_doing_ajax()) {
@@ -188,26 +176,12 @@ class Calendar
         $start = $_POST['start'];
         $end   = $_POST['end'];
 
-        // Check transient.
+        $posts = self::getEventsFromTransient($start, $end);
 
-        // $transient_key = sprintf('%s|%s', $start, $end);
-
-        // $transient = get_transient(self::TRANSIENT);
-
-        // if (! is_array($transient)) {
-        //     $transient = [];
-        // }
-
-        // if (isset($transient[$transient_key])) {
-        //     // Cached
-        //     $posts = $transient[$transient_key];
-        // } else {
-            // Not cached
+        if (! is_array($posts)) {
             $posts = Model::getEventsBetween($start, $end);
-            // Save to cache
-        //     $transient[$transient_key] = $posts;
-        //     set_transient(self::TRANSIENT, $transient);
-        // }
+            self::saveEventsToTransient($posts, $start, $end);
+        }
 
         $events = [];
         foreach ($posts as $post) {
