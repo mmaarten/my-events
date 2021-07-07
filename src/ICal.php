@@ -41,15 +41,25 @@ class ICal
     {
         $post = new \My\Events\Posts\Event($post_id);
 
-        $timezone = new \DateTimeZone(wp_timezone_string());
+        $created = new \DateTime($post->post_date);
+        $start   = new \DateTime($post->getStartTime('Y-m-d H:i:s'));
+        $end     = new \DateTime($post->getEndTime('Y-m-d H:i:s'));
+
+        // Fix: 10:00 will be set to 12:00. So convert it back to 8:00 (UTC)
+        $timezone_str = str_replace('+', '-', wp_timezone_string());
+        $created->setTimeZone(new \DateTimeZone($timezone_str));
+        $start->setTimeZone(new \DateTimeZone($timezone_str));
+        $end->setTimeZone(new \DateTimeZone($timezone_str));
+
+        error_log($start->format('H:i:s'));
 
         $event = Event::create();
         $event->name($post->post_title);
         $event->description(Helpers::unautop($post->getDescription()));
         $event->uniqueIdentifier("my-events-{$post->ID}");
-        $event->createdAt(new \DateTime($post->post_date, $timezone));
-        $event->startsAt(new \DateTime($post->getStartTime('Y-m-d H:i:s'), $timezone));
-        $event->endsAt(new \DateTime($post->getEndTime('Y-m-d H:i:s'), $timezone));
+        $event->createdAt($created);
+        $event->startsAt($start);
+        $event->endsAt($end);
         $event->url(get_permalink($post->ID));
 
         if ($post->isPrivate()) {
