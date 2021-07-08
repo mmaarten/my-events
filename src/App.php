@@ -23,6 +23,7 @@ class App
             'Calendar',
             'EventCreator',
             'ICal',
+            'Comments',
         ]);
 
         add_action('init', [__CLASS__, 'loadTextdomain'], 0);
