@@ -2,10 +2,10 @@
 
 namespace My\Events;
 
+use My\Events\Posts\Event;
+
 class Comments
 {
-    use My\Events\Posts\Event;
-
     public static function init()
     {
         //add_filter('comment_moderation_recipients', [__CLASS__, 'recipients'], 10, 2);
