@@ -108,7 +108,7 @@ class ICal
         return $calendar;
     }
 
-    public static function maybeOutputUserCalendar($user_id)
+    public static function maybeOutputUserCalendar()
     {
         if (empty($_GET[MY_EVENTS_NONCE_NAME])) {
             return;
@@ -124,10 +124,10 @@ class ICal
 
         $user_id = get_current_user_id();
 
-        $events = Model::getUserEvents($user_id, 'accepted', ['fields', 'ids']);
+        $events = Model::getUserEvents($user_id, 'accepted', ['fields' => 'ids']);
 
         if ($events) {
-            $events = Model::excludeEventsThatAreOver($events, ['fields', 'ids']);
+            $events = Model::excludeEventsThatAreOver($events, ['fields' => 'ids']);
         }
 
         if (! $events) {
