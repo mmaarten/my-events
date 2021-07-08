@@ -49,7 +49,7 @@ class PostTypes
             'has_archive'        => true,
             'hierarchical'       => false,
             'menu_position'      => 20,
-            'supports'           => ['title'],
+            'supports'           => ['title', 'comments', 'thumbnail'],
             'taxonomies'         => [],
             'show_in_rest'       => false
         ]);
