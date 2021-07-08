@@ -13,6 +13,8 @@ class Calendar
         add_shortcode('calendar', function () {
             ob_start();
             self::render();
+
+            printf('<a href="%1$s">%2$s</a>', self::getGoToDateURL('2021-01-01'), 'go');
             return ob_get_clean();
         });
 
@@ -21,6 +23,17 @@ class Calendar
         add_action('wp_ajax_nopriv_my_events_get_events', [__CLASS__, 'getEvents']);
         add_action('acf/save_post', [__CLASS__, 'acfSavePost'], PHP_INT_MAX);
         add_action('transition_post_status', [__CLASS__, 'transitionPostStatus'], 0, 3);
+    }
+
+    public static function getGoToDateURL($date)
+    {
+        $page_id = self::getPageId();
+
+        if (! $page_id) {
+            return false;
+        }
+
+        return trailingslashit(get_permalink($page_id)) . '#calendar/date/' . date_i18n('Y-m-d', strtotime($date));
     }
 
     public static function acfSavePost($post_id)

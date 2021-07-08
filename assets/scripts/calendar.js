@@ -120,3 +120,25 @@ import './components/breakpoints';
   window.addEventListener('DOMContentLoaded', App.init.bind(App));
 
 })(window, document);
+(function(){
+
+  window.addEventListener('DOMContentLoaded', function () {
+
+    var hash = window.location.hash;
+
+    if (! hash) {
+      return;
+    }
+
+    var matches = hash.match(/#calendar\/date\/(\d{4}-\d{2}-\d{2})/);
+
+    if (! matches) {
+      return;
+    }
+
+    MyEventsCalendar.calendar.gotoDate(matches[1]);
+
+    window.history.replaceState({}, document.title, window.location.origin + window.location.pathname);
+  });
+
+})();
