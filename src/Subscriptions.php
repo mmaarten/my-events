@@ -7,16 +7,19 @@ use My\Events\Posts\Invitee;
 
 class Subscriptions
 {
+    protected static $message = '';
+
     public static function init()
     {
         add_action('template_redirect', [__CLASS__, 'process']);
-
-        add_action('wp_ajax_my_events_process_event_subscription', [__CLASS__, 'process']);
-        add_action('wp_ajax_nopriv_my_events_process_event_subscription', [__CLASS__, 'process']);
     }
 
-    public static function notices($post = null)
+    public static function form($post = null)
     {
+        if (self::$message) {
+            echo self::$message;
+        }
+
         if (! is_user_logged_in()) {
             printf(
                 '<div class="alert alert-danger" role="alert">%s</div>',
@@ -29,8 +32,8 @@ class Subscriptions
 
         $user_id = get_current_user_id();
 
-        if (! $event->hasAccess($user_id)) {
-            printf('<div class="alert alert-danger" role="alert">%s</div>', esc_html__('You have no access to this event.', 'my-events'));
+        if (! $event->subscriptionsEnabled()) {
+            printf('<div class="alert alert-danger" role="alert">%s</div>', esc_html__('Subscriptions are disabled.', 'my-events'));
             return;
         }
 
@@ -44,6 +47,18 @@ class Subscriptions
         if (! $invitee) {
             printf('<div class="alert alert-danger" role="alert">%s</div>', esc_html__('You are not invited to this event.', 'my-events'));
             return;
+        }
+
+        if ($event->isLimitedParticipants()) {
+            $max_participants = $event->getMaxParticipants();
+            $participant_count = count($event->getParticipants());
+
+            $text = sprintf(esc_html__('%1$s out of %2$s places available', 'my-events'), $max_participants - $participant_count, $max_participants);
+
+            printf(
+                '<div class="alert alert-info" role="alert">%s</div>',
+                sprintf(esc_html__('Subscriptions are limited: %s.', 'my-events'), $text)
+            );
         }
 
         $max_reached = $event->isLimitedParticipants() && count($event->getParticipants()) >= $event->getMaxParticipants();
@@ -63,31 +78,6 @@ class Subscriptions
         if ($invitee->getStatus() === 'pending') {
             printf('<div class="alert alert-warning" role="alert">%s</div>', esc_html__('We would like to know if you are comming to this event.', 'my-events'));
         }
-    }
-
-    public static function form($post = null)
-    {
-        if (! is_user_logged_in()) {
-            return;
-        }
-
-        $event = new Event($post);
-
-        $user_id = get_current_user_id();
-
-        if (! $event->hasAccess($user_id)) {
-            return;
-        }
-
-        if ($event->isOver()) {
-            return;
-        }
-
-        $invitee = $event->getInviteeByUser($user_id);
-
-        if (! $invitee) {
-            return;
-        }
 
         $max_reached = $event->isLimitedParticipants() && count($event->getParticipants()) >= $event->getMaxParticipants();
 
@@ -96,18 +86,17 @@ class Subscriptions
 
         ?>
 
-        <form id="event-subscription-form" method="post">
+        <form id="event-subscription-form" action="#event-subscription-form" method="post">
 
             <?php wp_nonce_field('event_subscription_form', MY_EVENTS_NONCE_NAME); ?>
-            <input type="hidden" name="action" value="my_events_process_event_subscription">
             <input type="hidden" name="invitee" value="<?php echo esc_attr($invitee->ID); ?>">
 
-            <ul class="list-inline mb-0 d-table ml-auto">
+            <ul class="list-inline mb-0">
                 <?php if ($can_decline) : ?>
-                <li class="list-inline-item"><label class="btn btn-danger mb-0"><input type="radio" class="d-none" name="request" value="decline"><?php esc_attr_e('Decline invitation', 'my-events'); ?></label></li>
+                <li class="list-inline-item"><label class="btn btn-outline-light mb-0"><input type="radio" class="d-none" name="request" value="decline" onchange="jQuery(this).closest('form').trigger('submit');"><?php esc_attr_e('Decline invitation', 'my-events'); ?></label></li>
                 <?php endif; ?>
                 <?php if ($can_accept) : ?>
-                <li class="list-inline-item"><label class="btn btn-success mb-0"><input type="radio" class="d-none" name="request" value="accept"><?php esc_attr_e('Accept invitation', 'my-events'); ?></label></li>
+                <li class="list-inline-item"><label class="btn btn-outline-light mb-0"><input type="radio" class="d-none" name="request" value="accept" onchange="jQuery(this).closest('form').trigger('submit');"><?php esc_attr_e('Accept invitation', 'my-events'); ?></label></li>
                 <?php endif; ?>
             </ul>
 
@@ -118,21 +107,31 @@ class Subscriptions
 
     public static function process()
     {
-        if (! wp_doing_ajax()) {
+        if (! isset($_POST[MY_EVENTS_NONCE_NAME])) {
             return;
         }
 
-        check_ajax_referer('event_subscription_form', MY_EVENTS_NONCE_NAME);
+        if (! wp_verify_nonce($_POST[MY_EVENTS_NONCE_NAME], 'event_subscription_form')) {
+            return;
+        }
 
         $invitee_id = isset($_POST['invitee']) ? $_POST['invitee'] : 0;
         $request    = isset($_POST['request']) ? $_POST['request'] : '';
 
         if (! is_user_logged_in()) {
-            wp_send_json_error(__('You need to login in order to subscribe.', 'my-events'));
+            self::$message = sprintf(
+                '<div class="alert alert-danger" role="alert">%s</div>',
+                esc_html__('You need to login in order to subscribe.', 'my-events')
+            );
+            return;
         }
 
         if (! $invitee_id || get_post_type($invitee_id) !== 'invitee') {
-            wp_send_json_error(__('Invalid invitee.', 'my-events'));
+            self::$message = sprintf(
+                '<div class="alert alert-danger" role="alert">%s</div>',
+                esc_html__('Invalid invitee.', 'my-events')
+            );
+            return;
         }
 
         $invitee = new Invitee($invitee_id);
@@ -140,17 +139,29 @@ class Subscriptions
         $user_id = get_current_user_id();
 
         if ($user_id != $invitee->getUser()) {
-            wp_send_json_error(__('Invalid user.', 'my-events'));
+            self::$message = sprintf(
+                '<div class="alert alert-danger" role="alert">%s</div>',
+                esc_html__('Invalid user..', 'my-events')
+            );
+            return;
         }
 
         $event_id = $invitee->getEvent();
 
         if (! $event_id || get_post_type($event_id) !== 'event') {
-            wp_send_json_error(__('Invalid event.', 'my-events'));
+            self::$message = sprintf(
+                '<div class="alert alert-danger" role="alert">%s</div>',
+                esc_html__('Invalid event.', 'my-events')
+            );
+            return;
         }
 
         if (! in_array($request, ['accept', 'decline'])) {
-            wp_send_json_error(__('Invalid request.', 'my-events'));
+            self::$message = sprintf(
+                '<div class="alert alert-danger" role="alert">%s</div>',
+                esc_html__('Invalid request.', 'my-events')
+            );
+            return;
         }
 
         $event = new Event($event_id);
@@ -166,17 +177,11 @@ class Subscriptions
         }
 
         if (is_wp_error($result)) {
-            wp_send_json_error($result->get_error_message());
+            self::$message = sprintf(
+                '<div class="alert alert-danger" role="alert">%s</div>',
+                esc_html($result->get_error_message())
+            );
+            return;
         }
-
-        if ($request === 'accept') {
-            $message = __('You have accepted the invitation.', 'my-events');
-        }
-
-        if ($request === 'decline') {
-            $message = __('You have declined the invitation.', 'my-events');
-        }
-
-        wp_send_json_success($message);
     }
 }

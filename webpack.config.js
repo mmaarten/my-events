@@ -9,7 +9,6 @@ module.exports = {
     'admin-script': './assets/scripts/admin.js',
     'admin-style': './assets/styles/admin.scss',
     'fontawesome': './assets/styles/fontawesome.scss',
-    'featherlight-script': './assets/scripts/featherlight.js',
   },
   plugins : [
     ...defaultConfig.plugins,
