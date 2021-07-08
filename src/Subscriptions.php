@@ -14,7 +14,7 @@ class Subscriptions
         add_action('template_redirect', [__CLASS__, 'process']);
     }
 
-    public static function form($post = null)
+    public static function form($post = null, $action = null)
     {
         if (self::$message) {
             echo self::$message;
@@ -86,7 +86,7 @@ class Subscriptions
 
         ?>
 
-        <form id="event-subscription-form" action="#event-subscription-form" method="post">
+        <form id="event-subscription-form" action="<?php echo $action ? esc_attr($action) : '#event-subscription-form'; ?>" method="post">
 
             <?php wp_nonce_field('event_subscription_form', MY_EVENTS_NONCE_NAME); ?>
             <input type="hidden" name="invitee" value="<?php echo esc_attr($invitee->ID); ?>">
