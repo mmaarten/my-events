@@ -38,7 +38,8 @@ class Emails
                 __('Send email', 'my-events'),
                 [__CLASS__, 'renderMetaBox'],
                 $screen,
-                'side'
+                'advanced',
+                'low'
             );
         }
     }
