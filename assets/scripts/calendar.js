@@ -67,6 +67,8 @@ import './components/breakpoints';
     },
 
     eventDidMount: function (info) {
+      // Set event ID.
+      jQuery(info.el).attr('data-id', info.event.id);
       // Set title attribute.
       jQuery(info.el).attr('title', info.event.title);
     },
@@ -122,8 +124,7 @@ import './components/breakpoints';
 })(window, document);
 (function(){
 
-  window.addEventListener('DOMContentLoaded', function () {
-
+  function gotoDate() {
     var hash = window.location.hash;
 
     if (! hash) {
@@ -136,9 +137,18 @@ import './components/breakpoints';
       return;
     }
 
-    MyEventsCalendar.calendar.gotoDate(matches[1]);
+    var date = matches[1];
 
-    window.history.replaceState({}, document.title, window.location.origin + window.location.pathname);
-  });
+    MyEventsCalendar.calendar.gotoDate(date);
+    MyEventsCalendar.$elem.find('.fc-day').filter(function(){
+      return jQuery(this).data('date') == date;
+    }).addClass('highlight');
+
+    // Remove hash
+    //window.history.replaceState({}, document.title, window.location.origin + window.location.pathname);
+  }
+
+  window.addEventListener('DOMContentLoaded', gotoDate);
+  window.addEventListener('hashchange', gotoDate, false);
 
 })();
