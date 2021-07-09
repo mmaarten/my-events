@@ -192,27 +192,19 @@ class Event extends Post
 
     public function getInviteesByStatus($status, $args = [])
     {
-        $invitees = $this->getInvitees(['fields' => 'ids']);
-
-        if (! $invitees) {
-            return [];
-        }
-
-        return Model::getInviteesByStatus($status, [
-            'include' => $invitees,
+        return $this->getInvitees([
+            'meta_key'     => 'status',
+            'meta_compare' => '=',
+            'meta_value'   => $status,
         ] + $args);
     }
 
     public function getInviteesByUser($user_id, $args = [])
     {
-        $invitees = $this->getInvitees(['fields' => 'ids']);
-
-        if (! $invitees) {
-            return [];
-        }
-
-        return Model::getInviteesByUser($user_id, [
-            'include' => $invitees,
+        return $this->getInvitees([
+            'meta_key'     => 'user',
+            'meta_compare' => '=',
+            'meta_value'   => $user_id,
         ] + $args);
     }
 
@@ -261,17 +253,24 @@ class Event extends Post
         return false;
     }
 
-    public function removeInvitee($post_id)
+    public function removeInvitee($invitee_id)
     {
-        $invitee = get_post($post_id);
-
-        if ($invitee && get_post_type($invitee) === 'invitee') {
-            $invitee = new Invitee($invitee);
-            do_action('my_events/invitee_removed', $invitee, $invitee->getUser(), $this);
-            return wp_delete_post($invitee->ID, true);
+        if (! $invitee_id || get_post_type($invitee_id) != 'invitee') {
+            return false;
         }
 
-        return false;
+        $invitee = new Invitee($invitee_id);
+
+        do_action('my_events/invitee_removed', $invitee, $invitee->getUser(), $this);
+
+        return wp_delete_post($invitee->ID, true);
+    }
+
+    public function removeInviteeByUser($user_id)
+    {
+        $invitee = $this->getInviteeByUser($user_id);
+
+        return $this->removeInvitee($invitee->ID);
     }
 
     public function isInvitee($user_id)
@@ -312,13 +311,6 @@ class Event extends Post
         foreach ($delete as $invitee_id) {
             $this->removeInvitee($invitee_id);
         }
-    }
-
-    public function removeInviteeByUser($user_id)
-    {
-        $invitee = $this->getInviteeByUser($user_id);
-
-        return $this->removeInvitee($invitee->ID);
     }
 
     public function getInviteesUsers($status = null, $args = [])

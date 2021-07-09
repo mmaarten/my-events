@@ -17,7 +17,7 @@ class Events
         add_action('add_meta_boxes', [__CLASS__, 'addMetaBoxes']);
         add_action('admin_notices', [__CLASS__, 'adminNotices']);
 
-        add_filter('acf/load_value/key=my_events_event_invitees_individual', [__CLASS__, 'updateInvitiesField'], 10, 3);
+        add_filter('acf/load_value/key=my_events_event_invitees_individual', [__CLASS__, 'populateInviteesField'], 10, 3);
         add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
         add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
     }
@@ -206,21 +206,23 @@ class Events
         }
     }
 
-    public static function updateInvitiesField($value, $post_id, $field)
+    public static function populateInviteesField($value, $post_id, $field)
     {
         // Don't change field value on post save. We need to access the field settings.
         if (did_action('acf/save_post')) {
             return $value;
         }
 
-        // Populates field with invitees from our post type.
-        if (get_post_type($post_id) == 'event') {
-            $event = new Event($post_id);
-            return $event->getInviteesUsers(null, ['fields' => 'ID']);
+        // Check post type.
+        if (get_post_type($post_id) != 'event') {
+            return $value;
         }
 
-        // Return.
-        return $value;
+        // Get event.
+        $event = new Event($post_id);
+
+        // Return invitees user ids.
+        return $event->getInviteesUsers(null, ['fields' => 'ID']);
     }
 
     public static function updateInviteesFromInviteeGroup($group_id)
