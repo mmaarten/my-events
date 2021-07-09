@@ -36,6 +36,12 @@ class Events
             $classes[] = 'is-private-event';
         }
 
+        if ($event->subscriptionsEnabled()) {
+            $classes[] = 'is-subscriptions-enabled';
+        } else {
+            $classes[] = 'is-subscriptions-disabled';
+        }
+
         if (is_user_logged_in()) {
             $invitee = $event->getInviteeByUser(get_current_user_id());
             if ($invitee) {
@@ -196,6 +202,7 @@ class Events
             $event->deleteField('location_type');
             $event->deleteField('location_input');
             $event->deleteField('location_id');
+            $event->setInvitees([]);
         }
     }
 
