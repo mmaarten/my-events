@@ -87,4 +87,14 @@ class Invitee extends Post
     {
         return $this->updateField('email_sent', $value);
     }
+
+    public function getStatusReason()
+    {
+        return $this->getField('status_reason');
+    }
+
+    public function setStatusReason($value)
+    {
+        return $this->updateField('status_reason', $value);
+    }
 }

@@ -627,6 +627,19 @@ class Fields
         ]);
 
         acf_add_local_field([
+            'key'           => 'my_events_invitee_status_reason',
+            'label'         => __('Status reason', 'my-events'),
+            'instructions'  => __('', 'my-events'),
+            'name'          => 'status_reason',
+            'type'          => 'textarea',
+            'rows'          => 3,
+            'new_lines'     => 'wpautop',
+            'required'      => false,
+            'default_value' => '',
+            'parent'        => 'my_events_invitee_group',
+        ]);
+
+        acf_add_local_field([
             'key'           => 'my_events_invitee_email_sent',
             'label'         => __('Email Sent', 'my-events'),
             'instructions'  => __('', 'my-events'),

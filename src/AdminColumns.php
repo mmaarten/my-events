@@ -93,12 +93,13 @@ class AdminColumns
     public static function addInviteeColumns($columns)
     {
         return [
-            'cb'         => $columns['cb'],
-            'title'      => $columns['title'],
-            'user'       => __('User', 'my-events'),
-            'event'      => __('Event', 'my-events'),
-            'status'     => __('Status', 'my-events'),
-            'email_sent' => __('Email sent', 'my-events'),
+            'cb'            => $columns['cb'],
+            'title'         => $columns['title'],
+            'user'          => __('User', 'my-events'),
+            'event'         => __('Event', 'my-events'),
+            'status'        => __('Status', 'my-events'),
+            'status_reason' => __('Status reason', 'my-events'),
+            'email_sent'    => __('Email sent', 'my-events'),
         ] + $columns;
     }
 
@@ -106,10 +107,11 @@ class AdminColumns
     {
         $invitee = new Invitee($post_id);
 
-        $user      = Helpers::renderUsers($invitee->getUser());
-        $event     = Helpers::renderPosts($invitee->getEvent());
-        $status    = $invitee->getStatus();
-        $statusses = Helpers::getInviteeStatusses();
+        $user          = Helpers::renderUsers($invitee->getUser());
+        $event         = Helpers::renderPosts($invitee->getEvent());
+        $status        = $invitee->getStatus();
+        $statusses     = Helpers::getInviteeStatusses();
+        $status_reason = $invitee->getStatusReason();
 
         switch ($column) {
             case 'user':
@@ -120,6 +122,9 @@ class AdminColumns
                 break;
             case 'status':
                 echo isset($statusses[$status]) ? esc_html($statusses[$status]) : esc_html(self::NO_VALUE);
+                break;
+            case 'status_reason':
+                echo trim($status_reason) ? $status_reason : esc_html(self::NO_VALUE);
                 break;
             case 'email_sent':
                 echo Helpers::renderBoolean($invitee->getEmailSent());

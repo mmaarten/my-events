@@ -91,6 +91,14 @@ class Subscriptions
             <?php wp_nonce_field('event_subscription_form', MY_EVENTS_NONCE_NAME); ?>
             <input type="hidden" name="invitee" value="<?php echo esc_attr($invitee->ID); ?>">
 
+            <?php if ($can_decline) : ?>
+            <div class="form-group">
+                <label for="event-subscription-reason"><?php esc_html_e('Reason', 'my-events'); ?></label>
+                <textarea id="event-subscription-reason" class="form-control" name="reason"></textarea>
+                <small class="form-text text-muted"><?php esc_html_e('Let us know why you decline the invitation.', 'my-events'); ?></small>
+            </div>
+            <?php endif; ?>
+
             <ul class="list-inline mb-0">
                 <?php if ($can_decline) : ?>
                 <li class="list-inline-item"><label class="btn btn-outline-light mb-0"><input type="radio" class="d-none" name="request" value="decline" onchange="jQuery(this).closest('form').trigger('submit');"><?php esc_attr_e('Decline invitation', 'my-events'); ?></label></li>
@@ -116,6 +124,7 @@ class Subscriptions
         }
 
         $invitee_id = isset($_POST['invitee']) ? $_POST['invitee'] : 0;
+        $reason     = isset($_POST['reason']) ? trim($_POST['reason']) : '';
         $request    = isset($_POST['request']) ? $_POST['request'] : '';
 
         if (! is_user_logged_in()) {
@@ -170,10 +179,16 @@ class Subscriptions
 
         if ($request === 'accept') {
             $result = $event->acceptInvitation($user_id);
+            if (! is_wp_error($result)) {
+                $invitee->setStatusReason('');
+            }
         }
 
         if ($request === 'decline') {
             $result = $event->declineInvitation($user_id);
+            if (! is_wp_error($result) && $reason) {
+                $invitee->setStatusReason($reason);
+            }
         }
 
         if (is_wp_error($result)) {
