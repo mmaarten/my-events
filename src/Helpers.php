@@ -106,7 +106,7 @@ class Helpers
             $post = $post_id ? get_post($post_id) : null;
             if ($post) {
                 $return[] = sprintf(
-                    "<a href='%1$s'>%2$s</a>",
+                    '<a href="%1$s">%2$s</a>',
                     esc_url(get_edit_post_link($post->ID)),
                     esc_html($post->post_title)
                 );
