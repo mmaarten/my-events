@@ -24,6 +24,15 @@ class Model
         ]);
     }
 
+    public static function getAllDayEvents($args = [])
+    {
+        return self::getEvents($args + [
+            'meta_key'     => 'is_all_day',
+            'meta_compare' => '=',
+            'meta_value'   => true,
+        ]);
+    }
+
     public static function getUserEvents($user_id, $status = null, $args = [])
     {
         if ($status) {
@@ -82,7 +91,7 @@ class Model
             'include' => $event_ids,
             'meta_query' => [
                 [
-                    'key'     => 'start',
+                    'key'     => 'end',
                     'compare' => '>=',
                     'value'   => date_i18n('Y-m-d H:i:s'),
                     'type'    => 'DATETIME',

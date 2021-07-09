@@ -124,7 +124,20 @@ class ICal
 
         $user_id = get_current_user_id();
 
-        $events = Model::getUserEvents($user_id, 'accepted', ['fields' => 'ids']);
+        $user_events = Model::getUserEvents($user_id, 'accepted', ['fields' => 'ids']);
+
+        $extra_events = Model::getAllDayEvents([
+            'meta_query' => [
+                [
+                    'key'     => 'enable_subscriptions',
+                    'compare' => '!=',
+                    'value'   => true,
+                ],
+            ],
+            'fields' => 'ids',
+        ]);
+
+        $events = array_merge($user_events, $extra_events);
 
         if ($events) {
             $events = Model::excludeEventsThatAreOver($events, ['fields' => 'ids']);
