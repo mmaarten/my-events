@@ -34,7 +34,7 @@ class EventCreator
             'menu_title'    => __('Event Creator', 'my-events'),
             'menu_slug'     => 'my-events-event-creator',
             'capability'    => 'edit_posts',
-            'parent_slug'   => 'tools.php',
+            'parent_slug'   => 'my-events',
             'post_id'       => self::POST_ID,
         ]);
     }
