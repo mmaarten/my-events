@@ -105,7 +105,7 @@ class EventCreator
 
             wp_update_post([
                 'ID'        => $event->ID,
-                'post_name' => sanitize_title($event->post_title . '-' . $event->getTimeFromUntil()),
+                'post_name' => sanitize_title($event->post_title . '-' . $event->getStartTime()),
             ]);
 
             Events::updateEventFields($event->ID);

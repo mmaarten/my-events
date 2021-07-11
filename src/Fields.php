@@ -450,7 +450,7 @@ class Fields
             'name'          => 'is_private',
             'type'          => 'true_false',
             'required'      => false,
-            'default_value' => 'false',
+            'default_value' => false,
             'parent'        => 'my_events_event_group',
         ]);
     }
