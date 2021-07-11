@@ -121,13 +121,13 @@ class Helpers
         if ($value) {
             return sprintf(
                 '<span class="dashicons-before dashicons-yes"><span class="screen-reader-text">%s</span></span>',
-                esc_html('yes', 'my-events')
+                esc_html__('yes', 'my-events')
             );
         }
 
         return sprintf(
             '<span class="dashicons-before dashicons-no-alt"><span class="screen-reader-text">%s</span></span>',
-            esc_html('no', 'my-events')
+            esc_html__('no', 'my-events')
         );
     }
 
