@@ -198,6 +198,13 @@ class Fields
         ]);
 
         acf_add_local_field([
+            'key'    => 'my_events_event_general',
+            'label'  => __('General', 'my-events'),
+            'type'   => 'tab',
+            'parent' => 'my_events_event_group',
+        ]);
+
+        acf_add_local_field([
             'key'           => 'my_events_event_description',
             'label'         => __('Description', 'my-events'),
             'instructions'  => __('A brief description of this event.', 'my-events'),
@@ -222,54 +229,6 @@ class Fields
         ]);
 
         acf_add_local_field([
-            'key'            => 'my_events_event_all_day_start',
-            'label'          => __('Start date', 'my-events'),
-            'instructions'   => __('The date when the event starts.', 'my-events'),
-            'name'           => 'all_day_start',
-            'type'           => 'date_picker',
-            'display_format' => get_option('date_format'),
-            'return_format'  => 'Y-m-d',
-            'first_day'      => get_option('start_of_week', 0),
-            'required'       => true,
-            'default_value' => '',
-            'wrapper'        => ['width' => '50%'],
-            'parent'         => 'my_events_event_group',
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_is_all_day',
-                        'operator' => '==',
-                        'value'    => 1
-                    ],
-                ],
-            ],
-        ]);
-
-        acf_add_local_field([
-            'key'            => 'my_events_event_all_day_end',
-            'label'          => __('End date', 'my-events'),
-            'instructions'   => __('The date when the event ends.', 'my-events'),
-            'name'           => 'all_day_end',
-            'type'           => 'date_picker',
-            'display_format' => get_option('date_format'),
-            'return_format'  => 'Y-m-d',
-            'first_day'      => get_option('start_of_week', 0),
-            'required'       => true,
-            'default_value' => '',
-            'wrapper'        => ['width' => '50%'],
-            'parent'         => 'my_events_event_group',
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_is_all_day',
-                        'operator' => '==',
-                        'value'    => 1
-                    ],
-                ],
-            ],
-        ]);
-
-        acf_add_local_field([
             'key'            => 'my_events_event_start',
             'label'          => __('Start time', 'my-events'),
             'instructions'   => __('The time when the event starts.', 'my-events'),
@@ -282,15 +241,6 @@ class Fields
             'default_value'  => '',
             'wrapper'        => ['width' => '50%'],
             'parent'         => 'my_events_event_group',
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_is_all_day',
-                        'operator' => '==',
-                        'value'    => 0
-                    ],
-                ],
-            ],
         ]);
 
         acf_add_local_field([
@@ -306,15 +256,6 @@ class Fields
             'default_value'  => '',
             'wrapper'        => ['width' => '50%'],
             'parent'         => 'my_events_event_group',
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_is_all_day',
-                        'operator' => '==',
-                        'value'    => 0
-                    ],
-                ],
-            ],
         ]);
 
         acf_add_local_field([
@@ -329,6 +270,22 @@ class Fields
         ]);
 
         acf_add_local_field([
+            'key'    => 'my_events_event_subscriptions',
+            'label'  => __('Subscriptions', 'my-events'),
+            'type'   => 'tab',
+            'parent' => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_enable_subscriptions',
+                        'operator' => '!=',
+                        'value'    => false
+                    ],
+                ],
+            ],
+        ]);
+
+        acf_add_local_field([
             'key'           => 'my_events_event_organisers',
             'label'         => __('Organisers', 'my-events'),
             'instructions'  => __('The organizers receive an email when an invitee accepts or declines an invitation.', 'my-events'),
@@ -339,22 +296,13 @@ class Fields
             'required'      => true,
             'default_value' => [],
             'parent'        => 'my_events_event_group',
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_enable_subscriptions',
-                        'operator' => '==',
-                        'value'    => 1
-                    ],
-                ],
-            ],
         ]);
 
         acf_add_local_field([
-            'key'           => 'my_events_event_invitees_type',
+            'key'           => 'my_events_event_invitee_type',
             'label'         => __('Invitees', 'my-events'),
             'instructions'  => __('The invitees will receive an email about the event when published. They can accept or decline the invitation.', 'my-events'),
-            'name'          => 'invitees_type',
+            'name'          => 'invitee_type',
             'type'         => 'select',
             'choices'      => [
                 'individual' => __('Individual', 'my-events'),
@@ -363,22 +311,13 @@ class Fields
             'default_value' => 'individual',
             'required'      => true,
             'parent'        => 'my_events_event_group',
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_enable_subscriptions',
-                        'operator' => '==',
-                        'value'    => 1
-                    ],
-                ],
-            ],
         ]);
 
         acf_add_local_field([
-            'key'           => 'my_events_event_invitees_individual',
+            'key'           => 'my_events_event_individual_invitees',
             'label'         => __('Individual', 'my-events'),
             'instructions'  => __('A list of people you want to invite.', 'my-events'),
-            'name'          => 'invitees_individual',
+            'name'          => 'individual_invitees',
             'type'          => 'user',
             'multiple'      => true,
             'return_format' => 'id',
@@ -387,7 +326,7 @@ class Fields
             'conditional_logic' => [
                 [
                     [
-                        'field'    => 'my_events_event_invitees_type',
+                        'field'    => 'my_events_event_invitee_type',
                         'operator' => '==',
                         'value'    => 'individual'
                     ],
@@ -397,10 +336,10 @@ class Fields
         ]);
 
         acf_add_local_field([
-            'key'           => 'my_events_event_invitees_group',
+            'key'           => 'my_events_event_invitee_group',
             'label'         => __('Group', 'my-events'),
             'instructions'  => __('A group of people you like to invite.', 'my-events'),
-            'name'          => 'invitees_group',
+            'name'          => 'invitee_group',
             'type'          => 'post_object',
             'post_type'     => 'invitee_group',
             'multiple'      => false,
@@ -410,7 +349,7 @@ class Fields
             'conditional_logic' => [
                 [
                     [
-                        'field'    => 'my_events_event_invitees_type',
+                        'field'    => 'my_events_event_invitee_type',
                         'operator' => '==',
                         'value'    => 'group'
                     ],
@@ -432,15 +371,6 @@ class Fields
             'default_value' => 'pending',
             'required'      => true,
             'parent'        => 'my_events_event_group',
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_enable_subscriptions',
-                        'operator' => '==',
-                        'value'    => 1
-                    ],
-                ],
-            ],
         ]);
 
         acf_add_local_field([
@@ -452,15 +382,6 @@ class Fields
             'required'      => false,
             'default_value' => false,
             'parent'        => 'my_events_event_group',
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_enable_subscriptions',
-                        'operator' => '==',
-                        'value'    => 1
-                    ],
-                ],
-            ],
         ]);
 
         acf_add_local_field([
@@ -497,15 +418,6 @@ class Fields
             'default_value' => 'input',
             'required'     => true,
             'parent'       => 'my_events_event_group',
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_enable_subscriptions',
-                        'operator' => '==',
-                        'value'    => 1
-                    ],
-                ],
-            ],
         ]);
 
         acf_add_local_field([
@@ -560,15 +472,6 @@ class Fields
             'required'      => false,
             'default_value' => 'false',
             'parent'        => 'my_events_event_group',
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_enable_subscriptions',
-                        'operator' => '==',
-                        'value'    => 1
-                    ],
-                ],
-            ],
         ]);
     }
 

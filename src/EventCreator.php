@@ -99,9 +99,9 @@ class EventCreator
             $event->updateField('description', self::getField('description', false));
             $event->updateField('enable_subscriptions', self::getField('enable_subscriptions', false));
             $event->updateField('organisers', self::getField('organisers', false));
-            $event->updateField('invitees_type', self::getField('invitees_type', false));
-            $event->updateField('invitees_individual', self::getField('invitees_individual', false));
-            $event->updateField('invitees_group', self::getField('invitees_group', false));
+            $event->updateField('invitee_type', self::getField('invitee_type', false));
+            $event->updateField('individual_invitees', self::getField('individual_invitees', false));
+            $event->updateField('invitee_group', self::getField('invitee_group', false));
             $event->updateField('invitee_default_status', self::getField('invitee_default_status', false));
             $event->updateField('is_private', self::getField('is_private', false));
             $event->updateField('location_type', self::getField('location_type', false));

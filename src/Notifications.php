@@ -12,7 +12,6 @@ class Notifications
     {
         add_action('my_events/invitee_accepted_invitation', [__CLASS__, 'sendInviteeAcceptedNotification'], 10, 3);
         add_action('my_events/invitee_declined_invitation', [__CLASS__, 'sendInviteeDeclinedNotification'], 10, 3);
-        //add_action('my_events/invitee_removed', [__CLASS__, 'sendInviteeRemovedNotification'], 10, 3);
         add_action('init', [__CLASS__, 'maybeSendInviteeInvitationNotification']);
     }
 

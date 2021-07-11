@@ -160,12 +160,12 @@ class Model
             'meta_query' => [
                 'relation' => 'AND',
                 [
-                    'key'     => 'invitees_type',
+                    'key'     => 'invitee_type',
                     'compare' => '=',
                     'value'   => 'group',
                 ],
                 [
-                    'key'     => 'invitees_group',
+                    'key'     => 'invitee_group',
                     'compare' => '=',
                     'value'   => $group_id,
                 ],

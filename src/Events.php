@@ -17,7 +17,7 @@ class Events
         add_action('add_meta_boxes', [__CLASS__, 'addMetaBoxes']);
         add_action('admin_notices', [__CLASS__, 'adminNotices']);
 
-        add_filter('acf/load_value/key=my_events_event_invitees_individual', [__CLASS__, 'populateInviteesField'], 10, 3);
+        add_filter('acf/load_value/key=my_events_event_individual_invitees', [__CLASS__, 'populateInviteesField'], 10, 3);
         add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
         add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
     }
@@ -89,8 +89,8 @@ class Events
                 foreach ($events as $event) {
                     $event = new Event($event);
                     // Set invitee type to 'individual'.
-                    // The field 'invitees_individual' is automatically populated. So we dont need to update it.
-                    $event->updateField('invitees_type', 'individual');
+                    // The field 'individual_invitees' is automatically populated. So we dont need to update it.
+                    $event->updateField('invitee_type', 'individual');
                 }
                 break;
             case 'event_location':
@@ -143,18 +143,18 @@ class Events
         $event = new Event($event_id);
 
         // Get invitee type.
-        $type = $event->getField('invitees_type');
+        $type = $event->getField('invitee_type');
 
         $user_ids = [];
 
         // Get user ids from individual invitees field
         if ($type == 'individual') {
-            $user_ids = $event->getField('invitees_individual');
+            $user_ids = $event->getField('individual_invitees');
         }
 
         // Get user ids from invitees group
         if ($type == 'group') {
-            $group_id = $event->getField('invitees_group');
+            $group_id = $event->getField('invitee_group');
             if ($group_id && get_post_type($group_id)) {
                 $group = new Post($group_id);
                 $user_ids = $group->getField('users');
@@ -178,8 +178,8 @@ class Events
 
         if ($event->isAllDay()) {
             // Set event 'start' and 'end'.
-            $start_date = $event->getField('all_day_start');
-            $end_date   = $event->getField('all_day_end');
+            $start_date = date('Y-m-d', strtotime($event->getField('start')));
+            $end_date   = date('Y-m-d', strtotime($event->getField('end')));
             $event->updateField('start', "$start_date 00:00:00");
             $event->updateField('end', "$end_date 23:59:59");
         }
@@ -190,13 +190,13 @@ class Events
             // Create invitees
             $event->setInvitees($user_ids);
             // Remove settings (will be refilled with invitees from our custom post type).
-            $event->deleteField('invitees_individual');
+            $event->deleteField('individual_invitees');
         } else {
             // Delete subscription related settings.
             $event->deleteField('organisers');
-            $event->deleteField('invitees_type');
-            $event->deleteField('invitees_individual');
-            $event->deleteField('invitees_group');
+            $event->deleteField('invitee_type');
+            $event->deleteField('individual_invitees');
+            $event->deleteField('invitee_group');
             $event->deleteField('invitee_default_status');
             $event->deleteField('is_private');
             $event->deleteField('location_type');

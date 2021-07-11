@@ -3,16 +3,16 @@
 // Event settings
 #acf-my_events_event_group {
   .acf-field {
-    &[data-name="invitees_individual"],
-    &[data-name="invitees_group"],
+    &[data-name="individual_invitees"],
+    &[data-name="invitee_group"],
     &[data-name="location_id"],
     &[data-name="location_input"],
     &[data-name="max_subscriptions"] {
       border-top: none;
       padding-top: 0;
     }
-    &[data-name="invitees_individual"],
-    &[data-name="invitees_group"],
+    &[data-name="individual_invitees"],
+    &[data-name="invitee_group"],
     &[data-name="location_id"],
     &[data-name="location_input"] {
       .acf-label {
@@ -28,7 +28,7 @@
 }
 
 // 'Invitees' meta box on event edit screen.
-#acf-my_events_event_invitees_group .acf-field[data-key="my_events_event_invitees_list"] {
+#acf-my_events_event_invitee_group .acf-field[data-key="my_events_event_invitees_list"] {
   .acf-label {
     display: none;
   }
