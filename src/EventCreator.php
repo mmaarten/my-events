@@ -105,7 +105,7 @@ class EventCreator
             $event->updateField('invitee_default_status', self::getField('invitee_default_status', false));
             $event->updateField('is_private', self::getField('is_private', false));
             $event->updateField('location_type', self::getField('location_type', false));
-            $event->updateField('location_input', self::getField('location_input', false));
+            $event->updateField('custom_location', self::getField('custom_location', false));
             $event->updateField('location_id', self::getField('location_id', false));
 
             Events::updateEventFields($event->ID);

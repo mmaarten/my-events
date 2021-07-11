@@ -19,7 +19,6 @@ class Events
 
         add_filter('acf/load_value/key=my_events_event_individual_invitees', [__CLASS__, 'populateInviteesField'], 10, 3);
         add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
-        add_filter('admin_body_class', [__CLASS__, 'adminBodyClass']);
     }
 
     public static function getEventClasses($post_id)
@@ -36,7 +35,7 @@ class Events
             $classes[] = 'is-private-event';
         }
 
-        if ($event->subscriptionsEnabled()) {
+        if ($event->hasMaxParticipants()) {
             $classes[] = 'is-subscriptions-enabled';
         } else {
             $classes[] = 'is-subscriptions-disabled';
@@ -53,21 +52,6 @@ class Events
         return apply_filters('my_events/event_class', $classes, $event);
     }
 
-    public static function getInviteeClasses($post_id)
-    {
-        $invitee = new Invitee($post_id);
-
-        $event = null;
-        $event_id = $invitee->getEvent();
-        if ($event_id && get_post_type($event_id)) {
-            $event = new Event($event_id);
-        }
-
-        $classes[] = sprintf('is-invitee-%s', $invitee->getStatus());
-
-        return apply_filters('my_events/invitee_class', $classes, $invitee, $event);
-    }
-
     public static function savePost($post_id)
     {
         switch (get_post_type($post_id)) {
@@ -75,7 +59,6 @@ class Events
                 self::updateEventFields($post_id);
                 break;
             case 'invitee_group':
-                // Update invitees.
                 self::updateInviteesFromInviteeGroup($post_id);
                 break;
         }
@@ -99,10 +82,10 @@ class Events
                 $address = $location->getField('address');
                 $events = Model::getEventsByLocation($post_id, ['post_status' => 'any']);
                 foreach ($events as $event) {
-                    // Switch to 'input' and save location address.
+                    // Switch to 'custom' and save location address.
                     $event = new Event($event);
-                    $event->updateField('location_type', 'input');
-                    $event->updateField('location_input', $address);
+                    $event->updateField('location_type', 'custom');
+                    $event->updateField('custom_location', $address);
                 }
                 break;
         }
@@ -121,19 +104,12 @@ class Events
 
     public static function beforeDeleteUser($user_id, $reassign, $user)
     {
-        // Get invitees by user.
-        $invitees = Model::getInviteesByUser($user_id);
-
         // Remove all user related invitees.
+
+        $invitees = Model::getInviteesByUser($user_id, ['fields' => 'ids']);
+
         foreach ($invitees as $invitee) {
-            $invitee = new Invitee($invitee);
-            $event_id = $invitee->getEvent();
-            if ($event_id && get_post_type($event_id)) {
-                $event = new Event($event_id);
-                $event->removeInvitee($invitee->ID);
-            } else {
-                wp_delete_post($invitee->ID, true);
-            }
+            wp_delete_post($invitee, true);
         }
     }
 
@@ -154,11 +130,8 @@ class Events
 
         // Get user ids from invitees group
         if ($type == 'group') {
-            $group_id = $event->getField('invitee_group');
-            if ($group_id && get_post_type($group_id)) {
-                $group = new Post($group_id);
-                $user_ids = $group->getField('users');
-            }
+            $group = new Post($event->getField('invitee_group'));
+            $user_ids = $group->getField('users');
         }
 
         if (! $user_ids || ! is_array($user_ids)) {
@@ -177,44 +150,40 @@ class Events
         $event = new Event($post_id);
 
         if ($event->isAllDay()) {
-            // Set event 'start' and 'end'.
             $start_date = date('Y-m-d', strtotime($event->getField('start')));
             $end_date   = date('Y-m-d', strtotime($event->getField('end')));
             $event->updateField('start', "$start_date 00:00:00");
             $event->updateField('end', "$end_date 23:59:59");
         }
 
-        if ($event->subscriptionsEnabled()) {
-            // Get invitees from settings field.
+        if ($event->areSubscriptionsEnabled()) {
             $user_ids = self::getInviteesFromSettingsField($event->ID);
-            // Create invitees
             $event->setInvitees($user_ids);
-            // Remove settings (will be refilled with invitees from our custom post type).
             $event->deleteField('individual_invitees');
         } else {
-            // Delete subscription related settings.
             $event->deleteField('organisers');
             $event->deleteField('invitee_type');
             $event->deleteField('individual_invitees');
             $event->deleteField('invitee_group');
             $event->deleteField('invitee_default_status');
-            $event->deleteField('is_private');
+            $event->deleteField('max_participants');
             $event->deleteField('location_type');
-            $event->deleteField('location_input');
+            $event->deleteField('custom_location');
             $event->deleteField('location_id');
+            $event->deleteField('is_private');
             $event->setInvitees([]);
         }
     }
 
     public static function populateInviteesField($value, $post_id, $field)
     {
-        // Don't change field value on post save. We need to access the field settings.
-        if (did_action('acf/save_post')) {
+        // Check post type.
+        if (get_post_type($post_id) != 'event') {
             return $value;
         }
 
-        // Check post type.
-        if (get_post_type($post_id) != 'event') {
+        // Don't change field value on post save. We need to access the field settings.
+        if (did_action('acf/save_post')) {
             return $value;
         }
 
@@ -229,32 +198,33 @@ class Events
     {
         $group = new Post($group_id);
 
-        // Get previous users
-
-        $prev_users = $group->getMeta('prev_users', true);
+        $prev_users = $group->getMeta('_prev_users', true);
+        $curr_users = $group->getField('users');
 
         if (! is_array($prev_users)) {
-            $prev_users = [];
+            $prev_users = $curr_users;
         }
 
-        // Get current users
-
-        $current_users = $group->getField('users');
-
-        if (! is_array($current_users)) {
-            $current_users = [];
+        if (! is_array($curr_users)) {
+            $curr_users = [];
         }
 
-        // Check for differences
+        // Check for differences.
+        $add_users   = array_diff($curr_users, $prev_users);
+        $remove_users = array_diff($prev_users, $curr_users);
 
-        $added_users   = array_diff($current_users, $prev_users);
-        $removed_users = array_diff($prev_users, $current_users);
+        // Save current users.
+        $group->updateMeta('_prev_users', $current_users);
 
+        if (! $add_users && ! $prev_users) {
+            return;
+        }
+
+        // Get all events related to the invitee group.
         $events = Model::getEventsByInviteeGroup($group->ID, ['post_status' => 'any']);
 
-        // Add invitees
-
-        foreach ($added_users as $user_id) {
+        // Add invitees.
+        foreach ($add_users as $user_id) {
             foreach ($events as $event) {
                 $event = new Event($event);
                 if (! $event->isOver()) {
@@ -263,9 +233,8 @@ class Events
             }
         }
 
-        // Remove invitees
-
-        foreach ($removed_users as $user_id) {
+        // Remove invitees.
+        foreach ($remove_users as $user_id) {
             foreach ($events as $event) {
                 $event = new Event($event);
                 if (! $event->isOver()) {
@@ -273,10 +242,6 @@ class Events
                 }
             }
         }
-
-        // Save current users
-
-        $group->updateMeta('prev_users', $current_users);
     }
 
     public static function renderInvities($post)
@@ -290,32 +255,7 @@ class Events
 
     public static function addMetaBoxes($post_type)
     {
-        $screen = get_current_screen();
-
-        // Only show metabox when there are invitees.
-        if ($screen->base = 'post' && $screen->post_type == 'event') {
-            if ($screen->action == 'add') {
-                return;
-            }
-
-            if (isset($_GET['post'])) {
-                $event = new Event($_GET['post']);
-
-                $invitees = $event->getInvitees();
-
-                if (! $invitees) {
-                    return;
-                }
-            }
-
-            add_meta_box(
-                'my-events-invitees',
-                __('Invitees', 'my-events'),
-                [__CLASS__, 'renderInvities'],
-                $screen,
-                'side'
-            );
-        }
+        add_meta_box('my-events-invitees', __('Invitees', 'my-events'), [__CLASS__, 'renderInvities'], 'event', 'side');
     }
 
     public static function adminNotices()
@@ -326,9 +266,11 @@ class Events
             return;
         }
 
+        $post_id = $_GET['post'];
+
         switch ($screen->post_type) {
             case 'event':
-                $event = new Event($_GET['post']);
+                $event = new Event($post_id);
 
                 if ($event->isOver()) {
                     echo Helpers::adminNotice(__('This event is over.', 'my-events'), 'warning');
@@ -343,31 +285,6 @@ class Events
         switch (get_post_type($post_id)) {
             case 'event':
                 $classes = array_merge($classes, self::getEventClasses($post_id));
-                break;
-            case 'invitee':
-                $classes = array_merge($classes, self::getInviteeClasses($post_id));
-                break;
-        }
-
-        return $classes;
-    }
-
-    public static function adminBodyClass($classes)
-    {
-        $screen = get_current_screen();
-
-        if ($screen->base != 'post' || ! isset($_GET['post'])) {
-            return $classes;
-        }
-
-        $post_id = $_GET['post'];
-
-        switch ($screen->post_type) {
-            case 'event':
-                $classes .= ' ' . implode(' ', self::getEventClasses($post_id));
-                break;
-            case 'invitee':
-                $classes .= ' ' . implode(' ', self::getInviteeClasses($post_id));
                 break;
         }
 

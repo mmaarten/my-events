@@ -79,7 +79,7 @@ class Notifications
         $to = wp_list_pluck($event->getOrganisers(), 'user_email');
 
         $subject = sprintf(
-            __('%1$s accepted your invitation for "%2$s".', 'my-events'),
+            __('%1$s accepted your invitation for: %2$s.', 'my-events'),
             $user->display_name,
             $event->post_title
         );
@@ -112,7 +112,7 @@ class Notifications
         $to = wp_list_pluck($event->getOrganisers(), 'user_email');
 
         $subject = sprintf(
-            __('%1$s declined your invitation for "%2$s".', 'my-events'),
+            __('%1$s declined your invitation for: %2$s.', 'my-events'),
             $user->display_name,
             $event->post_title
         );
@@ -150,42 +150,6 @@ class Notifications
         );
 
         $message = Helpers::loadTemplate('emails/invitee-added-notification', [
-            'invitee' => $invitee,
-            'user'    => $user,
-            'event'   => $event,
-        ], true);
-
-        return self::sendNotification($to, $subject, $message, [], [], $event);
-    }
-
-    public static function sendInviteeRemovedNotification($invitee, $user_id, $event)
-    {
-        if ($event->post_status !== 'publish') {
-            return;
-        }
-
-        $user = get_userdata($user_id);
-
-        if (! $user) {
-            return false;
-        }
-
-        if ($event->isOver()) {
-            return false;
-        }
-
-        if ($invitee->getStatus() === 'declined') {
-            return false;
-        }
-
-        $to = $user->user_email;
-
-        $subject = sprintf(
-            __('You are no longer invited for the event: "%1$s".', 'my-events'),
-            $event->post_title
-        );
-
-        $message = Helpers::loadTemplate('emails/invitee-removed-notification', [
             'invitee' => $invitee,
             'user'    => $user,
             'event'   => $event,

@@ -63,7 +63,7 @@ msgstr ""
 
 #: templates/emails/invitee-declined-invitation.php:14
 #: src/Subscriptions.php:96
-msgid "Reason"
+msgid "Comments"
 msgstr ""
 
 #: templates/event-edit-invitees.php:11
@@ -423,7 +423,7 @@ msgstr ""
 
 #: src/Fields.php:631
 #: src/AdminColumns.php:101
-msgid "Status reason"
+msgid "Status comments"
 msgstr ""
 
 #: src/Fields.php:644

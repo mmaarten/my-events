@@ -1,6 +1,6 @@
 <?php
 
-    $reason = $args['invitee']->getStatusReason();
+    $comments = $args['invitee']->getComments();
 
 ?>
 
@@ -10,7 +10,7 @@
 
 <p><?php printf(esc_html__('Time: %s', 'my-events'), $args['event']->getTimeFromUntil()); ?></p>
 
-<?php if (trim($reason)) : ?>
-    <strong><?php echo esc_html_e('Reason', 'my-events'); ?></strong><br />
-    <?php echo $reason; ?>
+<?php if (trim($comments)) : ?>
+    <strong><?php echo esc_html_e('Comments', 'my-events'); ?></strong><br />
+    <?php echo wpautop(esc_html($comments)); ?>
 <?php endif; ?>

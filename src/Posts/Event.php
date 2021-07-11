@@ -153,8 +153,8 @@ class Event extends Post
     {
         $type = $this->getField('location_type');
 
-        if ($type === 'input') {
-            return $this->getField('location_input');
+        if ($type === 'custom') {
+            return $this->getField('custom_location');
         }
 
         if ($type === 'id') {
@@ -168,11 +168,11 @@ class Event extends Post
         return false;
     }
 
-    public function setLocation($value, $type = 'input')
+    public function setLocation($value, $type = 'custom')
     {
-        if (in_array($type, ['input', 'id'])) {
-            if ($type === 'input') {
-                return $this->updateField('location_input', $value);
+        if (in_array($type, ['custom', 'id'])) {
+            if ($type === 'custom') {
+                return $this->updateField('custom_location', $value);
             }
 
             if ($type === 'id') {
@@ -376,17 +376,17 @@ class Event extends Post
         return $this->isMember($user_id);
     }
 
-    public function isLimitedParticipants()
-    {
-        return $this->getField('limit_subscriptions') ? true : false;
-    }
-
     public function getMaxParticipants()
     {
-        return $this->getField('max_subscriptions');
+        return $this->getField('max_participants');
     }
 
-    public function subscriptionsEnabled()
+    public function hasMaxParticipants()
+    {
+        return $this->getMaxParticipants() ? true : false;
+    }
+
+    public function areSubscriptionsEnabled()
     {
         return $this->getField('enable_subscriptions') ? true : false;
     }
@@ -411,7 +411,7 @@ class Event extends Post
             return true;
         }
 
-        if ($this->isLimitedParticipants() && count($this->getParticipants()) >= $this->getMaxParticipants()) {
+        if ($this->hasMaxParticipants() && count($this->getParticipants()) >= $this->getMaxParticipants()) {
             return new \WP_Error(__FILE__, __('The maximum amount of participants is reached', 'my-events'));
         }
 

@@ -118,7 +118,17 @@ class Helpers
 
     public static function renderBoolean($value)
     {
-        return $value ? esc_html__('yes', 'my-events') : esc_html__('no', 'my-events');
+        if ($value) {
+            return sprintf(
+                '<span class="dashicons-before dashicons-yes"><span class="screen-reader-text">%s</span></span>',
+                esc_html('yes', 'my-events')
+            );
+        }
+
+        return sprintf(
+            '<span class="dashicons-before dashicons-no-alt"><span class="screen-reader-text">%s</span></span>',
+            esc_html('no', 'my-events')
+        );
     }
 
     public static function generateDates($start, $end, $end_repeat, $modifier, $exclude = [])

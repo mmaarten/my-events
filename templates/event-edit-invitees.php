@@ -3,9 +3,9 @@
 namespace My\Events;
 
 $event = $args['event'];
-$accepted = $event->getInviteesUsers('accepted');
-$declined = $event->getInviteesUsers('declined');
-$pending  = $event->getInviteesUsers('pending');
+$accepted = $event->getInviteesUsers('accepted', ['orderby' => 'display_name', 'order' => 'ASC']);
+$declined = $event->getInviteesUsers('declined', ['orderby' => 'display_name', 'order' => 'ASC']);
+$pending  = $event->getInviteesUsers('pending', ['orderby' => 'display_name', 'order' => 'ASC']);
 
 if (! $accepted && ! $declined && ! $pending) {
     echo Helpers::adminNotice(__('No invitees found.', 'my-events'), 'info', true);

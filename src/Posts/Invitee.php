@@ -88,13 +88,24 @@ class Invitee extends Post
         return $this->updateField('email_sent', $value);
     }
 
-    public function getStatusReason()
+    /**
+     * Get comments
+     *
+     * @return string
+     */
+    public function getComments()
     {
-        return $this->getField('status_reason');
+        return $this->getField('comments');
     }
 
-    public function setStatusReason($value)
+    /**
+     * Set comments
+     *
+     * @param string $value
+     * @return bool
+     */
+    public function setComments($value)
     {
-        return $this->updateField('status_reason', $value);
+        return $this->updateField('comments', $value);
     }
 }

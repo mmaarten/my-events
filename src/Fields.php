@@ -374,34 +374,14 @@ class Fields
         ]);
 
         acf_add_local_field([
-            'key'           => 'my_events_event_limit_subscriptions',
-            'label'         => __('Limited subscriptions', 'my-events'),
-            'instructions'  => __('Limit the amount of invitees who can subscribe.', 'my-events'),
-            'name'          => 'limit_subscriptions',
-            'type'         => 'true_false',
-            'required'      => false,
-            'default_value' => false,
-            'parent'        => 'my_events_event_group',
-        ]);
-
-        acf_add_local_field([
-            'key'           => 'my_events_event_max_subscriptions',
-            'label'         => __('Amount', 'my-events'),
-            'instructions'  => __('', 'my-events'),
-            'name'          => 'max_subscriptions',
+            'key'           => 'my_events_event_max_participants',
+            'label'         => __('Limit the amount of participants', 'my-events'),
+            'instructions'  => __('Leave empty for unlimited particpants.', 'my-events'),
+            'name'          => 'max_participants',
             'type'          => 'number',
-            'required'      => true,
-            'default_value' => 10,
+            'required'      => false,
+            'default_value' => '',
             'min'           => 1,
-            'conditional_logic' => [
-                [
-                    [
-                        'field'    => 'my_events_event_limit_subscriptions',
-                        'operator' => '==',
-                        'value'    => '1',
-                    ],
-                ],
-            ],
             'parent'        => 'my_events_event_group',
         ]);
 
@@ -412,19 +392,19 @@ class Fields
             'name'         => 'location_type',
             'type'         => 'select',
             'choices'      => [
-                'input' => __('Custom', 'my-events'),
+                'custom' => __('Custom', 'my-events'),
                 'id'    => __('Choose from a list', 'my-events'),
             ],
-            'default_value' => 'input',
+            'default_value' => 'custom',
             'required'     => true,
             'parent'       => 'my_events_event_group',
         ]);
 
         acf_add_local_field([
-            'key'           => 'my_events_event_location_input',
+            'key'           => 'my_events_event_custom_location',
             'label'         => __('Custom', 'my-events'),
             'instructions'  => __('', 'my-events'),
-            'name'          => 'location_input',
+            'name'          => 'custom_location',
             'type'          => 'text',
             'required'      => true,
             'default_value' => '',
@@ -433,7 +413,7 @@ class Fields
                     [
                         'field'    => 'my_events_event_location_type',
                         'operator' => '==',
-                        'value'    => 'input'
+                        'value'    => 'custom'
                     ],
                 ],
             ],
@@ -530,13 +510,13 @@ class Fields
         ]);
 
         acf_add_local_field([
-            'key'           => 'my_events_invitee_status_reason',
-            'label'         => __('Status reason', 'my-events'),
+            'key'           => 'my_events_invitee_comments',
+            'label'         => __('Comments', 'my-events'),
             'instructions'  => __('', 'my-events'),
-            'name'          => 'status_reason',
+            'name'          => 'comments',
             'type'          => 'textarea',
             'rows'          => 3,
-            'new_lines'     => 'wpautop',
+            'new_lines'     => '',
             'required'      => false,
             'default_value' => '',
             'parent'        => 'my_events_invitee_group',

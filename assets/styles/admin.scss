@@ -6,47 +6,18 @@
     &[data-name="individual_invitees"],
     &[data-name="invitee_group"],
     &[data-name="location_id"],
-    &[data-name="location_input"],
-    &[data-name="max_subscriptions"] {
+    &[data-name="custom_location"] {
       border-top: none;
       padding-top: 0;
     }
     &[data-name="individual_invitees"],
     &[data-name="invitee_group"],
     &[data-name="location_id"],
-    &[data-name="location_input"] {
+    &[data-name="custom_location"] {
       .acf-label {
         display: none;
       }
     }
-    &[data-name="max_subscriptions"] {
-      .acf-label label {
-        font-weight: normal;
-      }
-    }
-  }
-}
-
-// 'Invitees' meta box on event edit screen.
-#acf-my_events_event_invitee_group .acf-field[data-key="my_events_event_invitees_list"] {
-  .acf-label {
-    display: none;
-  }
-  ul {
-    margin: 0;
-  }
-}
-
-// Admin notices.
-.acf-fields .notice {
-  margin-top: 0;
-}
-
- // Events overview screen
-body.edit-php.post-type-event .hentry.type-event {
-  // Events that are over.
-  &.is-event-over {
-    opacity: .5;
   }
 }
 
@@ -71,31 +42,6 @@ body.edit-php.post-type-event .hentry.type-event {
 
     > li:last-child {
       margin-bottom: 0;
-    }
-  }
-}
-
-// Invitee overview screen.
-body.edit-php.post-type-invitee .hentry.type-invitee {
-}
-
-// Invitee edit screen.
-body.post-php.post-type-invitee {
-  // Disable fields.
-  .acf-field {
-    &[data-name="event"],
-    &[data-name="user"] {
-      @include disable-field();
-    }
-  }
-  // Disable actions.
-  &.is-grouped-event {
-    #submitdiv {
-      #delete-action,
-      #minor-publishing-actions,
-      #misc-publishing-actions {
-        display: none;
-      }
     }
   }
 }

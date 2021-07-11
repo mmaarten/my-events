@@ -35,16 +35,14 @@ class AdminColumns
             'participants'     => __('Participants', 'my-events'),
             'participants_num' => __('Number of participants', 'my-events'),
             'location'         => __('Location', 'my-events'),
-            'over'             => __('Over', 'my-events'),
             'private'          => __('Private', 'my-events'),
-            'subscriptions_enabled' => __('Subscriptions enabled', 'my-events'),
+            'over'             => __('Over', 'my-events'),
         ] + $columns;
     }
 
     public static function renderEventColumns($column, $post_id)
     {
         $event = new Event($post_id);
-
         $time         = $event->getTimeFromUntil();
         $organisers   = Helpers::renderUsers($event->getOrganisers(['fields' => 'ID']));
         $participants = Helpers::renderUsers($event->getParticipants(['fields' => 'ID']));
@@ -61,11 +59,16 @@ class AdminColumns
                 echo $participants ? $participants : esc_html(self::NO_VALUE);
                 break;
             case 'participants_num':
-                if ($event->isLimitedParticipants()) {
-                    printf('%1$d/%2$d', count($event->getParticipants()), $event->getMaxParticipants());
+                if ($event->areSubscriptionsEnabled()) {
+                    if ($event->hasMaxParticipants()) {
+                        printf('%1$d/%2$d', count($event->getParticipants()), $event->getMaxParticipants());
+                    } else {
+                        echo count($event->getParticipants());
+                    }
                 } else {
-                    echo count($event->getParticipants());
+                    echo esc_html(self::NO_VALUE);
                 }
+
                 break;
             case 'location':
                 if ($location) {
@@ -78,14 +81,11 @@ class AdminColumns
                     echo esc_html(self::NO_VALUE);
                 }
                 break;
-            case 'over':
-                echo Helpers::renderBoolean($event->isOver());
-                break;
             case 'private':
                 echo Helpers::renderBoolean($event->isPrivate());
                 break;
-            case 'subscriptions_enabled':
-                echo Helpers::renderBoolean($event->subscriptionsEnabled());
+            case 'over':
+                echo Helpers::renderBoolean($event->isOver());
                 break;
         }
     }
@@ -93,25 +93,23 @@ class AdminColumns
     public static function addInviteeColumns($columns)
     {
         return [
-            'cb'            => $columns['cb'],
-            'title'         => $columns['title'],
-            'user'          => __('User', 'my-events'),
-            'event'         => __('Event', 'my-events'),
-            'status'        => __('Status', 'my-events'),
-            'status_reason' => __('Status reason', 'my-events'),
-            'email_sent'    => __('Email sent', 'my-events'),
+            'cb'         => $columns['cb'],
+            'title'      => $columns['title'],
+            'user'       => __('User', 'my-events'),
+            'event'      => __('Event', 'my-events'),
+            'status'     => __('Status', 'my-events'),
+            'email_sent' => __('Email sent', 'my-events'),
         ] + $columns;
     }
 
     public static function renderInviteeColumns($column, $post_id)
     {
         $invitee = new Invitee($post_id);
-
         $user          = Helpers::renderUsers($invitee->getUser());
         $event         = Helpers::renderPosts($invitee->getEvent());
         $status        = $invitee->getStatus();
         $statusses     = Helpers::getInviteeStatusses();
-        $status_reason = $invitee->getStatusReason();
+        $comments = $invitee->getComments();
 
         switch ($column) {
             case 'user':
@@ -122,9 +120,6 @@ class AdminColumns
                 break;
             case 'status':
                 echo isset($statusses[$status]) ? esc_html($statusses[$status]) : esc_html(self::NO_VALUE);
-                break;
-            case 'status_reason':
-                echo trim($status_reason) ? $status_reason : esc_html(self::NO_VALUE);
                 break;
             case 'email_sent':
                 echo Helpers::renderBoolean($invitee->getEmailSent());
@@ -144,7 +139,6 @@ class AdminColumns
     public static function renderInviteeGroupColumns($column, $post_id)
     {
         $post = new Post($post_id);
-
         $users = Helpers::renderUsers($post->getField('users'));
 
         switch ($column) {
@@ -166,7 +160,6 @@ class AdminColumns
     public static function renderEventLocationColumns($column, $post_id)
     {
         $post = new Post($post_id);
-
         $address = $post->getField('address');
 
         switch ($column) {

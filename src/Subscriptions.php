@@ -11,6 +11,15 @@ class Subscriptions
 
     public static function init()
     {
+        add_filter('the_content', function ($the_content) {
+            if (is_singular('event')) {
+                ob_start();
+                self::form();
+                $the_content .= ob_get_clean();
+            }
+            return $the_content;
+        });
+
         add_action('template_redirect', [__CLASS__, 'process']);
     }
 
@@ -32,7 +41,7 @@ class Subscriptions
 
         $user_id = get_current_user_id();
 
-        if (! $event->subscriptionsEnabled()) {
+        if (! $event->areSubscriptionsEnabled()) {
             printf('<div class="alert alert-danger" role="alert">%s</div>', esc_html__('Subscriptions are disabled.', 'my-events'));
             return;
         }
@@ -49,7 +58,7 @@ class Subscriptions
             return;
         }
 
-        if ($event->isLimitedParticipants()) {
+        if ($event->hasMaxParticipants()) {
             $max_participants = $event->getMaxParticipants();
             $participant_count = count($event->getParticipants());
 
@@ -61,7 +70,7 @@ class Subscriptions
             );
         }
 
-        $max_reached = $event->isLimitedParticipants() && count($event->getParticipants()) >= $event->getMaxParticipants();
+        $max_reached = $event->hasMaxParticipants() && count($event->getParticipants()) >= $event->getMaxParticipants();
 
         if ($invitee->getStatus() !== 'accepted' && $max_reached) {
             printf('<div class="alert alert-danger" role="alert">%s</div>', esc_html__('The maximum amount of participants is reached.', 'my-events'));
@@ -79,7 +88,7 @@ class Subscriptions
             printf('<div class="alert alert-warning" role="alert">%s</div>', esc_html__('We would like to know if you are comming to this event.', 'my-events'));
         }
 
-        $max_reached = $event->isLimitedParticipants() && count($event->getParticipants()) >= $event->getMaxParticipants();
+        $max_reached = $event->hasMaxParticipants() && count($event->getParticipants()) >= $event->getMaxParticipants();
 
         $can_accept  = ($invitee->getStatus() == 'pending' || $invitee->getStatus() == 'declined') && !$max_reached;
         $can_decline = $invitee->getStatus() == 'pending' || $invitee->getStatus() == 'accepted';
@@ -91,20 +100,20 @@ class Subscriptions
             <?php wp_nonce_field('event_subscription_form', MY_EVENTS_NONCE_NAME); ?>
             <input type="hidden" name="invitee" value="<?php echo esc_attr($invitee->ID); ?>">
 
-            <?php if ($can_decline) : ?>
+            <?php if ($can_accept || $can_decline) : ?>
             <div class="form-group">
-                <label for="event-subscription-reason"><?php esc_html_e('Reason', 'my-events'); ?></label>
-                <textarea id="event-subscription-reason" class="form-control" name="reason"></textarea>
-                <small class="form-text text-muted"><?php esc_html_e('Let us know why you decline the invitation.', 'my-events'); ?></small>
+                <label for="event-subscription-comments"><?php esc_html_e('Comments', 'my-events'); ?></label>
+                <textarea id="event-subscription-comments" class="form-control" name="comments"></textarea>
+                <small class="form-text text-muted"><?php esc_html_e('Additional comments for the organisers of this event.', 'my-events'); ?></small>
             </div>
             <?php endif; ?>
 
             <ul class="list-inline mb-0">
                 <?php if ($can_decline) : ?>
-                <li class="list-inline-item"><label class="btn btn-outline-light mb-0"><input type="radio" class="d-none" name="request" value="decline" onchange="jQuery(this).closest('form').trigger('submit');"><?php esc_attr_e('Decline invitation', 'my-events'); ?></label></li>
+                <li class="list-inline-item"><label class="btn btn-danger mb-0"><input type="radio" class="d-none" name="request" value="decline" onchange="jQuery(this).closest('form').trigger('submit');"><?php esc_attr_e('Decline invitation', 'my-events'); ?></label></li>
                 <?php endif; ?>
                 <?php if ($can_accept) : ?>
-                <li class="list-inline-item"><label class="btn btn-outline-light mb-0"><input type="radio" class="d-none" name="request" value="accept" onchange="jQuery(this).closest('form').trigger('submit');"><?php esc_attr_e('Accept invitation', 'my-events'); ?></label></li>
+                <li class="list-inline-item"><label class="btn btn-success mb-0"><input type="radio" class="d-none" name="request" value="accept" onchange="jQuery(this).closest('form').trigger('submit');"><?php esc_attr_e('Accept invitation', 'my-events'); ?></label></li>
                 <?php endif; ?>
             </ul>
 
@@ -124,7 +133,7 @@ class Subscriptions
         }
 
         $invitee_id = isset($_POST['invitee']) ? $_POST['invitee'] : 0;
-        $reason     = isset($_POST['reason']) ? trim($_POST['reason']) : '';
+        $comments   = isset($_POST['comments']) ? trim($_POST['comments']) : '';
         $request    = isset($_POST['request']) ? $_POST['request'] : '';
 
         if (! is_user_logged_in()) {
@@ -180,14 +189,14 @@ class Subscriptions
         if ($request === 'accept') {
             $result = $event->acceptInvitation($user_id);
             if (! is_wp_error($result)) {
-                $invitee->setStatusReason('');
+                $invitee->setComments($comments);
             }
         }
 
         if ($request === 'decline') {
             $result = $event->declineInvitation($user_id);
-            if (! is_wp_error($result) && $reason) {
-                $invitee->setStatusReason($reason);
+            if (! is_wp_error($result)) {
+                $invitee->setComments($comments);
             }
         }
 

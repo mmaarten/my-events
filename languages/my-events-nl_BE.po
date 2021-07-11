@@ -64,7 +64,7 @@ msgid "%1$s declined your invitation for:"
 msgstr "%1$s heeft uw uitnodiging geweigerd voor:"
 
 #: templates/emails/invitee-declined-invitation.php:14 src/Subscriptions.php:96
-msgid "Reason"
+msgid "Comments"
 msgstr "Reden"
 
 #: templates/event-edit-invitees.php:11 src/PostTypes.php:71 src/Emails.php:54
@@ -410,7 +410,7 @@ msgid "Status"
 msgstr "Status"
 
 #: src/Fields.php:631 src/AdminColumns.php:101
-msgid "Status reason"
+msgid "Status comments"
 msgstr "Status reden"
 
 #: src/Fields.php:644
