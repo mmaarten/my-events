@@ -84,18 +84,12 @@ class EventCreator
 
             $event = new Event($post_id);
 
-            if ($is_all_day) {
-                $event->updateField('all_day_start', $date['start']);
-                $event->updateField('all_day_end', $date['end']);
-            } else {
-                $start_time = date('H:i:s', strtotime(self::getField('start')));
-                $end_time = date('H:i:s', strtotime(self::getField('end')));
-
-                $event->updateField('start', "{$date['start']} $start_time");
-                $event->updateField('end', "{$date['end']} $end_time");
-            }
+            $start_time = date('H:i:s', strtotime(self::getField('start')));
+            $end_time = date('H:i:s', strtotime(self::getField('end')));
 
             $event->updateField('is_all_day', self::getField('is_all_day', false));
+            $event->updateField('start', "{$date['start']} $start_time");
+            $event->updateField('end', "{$date['end']} $end_time");
             $event->updateField('description', self::getField('description', false));
             $event->updateField('enable_subscriptions', self::getField('enable_subscriptions', false));
             $event->updateField('organisers', self::getField('organisers', false));
@@ -103,10 +97,16 @@ class EventCreator
             $event->updateField('individual_invitees', self::getField('individual_invitees', false));
             $event->updateField('invitee_group', self::getField('invitee_group', false));
             $event->updateField('invitee_default_status', self::getField('invitee_default_status', false));
+            $event->updateField('max_participants', self::getField('max_participants', false));
             $event->updateField('is_private', self::getField('is_private', false));
             $event->updateField('location_type', self::getField('location_type', false));
             $event->updateField('custom_location', self::getField('custom_location', false));
             $event->updateField('location_id', self::getField('location_id', false));
+
+            wp_update_post([
+                'ID'        => $event->ID,
+                'post_name' => sanitize_title($event->post_title . '-' . $event->getTimeFromUntil()),
+            ]);
 
             Events::updateEventFields($event->ID);
 
