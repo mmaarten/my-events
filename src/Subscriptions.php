@@ -61,8 +61,9 @@ class Subscriptions
         if ($event->hasMaxParticipants()) {
             $max_participants = $event->getMaxParticipants();
             $participant_count = count($event->getParticipants());
+            $available_places = max(0, $max_participants - $participant_count);
 
-            $text = sprintf(esc_html__('%1$s out of %2$s places available', 'my-events'), $max_participants - $participant_count, $max_participants);
+            $text = sprintf(esc_html__('%1$s out of %2$s places available', 'my-events'), $available_places, $max_participants);
 
             printf(
                 '<div class="alert alert-info" role="alert">%s</div>',
@@ -72,26 +73,20 @@ class Subscriptions
 
         $max_reached = $event->hasMaxParticipants() && count($event->getParticipants()) >= $event->getMaxParticipants();
 
-        if ($invitee->getStatus() !== 'accepted' && $max_reached) {
-            printf('<div class="alert alert-danger" role="alert">%s</div>', esc_html__('The maximum amount of participants is reached.', 'my-events'));
-        }
+        $can_accept  = ($invitee->getStatus() == 'pending' || $invitee->getStatus() == 'declined') && !$max_reached;
+        $can_decline = $invitee->getStatus() == 'pending' || $invitee->getStatus() == 'accepted';
 
-        if ($invitee->getStatus() === 'accepted') {
+        if ($invitee->getStatus() == 'accepted') {
             printf('<div class="alert alert-success" role="alert">%s</div>', esc_html__('You have accepted the invitation.', 'my-events'));
         }
 
-        if ($invitee->getStatus() === 'declined') {
-            printf('<div class="alert alert-danger" role="alert">%s</div>', esc_html__('You have declined the invitation.', 'my-events'));
+        if ($invitee->getStatus() == 'declined') {
+            printf('<div class="alert alert-success" role="alert">%s</div>', esc_html__('You have declined the invitation.', 'my-events'));
         }
 
-        if ($invitee->getStatus() === 'pending') {
+        if ($invitee->getStatus() == 'pending') {
             printf('<div class="alert alert-warning" role="alert">%s</div>', esc_html__('We would like to know if you are comming to this event.', 'my-events'));
         }
-
-        $max_reached = $event->hasMaxParticipants() && count($event->getParticipants()) >= $event->getMaxParticipants();
-
-        $can_accept  = ($invitee->getStatus() == 'pending' || $invitee->getStatus() == 'declined') && !$max_reached;
-        $can_decline = $invitee->getStatus() == 'pending' || $invitee->getStatus() == 'accepted';
 
         ?>
 
@@ -108,14 +103,34 @@ class Subscriptions
             </div>
             <?php endif; ?>
 
+            <?php if ($can_accept || $can_decline) : ?>
             <ul class="list-inline mb-0">
-                <?php if ($can_decline) : ?>
-                <li class="list-inline-item"><label class="btn btn-danger mb-0"><input type="radio" class="d-none" name="request" value="decline" onchange="jQuery(this).closest('form').trigger('submit');"><?php esc_attr_e('Decline invitation', 'my-events'); ?></label></li>
-                <?php endif; ?>
-                <?php if ($can_accept) : ?>
-                <li class="list-inline-item"><label class="btn btn-success mb-0"><input type="radio" class="d-none" name="request" value="accept" onchange="jQuery(this).closest('form').trigger('submit');"><?php esc_attr_e('Accept invitation', 'my-events'); ?></label></li>
-                <?php endif; ?>
+                <li class="list-inline-item">
+                    <?php
+
+                    printf(
+                        '<label class="btn btn-danger mb-0%3$s"><input type="radio" class="d-none" name="request" value="decline" onchange="%1$s"%3$s>%2$s</label>',
+                        esc_attr("jQuery(this).closest('form').trigger('submit');"),
+                        esc_html__('Decline invitation', 'my-events'),
+                        $can_decline ? '' : ' disabled'
+                    );
+
+                    ?>
+                </li>
+                <li class="list-inline-item">
+                    <?php
+
+                    printf(
+                        '<label class="btn btn-success mb-0%3$s"><input type="radio" class="d-none" name="request" value="accept" onchange="%1$s"%3$s>%2$s</label>',
+                        esc_attr("jQuery(this).closest('form').trigger('submit');"),
+                        esc_html__('Accept invitation', 'my-events'),
+                        $can_accept ? '' : ' disabled'
+                    );
+
+                    ?>
+                </li>
             </ul>
+            <?php endif; ?>
 
         </form>
 
