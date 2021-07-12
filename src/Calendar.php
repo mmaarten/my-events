@@ -41,7 +41,7 @@ class Calendar
         if (get_post_type($post_id) == 'event') {
             // TODO: Do not delete all.
             delete_transient(self::TRANSIENT);
-            error_log('delete_transient');
+            Debug:log('delete_transient');
         }
     }
 
@@ -51,7 +51,7 @@ class Calendar
             if ($old_status != $new_status && ($old_status == 'publish' || $new_status == 'publish')) {
                 // TODO: Do not delete all.
                 delete_transient(self::TRANSIENT);
-                error_log('delete_transient');
+                Debug:log('delete_transient');
             }
         }
     }
