@@ -87,12 +87,11 @@ import './components/breakpoints';
     },
 
     addEvents : function(start, end) {
-
       this.start = start;
       this.end = end;
 
-      // Remove previous loaded events.
-      jQuery.each(this.loadedEvents, function(index, event){
+      // Remove all events.
+      jQuery.each(this.calendar.getEvents(), function(index, event){
         this.calendar.getEventById(event.id).remove();
       }.bind(this));
 
@@ -102,11 +101,13 @@ import './components/breakpoints';
 
       jQuery.post(MyEvents.ajaxurl, data ,function(response){
 
-        // Store loaded events
-        this.loadedEvents = response.events;
+        // Remove all events.
+        jQuery.each(this.calendar.getEvents(), function(index, event){
+          this.calendar.getEventById(event.id).remove();
+        }.bind(this));
 
         // Add loaded events
-        jQuery.each(this.loadedEvents, function(index, event) {
+        jQuery.each(response.events, function(index, event) {
           this.calendar.addEvent(event);
         }.bind(this));
 

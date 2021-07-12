@@ -10,13 +10,13 @@ class Calendar
 
     public static function init()
     {
-        add_shortcode('calendar', function () {
-            ob_start();
-            self::render();
+        // add_shortcode('calendar', function () {
+        //     ob_start();
+        //     self::render();
 
-            printf('<a href="%1$s">%2$s</a>', self::getGoToDateURL('2021-01-01'), 'go');
-            return ob_get_clean();
-        });
+        //     printf('<a href="%1$s">%2$s</a>', self::getGoToDateURL('2021-01-01'), 'go');
+        //     return ob_get_clean();
+        // });
 
         add_action('wp_enqueue_scripts', [__CLASS__, 'autoEnqueueAssets']);
         add_action('wp_ajax_my_events_get_events', [__CLASS__, 'getEvents']);

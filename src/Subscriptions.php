@@ -11,14 +11,17 @@ class Subscriptions
 
     public static function init()
     {
-        add_filter('the_content', function ($the_content) {
-            if (is_singular('event')) {
-                ob_start();
-                self::form();
-                $the_content .= ob_get_clean();
-            }
-            return $the_content;
-        });
+        // add_filter('the_content', function ($the_content) {
+        //     if (is_singular('event')) {
+        //         $event = new Event();
+        //         ob_start();
+        //         self::form();
+        //         $the_content .= ob_get_clean();
+
+        //         $the_content .= sprintf('<a href="%1$s">%2$s</a>', Calendar::getGoToDateURL($event->getStartTime('Y-m-d')), 'Show in calendar');
+        //     }
+        //     return $the_content;
+        // });
 
         add_action('template_redirect', [__CLASS__, 'process']);
     }
