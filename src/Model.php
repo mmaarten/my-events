@@ -2,6 +2,8 @@
 
 namespace My\Events;
 
+use My\Events\Posts\Event;
+
 class Model
 {
     public static function getPosts($args = [])
@@ -132,6 +134,17 @@ class Model
                 ],
             ],
         ]);
+    }
+
+    public static function getOverlappingEvents($event_id, $args = [])
+    {
+        $event = new Event($event_id);
+        $start = $event->getStartTime('Y-m-d H:i:s');
+        $end   = $event->getEndTime('Y-m-d H:i:s');
+
+        return self::getEventsBetween($start, $end, [
+            'exclude' => [$event->ID],
+        ] + $args);
     }
 
     public static function getEventsByInviteeGroup($post_id, $args = [])

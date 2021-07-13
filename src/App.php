@@ -19,6 +19,10 @@ class App
             'Fields',
             'Assets',
             'Events',
+            // Extensions
+            'Invitees',
+            'PrivateEvents',
+            'OverlappingEvents',
         ]);
 
         add_action('init', [__CLASS__, 'loadTextdomain']);

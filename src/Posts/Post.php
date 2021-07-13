@@ -8,6 +8,10 @@ class Post
 
     public function __construct($post = null)
     {
+        if (is_a($post, __CLASS__)) {
+            $post = $post->ID;
+        }
+
         $this->post = get_post($post);
     }
 
