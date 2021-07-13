@@ -15,6 +15,8 @@ class App
             'AdminMenu',
             'PostTypes',
             'AdminColumns',
+            'Fields',
+            'Assets',
         ]);
     }
 }
