@@ -154,6 +154,18 @@ class Fields
             ],
         ]);
 
+        // Max participants
+        acf_add_local_field([
+            'key'          => 'my_events_event_max_participants_field',
+            'label'        => __('Limit the amount of participants', 'my-events'),
+            'instructions' => __('', 'my-events'),
+            'name'         => 'max_participants',
+            'type'         => 'number',
+            'min'          => 1,
+            'required'     => false,
+            'parent'       => 'my_events_event_group',
+        ]);
+
         // Location type
         acf_add_local_field([
             'key'           => 'my_events_event_location_type_field',

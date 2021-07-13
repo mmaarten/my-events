@@ -289,9 +289,21 @@ class Event extends Post
      * @param array $args
      * @return array
      */
-    public function getParticpants($args = [])
+    public function getParticipants($args = [])
     {
         return $this->getInviteesUsers('accepted', $args);
+    }
+
+    /**
+     * Get max participants
+     *
+     * @return mixed
+     */
+    public function getMaxParticipants()
+    {
+        $value = $this->getField('max_participants');
+
+        return $value ? $value : false;
     }
 
     /**
