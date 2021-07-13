@@ -21,6 +21,11 @@ class Events
         add_filter('acf/load_value/key=my_events_event_individual_invitees_field', [__CLASS__, 'populateIndividualInviteesField'], 10, 3);
     }
 
+    public static function getEventClasses($event_id)
+    {
+        return [];
+    }
+
     /**
      * Populate individual invitees field
      *
@@ -62,8 +67,11 @@ class Events
                 }
 
                 if ($invitee_type == 'group') {
-                    $group = new Post($event->getField('invitee_group', false));
-                    $invitees = $group->getField('users', false);
+                    $group_id = $event->getField('invitee_group', false);
+                    if ($group_id && get_post_type($group_id)) {
+                        $group = new Post($group_id);
+                        $invitees = $group->getField('users', false);
+                    }
                 }
 
                 $event->setInvitees($invitees);

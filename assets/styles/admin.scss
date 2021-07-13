@@ -1,18 +1,16 @@
 @import "autoload";
+@import "send-email";
 
-// Event settings
 #acf-my_events_event_group {
-  .acf-field {
-    &[data-name="individual_invitees"],
-    &[data-name="invitee_group"],
-    &[data-name="location_id"],
-    &[data-name="custom_location"] {
-      border-top: none;
-      padding-top: 0;
+  .acf-field[data-name="individual_invitees"],
+  .acf-field[data-name="invitee_group"],
+  .acf-field[data-name="custom_location"],
+  .acf-field[data-name="location_id"] {
+    border-top: none;
+    padding-top: 0;
 
-      .acf-label {
-        display: none;
-      }
+    .acf-label {
+      display: none;
     }
   }
 }

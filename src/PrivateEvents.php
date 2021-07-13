@@ -2,6 +2,8 @@
 
 namespace My\Events;
 
+use My\Events\Posts\Event;
+
 class PrivateEvents
 {
     /**

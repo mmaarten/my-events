@@ -90,7 +90,7 @@ class Fields
             'type'          => 'user',
             'multiple'      => true,
             'return_format' => 'id',
-            'required'      => true,
+            'required'      => false,
             'parent'        => 'my_events_event_group',
         ]);
 
@@ -106,7 +106,7 @@ class Fields
                 'group'      => __('Group', 'my-events'),
             ],
             'default_value' => 'individual',
-            'required'      => true,
+            'required'      => false,
             'parent'        => 'my_events_event_group',
         ]);
 
@@ -119,7 +119,7 @@ class Fields
             'type'              => 'user',
             'multiple'          => true,
             'return_format'     => 'id',
-            'required'          => true,
+            'required'          => false,
             'parent'            => 'my_events_event_group',
             'conditional_logic' => [
                 [
@@ -141,7 +141,8 @@ class Fields
             'type'              => 'post_object',
             'post_type'         => 'invitee_group',
             'multiple'          => false,
-            'required'          => true,
+            'required'          => false,
+            'allow_null'        => true,
             'parent'            => 'my_events_event_group',
             'conditional_logic' => [
                 [
@@ -178,7 +179,7 @@ class Fields
                 'id'     => __('Preset', 'my-events'),
             ],
             'default_value' => 'custom',
-            'required'      => true,
+            'required'      => false,
             'parent'        => 'my_events_event_group',
         ]);
 
@@ -190,7 +191,7 @@ class Fields
             'name'          => 'custom_location',
             'type'          => 'text',
             'default_value' => '',
-            'required'      => true,
+            'required'      => false,
             'parent'        => 'my_events_event_group',
             'conditional_logic' => [
                 [
@@ -214,7 +215,8 @@ class Fields
             'multiple'      => false,
             'return_format' => 'id',
             'default_value' => '',
-            'required'      => true,
+            'allow_null'    => true,
+            'required'      => false,
             'parent'        => 'my_events_event_group',
             'conditional_logic' => [
                 [

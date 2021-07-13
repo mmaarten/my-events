@@ -19,12 +19,16 @@ class App
             'Fields',
             'Assets',
             'Events',
+            'Comments',
             'Subscriptions',
             'Notifications',
+            'AdminNotices',
+            'PrivateEvents',
             // Extensions
             'Invitees',
-            'PrivateEvents',
             'OverlappingEvents',
+            'SendEmail',
+            'Calendar',
         ]);
 
         add_action('init', [__CLASS__, 'loadTextdomain']);

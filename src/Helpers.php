@@ -4,13 +4,19 @@ namespace My\Events;
 
 class Helpers
 {
-    public static function adminNotice($message, $type = 'info', $inline = false, $html = false)
+    public static function getIcon($key)
+    {
+        return sprintf('<span class="dashicons-before dashicons-%s"></span>', sanitize_html_class($key));
+    }
+
+    public static function adminNotice($message, $type = 'info', $inline = false, $icon = '')
     {
         printf(
-            '<div class="notice notice-%1$s %2$s"><p>%3$s</p></div>',
+            '<div class="notice notice-%1$s %2$s"><p>%4$s %3$s</p></div>',
             sanitize_html_class($type),
             $inline ? 'inline' : '',
-            $html ? $message : esc_html($message)
+            esc_html($message),
+            $icon ? self::getIcon($icon) : ''
         );
     }
 
