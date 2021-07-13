@@ -33,4 +33,14 @@ class Invitee extends Post
     {
         return $this->updateField('status', $value);
     }
+
+    public function getEmailSent()
+    {
+        return $this->getField('email_sent');
+    }
+
+    public function setEmailSent($value)
+    {
+        return $this->updateField('email_sent', $value);
+    }
 }

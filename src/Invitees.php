@@ -52,7 +52,7 @@ class Invitees
                     '<li><a href="%1$s">%2$s</a> <small>(%3$s)</small></li>',
                     get_edit_post_link($invitee->ID),
                     esc_html($user->display_name),
-                    esc_html($status_display)
+                    esc_html(strtolower($status_display))
                 );
             }
         }

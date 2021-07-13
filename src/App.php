@@ -19,6 +19,8 @@ class App
             'Fields',
             'Assets',
             'Events',
+            'Subscriptions',
+            'Notifications',
             // Extensions
             'Invitees',
             'PrivateEvents',

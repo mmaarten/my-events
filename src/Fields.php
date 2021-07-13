@@ -262,36 +262,53 @@ class Fields
 
         // Event
         acf_add_local_field([
-            'key'           => 'my_events_invitee_xxx_field',
-            'label'         => __('xxx', 'my-events'),
+            'key'           => 'my_events_invitee_event_field',
+            'label'         => __('Event', 'my-events'),
             'instructions'  => __('', 'my-events'),
-            'name'          => 'xxx',
-            'type'          => '',
-            'default_value' => '',
-            'required'      => false,
+            'name'          => 'event',
+            'type'          => 'post_object',
+            'post_type'     => 'event',
+            'return_format' => 'id',
+            'multiple'      => false,
+            'required'      => true,
             'parent'        => 'my_events_invitee_group',
         ]);
 
         // User
         acf_add_local_field([
-            'key'           => 'my_events_invitee_xxx_field',
-            'label'         => __('xxx', 'my-events'),
+            'key'           => 'my_events_invitee_user_field',
+            'label'         => __('User', 'my-events'),
             'instructions'  => __('', 'my-events'),
-            'name'          => 'xxx',
-            'type'          => '',
-            'default_value' => '',
-            'required'      => false,
+            'name'          => 'user',
+            'type'          => 'user',
+            'return_format' => 'id',
+            'multiple'      => false,
+            'required'      => true,
             'parent'        => 'my_events_invitee_group',
         ]);
 
         // Status
         acf_add_local_field([
-            'key'           => 'my_events_invitee_xxx_field',
-            'label'         => __('xxx', 'my-events'),
+            'key'           => 'my_events_invitee_status_field',
+            'label'         => __('Status', 'my-events'),
             'instructions'  => __('', 'my-events'),
-            'name'          => 'xxx',
-            'type'          => '',
-            'default_value' => '',
+            'name'          => 'status',
+            'type'          => 'select',
+            'choices'       => Helpers::getInviteeStatuses(),
+            'multiple'      => false,
+            'default_value' => 'pending',
+            'required'      => true,
+            'parent'        => 'my_events_invitee_group',
+        ]);
+
+        // Email sent
+        acf_add_local_field([
+            'key'           => 'my_events_invitee_email_sent_field',
+            'label'         => __('Email sent', 'my-events'),
+            'instructions'  => __('', 'my-events'),
+            'name'          => 'email_sent',
+            'type'          => 'true_false',
+            'default_value' => false,
             'required'      => false,
             'parent'        => 'my_events_invitee_group',
         ]);
@@ -319,24 +336,25 @@ class Fields
 
         // Users
         acf_add_local_field([
-            'key'           => 'my_events_invitee_group_xxx_field',
-            'label'         => __('xxx', 'my-events'),
+            'key'           => 'my_events_invitee_group_users_field',
+            'label'         => __('Users', 'my-events'),
             'instructions'  => __('', 'my-events'),
-            'name'          => 'xxx',
-            'type'          => '',
-            'default_value' => '',
-            'required'      => false,
+            'name'          => 'users',
+            'type'          => 'user',
+            'return_format' => 'id',
+            'multiple'      => true,
+            'required'      => true,
             'parent'        => 'my_events_invitee_group_group',
         ]);
     }
 
     /**
-     * Add location fields
+     * Add event location fields
      */
     public static function addLocationFields()
     {
         acf_add_local_field_group([
-            'key'      => 'my_events_location_group',
+            'key'      => 'my_events_event_location_group',
             'title'    => __('General', 'my-events'),
             'fields'   => [],
             'location' => [
@@ -352,14 +370,13 @@ class Fields
 
         // Address
         acf_add_local_field([
-            'key'           => 'my_events_location_xxx_field',
-            'label'         => __('xxx', 'my-events'),
-            'instructions'  => __('', 'my-events'),
-            'name'          => 'xxx',
-            'type'          => '',
-            'default_value' => '',
-            'required'      => false,
-            'parent'        => 'my_events_location_group',
+            'key'           => 'my_events_event_location_address_field',
+            'label'         => __('Address', 'my-events'),
+            'instructions'  => __('The geographical location.', 'my-events'),
+            'name'          => 'address',
+            'type'          => 'text',
+            'required'      => true,
+            'parent'        => 'my_events_event_location_group',
         ]);
     }
 }
