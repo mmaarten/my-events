@@ -1,7 +1,7 @@
 @import "autoload";
 @import '~fullcalendar/main';
 
-.calendar {
+#calendar {
   &.is-loading {
     .fc-view-harness {
       @include make-loader(2rem, 0, true);

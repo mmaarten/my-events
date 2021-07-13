@@ -195,6 +195,8 @@ class Notifications
 
         $send = wp_mail($args['to'], $args['subject'], $args['message'], $args['headers'], $args['attachments']);
 
+        do_action('my_events/notification_sent', $send, $args);
+
         remove_filter('wp_mail_content_type', [__CLASS__, 'wpMailContentType']);
 
         return $send;

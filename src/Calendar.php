@@ -26,7 +26,9 @@ class Calendar
      */
     public static function render()
     {
-        $options = apply_filters('my_events/calendar_options', []);
+        $options = apply_filters('my_events/calendar_options', [
+            'locale' => substr(get_locale(), 0, 2),
+        ]);
 
         printf(
             '<div id="calendar" data-options="%s"></div>',

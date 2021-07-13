@@ -174,7 +174,7 @@ class Fields
             'instructions' => __('Leave empty for unlimited participants.', 'my-events'),
             'name'         => 'max_participants',
             'type'         => 'number',
-            'min'          => 1,
+            'min'          => 2,
             'required'     => false,
             'parent'       => 'my_events_event_group',
         ]);

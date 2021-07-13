@@ -25,6 +25,15 @@ class Helpers
         );
     }
 
+    public static function alert($message, $type = 'info')
+    {
+        printf(
+            '<div class="alert alert-%1$s" role="alert">%2$s</div>',
+            sanitize_html_class($type),
+            esc_html($message)
+        );
+    }
+
     public static function loadTemplate($name, $args = [], $return = false)
     {
         $file = locate_template('events/' . $name . '.php', false, false);

@@ -29,6 +29,9 @@ class Debug
         add_action('added_post_meta', [__CLASS__, 'addedPostMeta'], 0, 2);
         add_action('updated_post_meta', [__CLASS__, 'updatedPostMeta'], 0, 3);
         add_action('transition_post_status', [__CLASS__, 'transitionPostStatus'], 0, 3);
+        add_action('my_events/notification_sent', function ($send, $args) {
+            self::log(current_action() . ' ' . var_export($args, true));
+        }, 0, 2);
     }
 
     /**

@@ -40,11 +40,6 @@ class Subscriptions
 
         $user_id = get_current_user_id();
 
-        if (! $event->areSubscriptionsEnabled()) {
-            Helpers::alert(__('Subscriptions are disabled.', 'my-events'), 'danger');
-            return;
-        }
-
         if ($event->isOver()) {
             Helpers::alert(__('Event is over. It is no longer possible to subscribe.', 'my-events'), 'danger');
             return;
@@ -125,7 +120,7 @@ class Subscriptions
                 echo '<li class="list-inline-item">';
 
                 printf(
-                    '<label class="btn btn-success%"><input type="radio" class="d-none" name="action" value="accept" onchange="%2$s"> %1$s</label>',
+                    '<label class="btn btn-success"><input type="radio" class="d-none" name="action" value="accept" onchange="%2$s"> %1$s</label>',
                     esc_html__('Accept', 'my-events'),
                     esc_attr($onchange)
                 );
@@ -183,10 +178,6 @@ class Subscriptions
         }
 
         $event = new Event($event_id);
-
-        if (! $event->areSubscriptionsEnabled()) {
-            return;
-        }
 
         if ($event->isOver()) {
             return;

@@ -331,6 +331,26 @@ class Event extends Post
     }
 
     /**
+     * Has max participants
+     *
+     * @return bool
+     */
+    public function hasMaxParticipants()
+    {
+        return $this->getMaxParticipants() !== false;
+    }
+
+    /**
+     * Get available places
+     *
+     * @return int
+     */
+    public function getAvailablePlaces()
+    {
+        return max(0, $this->getMaxParticipants() - count($this->getParticipants()));
+    }
+
+    /**
      * Is organizer
      *
      * @param int $user_id
@@ -342,12 +362,23 @@ class Event extends Post
     }
 
     /**
+     * Is invitee
+     *
+     * @param int $user_id
+     * @return bool
+     */
+    public function isInvitee($user_id)
+    {
+        return $this->getInviteeByUser($user_id) ? true : false;
+    }
+
+    /**
      * Is participant
      *
      * @param int $user_id
      * @return bool
      */
-    public function isParticpant($user_id)
+    public function isParticipant($user_id)
     {
         return in_array($user_id, $this->getParticipants(['fields' => 'ID']));
     }
@@ -360,7 +391,7 @@ class Event extends Post
      */
     public function isMember($user_id)
     {
-        return $this->isOrganizer($user_id) || $this->isParticpant($user_id);
+        return $this->isOrganizer($user_id) || $this->isInvitee($user_id);
     }
 
     /**
