@@ -24,7 +24,7 @@ class Debug
 
         add_action('save_post', [__CLASS__, 'savePost'], 0);
         add_action('wp_trash_post', [__CLASS__, 'trashPost'], 0);
-        add_action('delete_post', [__CLASS__, 'deletePost'], 0);
+        add_action('before_delete_post', [__CLASS__, 'deletePost'], 0);
         add_action('delete_user', [__CLASS__, 'deleteUser'], 0);
         add_action('added_post_meta', [__CLASS__, 'addedPostMeta'], 0, 2);
         add_action('updated_post_meta', [__CLASS__, 'updatedPostMeta'], 0, 3);

@@ -28,16 +28,5 @@
     "@wordpress/scripts": "^16.0.0",
     "copy-webpack-plugin": "^6.4.1",
     "dir-archiver": "^1.1.1"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.1",
-    "@fullcalendar/bootstrap": "^5.7.0",
-    "@fullcalendar/core": "^5.7.0",
-    "@fullcalendar/daygrid": "^5.7.0",
-    "@fullcalendar/google-calendar": "^5.7.2",
-    "@fullcalendar/interaction": "^5.7.0",
-    "@fullcalendar/list": "^5.7.0",
-    "@fullcalendar/timegrid": "^5.7.0",
-    "fullcalendar": "^5.8.0"
   }
 }

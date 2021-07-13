@@ -15,7 +15,7 @@ class Events
     {
         add_action('acf/save_post', [__CLASS__, 'savePost']);
         add_action('wp_trash_post', [__CLASS__, 'trashPost']);
-        add_action('delete_post', [__CLASS__, 'deletePost']);
+        add_action('before_delete_post', [__CLASS__, 'deletePost']);
         add_action('delete_user', [__CLASS__, 'deleteUser']);
         add_action('add_meta_boxes', [__CLASS__, 'addMetaBoxes']);
 
@@ -36,10 +36,56 @@ class Events
                     __('Invitees', 'my-events'),
                     [__CLASS__, 'renderInvitees'],
                     $post_type,
-                    'side'
+                    'side',
+                    'high'
+                );
+                add_meta_box(
+                    'my-events-overlapping-events',
+                    __('Overlapping events', 'my-events'),
+                    [__CLASS__, 'renderOverlappingEvents'],
+                    $post_type,
+                    'side',
+                    'high'
                 );
                 break;
         }
+    }
+
+    /**
+     * Render overlapping events
+     *
+     * @param WP_Post $post
+     */
+    public static function renderOverlappingEvents($post)
+    {
+        $event = new Event($post);
+
+        $start = $event->getStartTime('Y-m-d H:i:s');
+        $end   = $event->getEndTime('Y-m-d H:i:s');
+
+        $events = Model::getEventsBetween($start, $end, [
+            'exclude' => [$event->ID],
+            'fields'  => 'ids',
+        ]);
+
+        if (! $events) {
+            Helpers::adminNotice(__('No overlapping events found.', 'my-events'), 'info', true);
+            return;
+        }
+
+        echo '<ul>';
+
+        foreach ($events as $event) {
+            $event = new Event($event);
+            printf(
+                '<li><a href="%1$s">%2$s</a><br><small>%3$s</small></li>',
+                get_permalink($event->ID),
+                esc_html($event->post_title),
+                esc_html($event->getTimeFromUntil())
+            );
+        }
+
+        echo '</ul>';
     }
 
     /**
@@ -50,6 +96,32 @@ class Events
     public static function renderInvitees($post)
     {
         $event = new Event($post);
+
+        if (! $event->hasInvitees()) {
+            Helpers::adminNotice(__('No invitees found.', 'my-events'), 'info', true);
+            return;
+        }
+
+        $statuses     = Helpers::getInviteeStatuses();
+        $status_order = ['accepted', 'declined', 'pending'];
+        $statuses     = array_merge(array_flip($status_order), $statuses);
+
+        echo '<ul>';
+
+        foreach ($statuses as $status => $status_display) {
+            $users = $event->getInviteesUsers($status, ['orderby' => 'display_name', 'order' => 'ASC']);
+            foreach ($users as $user) {
+                $invitee = $event->getInviteeByUser($user->ID);
+                printf(
+                    '<li><a href="%1$s">%2$s</a> (%3$s)</li>',
+                    get_edit_post_link($invitee->ID),
+                    esc_html($user->display_name),
+                    esc_html($status_display)
+                );
+            }
+        }
+
+        echo '</ul>';
     }
 
     /**
@@ -99,6 +171,27 @@ class Events
 
                 $event->setInvitees($invitees);
                 $event->deleteField('individual_invitees');
+                break;
+            case 'invitee_group':
+                $group = new Post($post_id);
+                $prev_users = $group->getField('_prev_users');
+                $curr_users = $group->getField('users', false);
+
+                if (! is_array($prev_users)) {
+                    $prev_users = $curr_users;
+                }
+
+                $group->updateField('_prev_users', $curr_users);
+
+                if ($prev_users !== $curr_users) {
+                    $events = self::getEventsByInviteeGroup($group->ID);
+                    foreach ($events as $event) {
+                        $event = new Event($event);
+                        if (! $event->isOver()) {
+                            $event->setInvitees($curr_users);
+                        }
+                    }
+                }
                 break;
         }
     }
@@ -167,5 +260,7 @@ class Events
                 wp_delete_post($invitee, true);
             }
         }
+
+        // TODO : update invitee group 'users' setting?
     }
 }

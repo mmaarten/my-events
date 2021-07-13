@@ -20,6 +20,120 @@ class Model
         ]);
     }
 
+    public static function getUserEvents($user_id, $status = null, $args = [])
+    {
+        if ($status) {
+            $invitees = self::getInviteesByUser($user_id, ['fields' => 'ids']);
+
+            if ($invitees) {
+                $invitees = self::getInviteesByStatus($status, ['include' => $invitees, 'fields' => 'ids']);
+            }
+
+        } else {
+            $invitees = self::getInviteesByUser($user_id, ['fields' => 'ids']);
+        }
+
+        if (! $invitees) {
+            return [];
+        }
+
+        $events = [];
+
+        foreach ($invitees as $invitee) {
+            $invitee = new Invitee($invitee);
+            $events[] = $invitee->getEvent();
+        }
+
+        if (! $events) {
+            return;
+        }
+
+        return self::getEvents([
+            'include' => $events,
+        ] + $args);
+    }
+
+    public static function orderEventsByStartTime($event_ids, $order = 'ASC', $args = [])
+    {
+        if (! $event_ids) {
+            return [];
+        }
+
+        return self::getEvents($args + [
+            'include'   => $event_ids,
+            'orderby'   => 'meta_value',
+            'meta_key'  => 'start',
+            'meta_type' => 'DATETIME',
+            'order'     => $order,
+        ]);
+    }
+
+    public static function excludeEventsThatAreOver($event_ids, $args = [])
+    {
+        if (! $event_ids) {
+            return [];
+        }
+
+        return self::getEvents($args + [
+            'include' => $event_ids,
+            'meta_query' => [
+                [
+                    'key'     => 'end',
+                    'compare' => '>=',
+                    'value'   => date_i18n('Y-m-d H:i:s'),
+                    'type'    => 'DATETIME',
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * Get events between
+     *
+     * @param string $start
+     * @param string $end
+     * @param array  $args
+     * @return array
+     */
+    public static function getEventsBetween($start, $end, $args = [])
+    {
+        return self::getEvents($args + [
+            'meta_query' => [
+                'relation' => 'OR',
+                [
+                    'relation' => 'AND',
+                    [
+                        'key'     => 'start',
+                        'compare' => '>=',
+                        'value'   => $start,
+                        'type'    => 'DATETIME',
+                    ],
+                    [
+                        'key'     => 'start',
+                        'compare' => '<=',
+                        'value'   => $end,
+                        'type'    => 'DATETIME',
+                    ],
+                ],
+                [
+                    'relation' => 'AND',
+                    [
+                        'key'     => 'end',
+                        'compare' => '>=',
+                        'value'   => $start,
+                        'type'    => 'DATETIME',
+                    ],
+                    [
+                        'key'     => 'end',
+                        'compare' => '<=',
+                        'value'   => $end,
+                        'type'    => 'DATETIME',
+                    ],
+                ],
+            ],
+        ]);
+    }
+
     public static function getEventsByInviteeGroup($post_id, $args = [])
     {
         return self::getEvents($args + [

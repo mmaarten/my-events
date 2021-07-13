@@ -4,6 +4,41 @@ namespace My\Events;
 
 class Helpers
 {
+    public static function adminNotice($message, $type = 'info', $inline = false, $html = false)
+    {
+        printf(
+            '<div class="notice notice-%1$s %2$s"><p>%3$s</p></div>',
+            sanitize_html_class($type),
+            $inline ? 'inline' : '',
+            $html ? $message : esc_html($message)
+        );
+    }
+
+    public static function loadTemplate($name, $args = [], $return = false)
+    {
+        $file = locate_template('events/' . $name . '.php', false, false);
+
+        if (! $file) {
+            $file = plugin_dir_path(MY_EVENTS_PLUGIN_FILE) . 'templates/' . $name . '.php';
+        }
+
+        if (! file_exists($file)) {
+            return false;
+        }
+
+        if ($return) {
+            ob_start();
+        }
+
+        include $file;
+
+        if ($return) {
+            return ob_get_clean();
+        }
+
+        return true;
+    }
+
     /**
      * Get invitee statuses
      *
@@ -37,7 +72,7 @@ class Helpers
      * @param string $separator
      * @return string
      */
-    public static function renderPosts($post_ids, $separator = ', ', $default = '')
+    public static function renderPosts($post_ids, $separator = ', ', $permalink = false)
     {
         $return = [];
 
@@ -46,7 +81,7 @@ class Helpers
                 $post = get_post($post_id);
                 $return[] = sprintf(
                     '<a href="%1$s">%2$s</a>',
-                    get_edit_post_link($post->ID),
+                    $permalink ? get_permalink($post) : get_edit_post_link($post),
                     esc_html($post->post_title)
                 );
             }

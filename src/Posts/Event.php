@@ -200,6 +200,16 @@ class Event extends Post
     }
 
     /**
+     * Has invitees
+     *
+     * @return bool
+     */
+    public function hasInvitees($args = [])
+    {
+        return $this->getInvitees(['numberposts' => 1]) ? true : false;
+    }
+
+    /**
      * Add invitee
      *
      * @param int     $user_id
