@@ -101,7 +101,7 @@ import './components/breakpoints';
 
     // Load events
     this.$elem.addClass('is-loading');
-    jQuery.post(MyEvents.ajaxurl, { action: 'my_events_get_events', start: start, end: end, context: this.context }, function(response){
+    jQuery.post(MyEventsCalendarSettings.ajaxurl, { action: 'my_events_get_events', start: start, end: end, context: this.context }, function(response){
       // Save to cache.
       this.loadedEvents[cacheKey] = response.events;
       // Add loaded events.

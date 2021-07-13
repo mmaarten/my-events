@@ -29,7 +29,7 @@ class Calendar
         $options = apply_filters('my_events/calendar_options', []);
 
         printf(
-            '<div id="calendar" class="calendar" data-options="%s"></div>',
+            '<div id="calendar" data-options="%s"></div>',
             esc_attr(json_encode($options))
         );
     }
@@ -102,7 +102,7 @@ class Calendar
             true
         );
 
-        wp_localize_script('my-events-calendar-script', 'MyEvents', [
+        wp_localize_script('my-events-calendar-script', 'MyEventsCalendarSettings', [
             'ajaxurl' => admin_url('admin-ajax.php'),
         ]);
 
