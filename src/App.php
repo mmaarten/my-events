@@ -12,6 +12,7 @@ class App
         array_map(function ($class) {
             call_user_func([__NAMESPACE__ . '\\' . $class, 'init']);
         }, [
+            'Debug',
             'AdminMenu',
             'PostTypes',
             'AdminColumns',
