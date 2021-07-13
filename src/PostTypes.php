@@ -4,11 +4,17 @@ namespace My\Events;
 
 class PostTypes
 {
+    /**
+     * Init
+     */
     public static function init()
     {
         add_action('init', [__CLASS__, 'registerPostTypes']);
     }
 
+    /**
+     * Register post types
+     */
     public static function registerPostTypes()
     {
         register_post_type('event', [
@@ -40,8 +46,45 @@ class PostTypes
             'menu_position'      => null,
             'supports'           => ['title'],
         ]);
+
+        register_post_type('invitee_group', [
+            'labels'             => self::getLabels(__('Invitee group', 'my-events'), __('Invitee groups', 'my-events')),
+            'public'             => false,
+            'publicly_queryable' => false,
+            'show_ui'            => true,
+            'show_in_menu'       => 'my-events',
+            'query_var'          => false,
+            'rewrite'            => false,
+            'capability_type'    => 'post',
+            'has_archive'        => false,
+            'hierarchical'       => false,
+            'menu_position'      => null,
+            'supports'           => ['title'],
+        ]);
+
+        register_post_type('event_location', [
+            'labels'             => self::getLabels(__('Location', 'my-events'), __('Locations', 'my-events')),
+            'public'             => false,
+            'publicly_queryable' => false,
+            'show_ui'            => true,
+            'show_in_menu'       => 'my-events',
+            'query_var'          => false,
+            'rewrite'            => false,
+            'capability_type'    => 'post',
+            'has_archive'        => false,
+            'hierarchical'       => false,
+            'menu_position'      => null,
+            'supports'           => ['title'],
+        ]);
     }
 
+    /**
+     * Get labels
+     *
+     * @param string $name
+     * @param string $singular_name
+     * @return array
+     */
     public static function getLabels($name, $singular_name)
     {
         return [

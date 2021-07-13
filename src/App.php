@@ -4,6 +4,9 @@ namespace My\Events;
 
 class App
 {
+    /**
+     * Init
+     */
     public static function init()
     {
         array_map(function ($class) {
@@ -11,6 +14,7 @@ class App
         }, [
             'AdminMenu',
             'PostTypes',
+            'AdminColumns',
         ]);
     }
 }

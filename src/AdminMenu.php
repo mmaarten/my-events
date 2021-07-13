@@ -4,11 +4,17 @@ namespace My\Events;
 
 class AdminMenu
 {
+    /**
+     * Init
+     */
     public static function init()
     {
         add_action('admin_menu', [__CLASS__, 'addMenuPage']);
     }
 
+    /**
+     * Add menu page
+     */
     public static function addMenuPage()
     {
         add_menu_page(
