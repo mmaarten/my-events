@@ -59,6 +59,15 @@ class Events
         switch (get_post_type($post_id)) {
             case 'event':
                 $event = new Event($post_id);
+
+                if ($event->isAllDay()) {
+                    $start_date = $event->getStartTime('Y-m-d');
+                    $end_date   = $event->getEndTime('Y-m-d');
+
+                    $event->updateField('start', "$start_date 00:00:00");
+                    $event->updateField('end', "$end_date 23:59:59");
+                }
+
                 $invitee_type = $event->getField('invitee_type');
                 $invitees = [];
 

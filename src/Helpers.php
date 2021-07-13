@@ -11,7 +11,12 @@ class Helpers
 
     public static function adminNotice($message, $type = 'info', $inline = false, $icon = '')
     {
-        printf(
+        echo self::getAdminNotice($message, $type, $inline, $icon);
+    }
+
+    public static function getAdminNotice($message, $type = 'info', $inline = false, $icon = '')
+    {
+        return sprintf(
             '<div class="notice notice-%1$s %2$s"><p>%4$s %3$s</p></div>',
             sanitize_html_class($type),
             $inline ? 'inline' : '',

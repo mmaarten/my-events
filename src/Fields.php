@@ -39,7 +39,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_description_field',
             'label'         => __('Description', 'my-events'),
-            'instructions'  => __('', 'my-events'),
+            'instructions'  => __('A breif description about this event.', 'my-events'),
             'name'          => 'description',
             'type'          => 'textarea',
             'new_lines'     => 'wpautop',
@@ -49,11 +49,23 @@ class Fields
             'parent'        => 'my_events_event_group',
         ]);
 
+        // All day
+        acf_add_local_field([
+            'key'           => 'my_events_event_all_day_field',
+            'label'         => __('All day', 'my-events'),
+            'instructions'  => __('This event takes one or more full days .', 'my-events'),
+            'name'          => 'all_day',
+            'type'          => 'true_false',
+            'default_value' => false,
+            'required'      => false,
+            'parent'        => 'my_events_event_group',
+        ]);
+
         // Start time
         acf_add_local_field([
             'key'            => 'my_events_event_start_field',
             'label'          => __('Start time', 'my-events'),
-            'instructions'   => __('', 'my-events'),
+            'instructions'   => __('The time the event starts.', 'my-events'),
             'name'           => 'start',
             'type'           => 'date_time_picker',
             'display_format' => get_option('date_format') . ' ' . get_option('time_format'),
@@ -69,7 +81,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_end_field',
             'label'         => __('End time', 'my-events'),
-            'instructions'  => __('', 'my-events'),
+            'instructions'  => __('The time the event ends.', 'my-events'),
             'name'          => 'end',
             'type'           => 'date_time_picker',
             'display_format' => get_option('date_format') . ' ' . get_option('time_format'),
@@ -85,7 +97,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_organizers_field',
             'label'         => __('Organizers', 'my-events'),
-            'instructions'  => __('', 'my-events'),
+            'instructions'  => __('Organisers recieve notifications by email when someone accepts or declines the invitation.', 'my-events'),
             'name'          => 'organizers',
             'type'          => 'user',
             'multiple'      => true,
@@ -98,7 +110,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_invitee_type_field',
             'label'         => __('Invitees', 'my-events'),
-            'instructions'  => __('', 'my-events'),
+            'instructions'  => __('Invitees receive an invitation email.', 'my-events'),
             'name'          => 'invitee_type',
             'type'          => 'select',
             'choices'       => [
@@ -159,7 +171,7 @@ class Fields
         acf_add_local_field([
             'key'          => 'my_events_event_max_participants_field',
             'label'        => __('Limit the amount of participants', 'my-events'),
-            'instructions' => __('', 'my-events'),
+            'instructions' => __('Leave empty for unlimited participants.', 'my-events'),
             'name'         => 'max_participants',
             'type'         => 'number',
             'min'          => 1,
@@ -171,7 +183,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_location_type_field',
             'label'         => __('Location', 'my-events'),
-            'instructions'  => __('', 'my-events'),
+            'instructions'  => __('The geographical location were the event takes place.', 'my-events'),
             'name'          => 'location_type',
             'type'          => 'select',
             'choices'       => [
@@ -233,7 +245,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_private_field',
             'label'         => __('Private', 'my-events'),
-            'instructions'  => __('', 'my-events'),
+            'instructions'  => __('Only organizers and invitees of this event have access to this event.', 'my-events'),
             'name'          => 'private',
             'type'          => 'true_false',
             'default_value' => false,

@@ -382,4 +382,14 @@ class Event extends Post
     {
         return $this->getField('private');
     }
+
+    /**
+     * Is all day
+     *
+     * @return bool
+     */
+    public function isAllDay()
+    {
+        return $this->getField('all_day') ? true : false;
+    }
 }

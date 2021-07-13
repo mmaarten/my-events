@@ -25,7 +25,7 @@ class SendEmail
         $invitees = $event->getInviteesUsers();
 
         if (! $invitees) {
-            echo Helpers::adminNotice(__('No invitees found.', 'my-events'), 'info', true);
+            Helpers::adminNotice(__('No invitees found.', 'my-events'), 'info', true);
             return;
         }
 
@@ -75,7 +75,7 @@ class SendEmail
 
             <div class="my-events-send-email-output"></div>
 
-            <?php echo Helpers::adminNotice(__('Be sure to save the event before sending.', 'my-events'), 'info', true); ?>
+            <?php echo Helpers::adminNotice(__('Be sure to save the event before sending.', 'my-events'), 'warning', true); ?>
 
         </div>
 

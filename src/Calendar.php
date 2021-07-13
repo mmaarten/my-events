@@ -71,6 +71,10 @@ class Calendar
         $start = new \DateTime($post->getStartTime('Y-m-d H:i:s'));
         $end   = new \DateTime($post->getEndTime('Y-m-d H:i:s'));
 
+        if ($post->isAllDay()) {
+            $end->modify('+1 day');
+        }
+
         // Create event
         $event = [
             'id'        => $post->ID,
@@ -78,6 +82,7 @@ class Calendar
             'start'     => $start->format('Y-m-d\TH:i:s'),
             'end'       => $end->format('Y-m-d\TH:i:s'),
             'url'       => get_permalink($post->ID),
+            'allDay'    => $post->isAllDay(),
             'className' => implode(' ', Events::getEventClasses($post->ID)),
         ];
 
@@ -127,7 +132,8 @@ class Calendar
      */
     public static function autoEnqueueAssets()
     {
-        if (Helpers::hasShortcode(self::SHORTCODE)) {
+        $post = get_post();
+        if (is_a($post, '\WP_post') && has_shortcode($post->post_content, self::SHORTCODE)) {
             self::enqueueAssets();
         }
     }
