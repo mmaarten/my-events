@@ -28,7 +28,7 @@ class Event extends Post
             $format = get_option('date_format') . '' . get_option('time_format');
         }
 
-        return date_i18n($format, $this->getField('start'));
+        return date_i18n($format, strtotime($this->getField('start')));
     }
 
     /**
@@ -43,7 +43,7 @@ class Event extends Post
             $format = get_option('date_format') . '' . get_option('time_format');
         }
 
-        return date_i18n($format, $this->getField('end'));
+        return date_i18n($format, strtotime($this->getField('end')));
     }
 
     /**
@@ -75,7 +75,18 @@ class Event extends Post
      */
     public function getLocation()
     {
-        return $this->getField('location');
+        $type = $this->getField('location_type');
+
+        if ($type == 'custom') {
+            return $this->getField('custom_location');
+        }
+
+        if ($type == 'id') {
+            $location = new Post($this->getField('location_id'));
+            return $location->getField('address');
+        }
+
+        return false;
     }
 
     /**

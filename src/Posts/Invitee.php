@@ -6,7 +6,7 @@ class Invitee extends Post
 {
     public function getEvent()
     {
-        return $this->getField('event');
+        return $this->getField('event', false);
     }
 
     public function setEvent($value)
@@ -16,7 +16,7 @@ class Invitee extends Post
 
     public function getUser()
     {
-        return $this->getField('user');
+        return $this->getField('user', false);
     }
 
     public function setUser($value)

@@ -110,7 +110,7 @@ class AdminColumns
 
         switch ($column) {
             case 'event':
-                echo Helpers::renderPosts($invitee->getEvent());
+                $event = Helpers::renderPosts($invitee->getEvent());
                 echo $event ? $event : esc_html(self::NO_VALUE);
                 break;
             case 'user':

@@ -20,6 +20,42 @@ class Model
         ]);
     }
 
+    public static function getEventsByInviteeGroup($post_id, $args = [])
+    {
+        return self::getEvents($args + [
+            'meta_query' => [
+                [
+                    'key'     => 'invitee_type',
+                    'compare' => '=',
+                    'value'   => 'group',
+                ],
+                [
+                    'key'     => 'invitee_group',
+                    'compare' => '=',
+                    'value'   => $post_id,
+                ],
+            ],
+        ]);
+    }
+
+    public static function getEventsByLocation($post_id, $args = [])
+    {
+        return self::getEvents($args + [
+            'meta_query' => [
+                [
+                    'key'     => 'location_type',
+                    'compare' => '=',
+                    'value'   => 'id',
+                ],
+                [
+                    'key'     => 'location_id',
+                    'compare' => '=',
+                    'value'   => $post_id,
+                ],
+            ],
+        ]);
+    }
+
     public static function getPrivateEvents($args = [])
     {
         return self::getEvents($args + [

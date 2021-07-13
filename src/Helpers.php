@@ -43,7 +43,7 @@ class Helpers
 
         foreach ((array) $post_ids as $post_id) {
             if ($post_id && get_post_type($post_id)) {
-                $post = get_post($post);
+                $post = get_post($post_id);
                 $return[] = sprintf(
                     '<a href="%1$s">%2$s</a>',
                     get_edit_post_link($post->ID),

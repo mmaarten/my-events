@@ -18,7 +18,7 @@ class PostTypes
     public static function registerPostTypes()
     {
         register_post_type('event', [
-            'labels'             => self::getLabels(__('Event', 'my-events'), __('Events', 'my-events')),
+            'labels'             => self::getLabels(__('Events', 'my-events'), __('Event', 'my-events')),
             'public'             => true,
             'publicly_queryable' => true,
             'show_ui'            => true,
@@ -33,7 +33,7 @@ class PostTypes
         ]);
 
         register_post_type('invitee', [
-            'labels'             => self::getLabels(__('Invitee', 'my-events'), __('Invitees', 'my-events')),
+            'labels'             => self::getLabels(__('Invitees', 'my-events'), __('Invitee', 'my-events')),
             'public'             => false,
             'publicly_queryable' => false,
             'show_ui'            => true,
@@ -48,7 +48,7 @@ class PostTypes
         ]);
 
         register_post_type('invitee_group', [
-            'labels'             => self::getLabels(__('Invitee group', 'my-events'), __('Invitee groups', 'my-events')),
+            'labels'             => self::getLabels(__('Invitee groups', 'my-events'), __('Invitee group', 'my-events')),
             'public'             => false,
             'publicly_queryable' => false,
             'show_ui'            => true,
