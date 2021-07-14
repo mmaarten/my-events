@@ -48,7 +48,11 @@ class Calendar
         $start = $_POST['start'];
         $end   = $_POST['end'];
 
-        $posts = Model::getEventsBetween($start, $end);
+        $posts = apply_filters('my_events/calendar_posts', null, $start, $end);
+
+        if (! is_array($posts)) {
+            $posts = Model::getEventsBetween($start, $end);
+        }
 
         $events = [];
         foreach ($posts as $post) {
