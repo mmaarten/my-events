@@ -9,11 +9,25 @@
 #acf-my_events_event_group {
   .acf-field[data-name="individual_invitees"],
   .acf-field[data-name="invitee_group"],
+  .acf-field[data-name="invitee_default_status"],
   .acf-field[data-name="custom_location"],
   .acf-field[data-name="location_id"] {
     border-top: none;
     padding-top: 0;
+  }
 
+  .acf-field[data-name="invitee_default_status"] {
+    .acf-label {
+      label {
+        font-weight: normal;
+      }
+    }
+  }
+
+  .acf-field[data-name="individual_invitees"],
+  .acf-field[data-name="invitee_group"],
+  .acf-field[data-name="custom_location"],
+  .acf-field[data-name="location_id"] {
     .acf-label {
       display: none;
     }

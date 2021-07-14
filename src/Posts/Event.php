@@ -93,6 +93,16 @@ class Event extends Post
     }
 
     /**
+     * Get invitee default status
+     *
+     * @return string
+     */
+    public function getInviteeDefaultStatus()
+    {
+        return $this->getField('invitee_default_status');
+    }
+
+    /**
      * Get organizers
      *
      * @param array $args
@@ -235,8 +245,12 @@ class Event extends Post
      * @param string  $status
      * @return int
      */
-    public function addInvitee($user_id, $status = 'pending')
+    public function addInvitee($user_id, $status = '')
     {
+        if (! $status) {
+            $status = $this->getInviteeDefaultStatus();
+        }
+
         $invitee = $this->getInviteeByUser($user_id);
 
         if ($invitee) {
@@ -302,7 +316,7 @@ class Event extends Post
      * @param int    $user_ids
      * @param string $status
      */
-    public function setInvitees($user_ids, $status = 'pending')
+    public function setInvitees($user_ids, $status = '')
     {
         $processed = [];
 

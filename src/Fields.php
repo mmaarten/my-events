@@ -39,7 +39,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_description_field',
             'label'         => __('Description', 'my-events'),
-            'instructions'  => __('A breif description about this event.', 'my-events'),
+            'instructions'  => __('A brief description about this event.', 'my-events'),
             'name'          => 'description',
             'type'          => 'textarea',
             'new_lines'     => 'wpautop',
@@ -165,6 +165,19 @@ class Fields
                     ],
                 ],
             ],
+        ]);
+
+        // Default invitee status
+        acf_add_local_field([
+            'key'           => 'my_events_event_invitee_default_status_field',
+            'label'         => __('Default status', 'my-events'),
+            'instructions'  => __('Invitees with a "pending" status reveive an invitation email about this event.', 'my-events'),
+            'name'          => 'invitee_default_status',
+            'type'          => 'select',
+            'choices'       => Helpers::getInviteeStatuses(),
+            'default_value' => 'pending',
+            'required'      => false,
+            'parent'        => 'my_events_event_group',
         ]);
 
         // Max participants
