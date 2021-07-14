@@ -56,11 +56,14 @@ class Notifications
 
         foreach ($invitees as $invitee) {
             $invitee = new Invitee($invitee);
-            $event = new Event($invitee->getEvent());
-            if ($event && $event->post_status === 'publish') {
-                // Send email
-                self::sendInvitationNotification($invitee, $invitee->getUser(), $event);
-                $invitee->setEmailSent(true);
+            $event_id = $invitee->getEvent();
+            if ($event_id && get_post_type($event_id)) {
+                $event = new Event($event_id);
+                if (! $event->isOver()) {
+                    // Send email
+                    self::sendInvitationNotification($invitee, $invitee->getUser(), $event);
+                    $invitee->setEmailSent(true);
+                }
             }
         }
     }
@@ -75,10 +78,6 @@ class Notifications
      */
     public static function sendInviteeAcceptedNotification($invitee, $user_id, $event)
     {
-        if ($event->isOver()) {
-            return false;
-        }
-
         $user = get_userdata($user_id);
 
         if (! $user) {
@@ -117,10 +116,6 @@ class Notifications
      */
     public static function sendInviteeDeclinedNotification($invitee, $user_id, $event)
     {
-        if ($event->isOver()) {
-            return false;
-        }
-
         $user = get_userdata($user_id);
 
         if (! $user) {
@@ -159,10 +154,6 @@ class Notifications
      */
     public static function sendInvitationNotification($invitee, $user_id, $event)
     {
-        if ($event->isOver()) {
-            return false;
-        }
-
         $user = get_userdata($user_id);
 
         if (! $user) {
