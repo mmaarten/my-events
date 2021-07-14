@@ -42,8 +42,9 @@ class OverlappingEvents
 
         check_admin_referer('search_overlapping_events', MY_EVENTS_NONCE_NAME);
 
-        $start = $_POST['overlapping_start'];
-        $end   = $_POST['overlapping_end'];
+        $start    = $_POST['overlapping_start'];
+        $end      = $_POST['overlapping_end'];
+        $event_id = $_POST['event'];
 
         if (! $start || ! strtotime($start)) {
             wp_send_json_error(Helpers::getAdminNotice(__('Invalid start date.', 'my-events'), 'error', true));
@@ -53,13 +54,26 @@ class OverlappingEvents
             wp_send_json_error(Helpers::getAdminNotice(__('Invalid end date.', 'my-events'), 'error', true));
         }
 
+        if (! $event_id || get_post_type($event_id) != 'event') {
+            wp_send_json_error(Helpers::getAdminNotice(__('Invalid event.', 'my-events'), 'error', true));
+        }
+
         $end = new \DateTime($end);
         $end->modify('+1 day');
 
-        $events = Model::getEventsBetween($start, $end->format('Y-m-d'));
+        $events = Model::getEventsBetween($start, $end->format('Y-m-d'), [
+            'exclude' => $event_id,
+        ]);
 
+        $response = self::renderEvents($events);
+
+        wp_send_json_success($response);
+    }
+
+    public static function renderEvents($events)
+    {
         if (! $events) {
-            wp_send_json_error(Helpers::getAdminNotice(__('No events found.', 'my-events'), 'error', true));
+            return Helpers::getAdminNotice(__('No events found.', 'my-events'), 'error', true);
         }
 
         $return = '<ul>';
@@ -74,7 +88,7 @@ class OverlappingEvents
         }
         $return .= '</ul>';
 
-        wp_send_json_success($return);
+        return $return;
     }
 
     /**
@@ -86,11 +100,11 @@ class OverlappingEvents
     {
         $event = new Event($post);
 
-        Helpers::adminNotice(__('Search overlapping events.', 'my-events'), 'info', true);
+        $events = Model::getOverlappingEvents($event->ID);
 
         ?>
 
-        <div class="my-ajax-form" data-action="my_events_get_overlapping_events">
+        <div class="my-ajax-form" data-action="my_events_get_overlapping_events" data-event="<?php echo esc_attr($event->ID); ?>">
 
             <?php wp_nonce_field('search_overlapping_events', MY_EVENTS_NONCE_NAME); ?>
 
@@ -99,13 +113,14 @@ class OverlappingEvents
                 <?php
 
                 printf('<input %s>', acf_esc_attr([
-                    'id'             => 'overlapping-events-start',
-                    'type'           => 'text',
-                    'class'          => 'large-text my-datepicker',
-                    'data-format'    => get_option('date_format'),
+                    'id'              => 'overlapping-events-start',
+                    'type'            => 'text',
+                    'class'           => 'large-text my-datepicker',
+                    'data-format'     => get_option('date_format'),
                     'data-alt-field'  => '#overlapping-events-start-alt',
                     'data-alt-format' => 'yy-mm-dd',
                     'value'           => $event->getStartTime(get_option('date_format')),
+                    'readonly'        => 'readonly',
                 ]));
 
                 ?>
@@ -117,13 +132,14 @@ class OverlappingEvents
                 <?php
 
                 printf('<input %s>', acf_esc_attr([
-                    'id'             => 'overlapping-events-end',
-                    'type'           => 'text',
-                    'class'          => 'large-text my-datepicker',
-                    'data-format'    => get_option('date_format'),
+                    'id'              => 'overlapping-events-end',
+                    'type'            => 'text',
+                    'class'           => 'large-text my-datepicker',
+                    'data-format'     => get_option('date_format'),
                     'data-alt-field'  => '#overlapping-events-end-alt',
                     'data-alt-format' => 'yy-mm-dd',
                     'value'           => $event->getEndTime(get_option('date_format')),
+                    'readonly'        => 'readonly',
                 ]));
 
                 ?>
@@ -134,7 +150,9 @@ class OverlappingEvents
                 <button type="button" class="button my-ajax-form-submit"><?php esc_html_e('Search', 'my-events'); ?></button>
             </p>
 
-            <div class="my-ajax-form-output"></div>
+            <div class="my-ajax-form-output">
+                <?php echo self::renderEvents($events); ?>
+            </div>
 
         </div>
 

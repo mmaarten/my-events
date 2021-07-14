@@ -18,7 +18,7 @@ class AdminNotices
     {
         $screen = get_current_screen();
 
-        if ($screen->base != 'post' || ! $_GET['post']) {
+        if ($screen->base != 'post' || empty($_GET['post'])) {
             return;
         }
 
