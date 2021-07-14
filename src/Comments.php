@@ -6,12 +6,22 @@ use My\Events\Posts\Event;
 
 class Comments
 {
+    /**
+     * Init
+     */
     public static function init()
     {
         //add_filter('comment_moderation_recipients', [__CLASS__, 'recipients'], 10, 2);
         add_filter('comment_notification_recipients', [__CLASS__, 'notificationRecipients'], 10, 2);
     }
 
+    /**
+     * Notification recipients
+     *
+     * @param array $emails
+     * @param int   $comment_id
+     * @return array
+     */
     public static function notificationRecipients($emails, $comment_id)
     {
         $comment = get_comment($comment_id);

@@ -18,12 +18,45 @@ class Events
         add_action('before_delete_post', [__CLASS__, 'deletePost']);
         add_action('delete_user', [__CLASS__, 'deleteUser']);
 
+        add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
         add_filter('acf/load_value/key=my_events_event_individual_invitees_field', [__CLASS__, 'populateIndividualInviteesField'], 10, 3);
     }
 
+    /**
+     * Get event classes
+     *
+     * @param int $event_id
+     * @return array
+     */
     public static function getEventClasses($event_id)
     {
-        return [];
+        $event = new Event($post_id);
+
+        $classes = [];
+
+        if ($event->isOver()) {
+            $classes[] = 'is-event-over';
+        }
+
+        if ($event->isPrivate()) {
+            $classes[] = 'is-private-event';
+        }
+
+        if ($event->hasMaxParticipants()) {
+            $classes[] = 'is-subscriptions-enabled';
+        } else {
+            $classes[] = 'is-subscriptions-disabled';
+        }
+
+        if (is_user_logged_in()) {
+            $invitee = $event->getInviteeByUser(get_current_user_id());
+            if ($invitee) {
+                $classes[] = 'is-invitee';
+                $classes[] = sprintf('is-invitee-%s', $invitee->getStatus());
+            }
+        }
+
+        return apply_filters('my_events/event_class', $classes, $event);
     }
 
     /**
@@ -176,5 +209,24 @@ class Events
         }
 
         // TODO : update invitee group 'users' setting?
+    }
+
+    /**
+     * Post class
+     *
+     * @param array  $classes
+     * @param string $class
+     * @param int    $post_id
+     * @return array
+     */
+    public static function postClass($classes, $class, $post_id)
+    {
+        switch (get_post_type($post_id)) {
+            case 'event':
+                $classes = array_merge($classes, self::getEventClasses($post_id));
+                break;
+        }
+
+        return $classes;
     }
 }

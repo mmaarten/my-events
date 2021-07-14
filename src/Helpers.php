@@ -172,4 +172,40 @@ class Helpers
 
         return false;
     }
+
+    public static function getDatesRepeat($start, $end, $end_repeat, $interval, $exclude = [])
+    {
+        $start      = new \DateTime($start);
+        $end        = new \DateTime($end);
+        $end_repeat = new \DateTime($end_repeat);
+
+        // Validate arguments.
+        $date = new \DateTime();
+        if (! $start || ! $end || ! $end_repeat || ! $date->modify($interval)) {
+            return false;
+        }
+
+        $dates = [];
+
+        while ($end <= $end_repeat) {
+            $include = true;
+
+            foreach ($exclude as $exclude_date) {
+                $is_overlap = self::doDatesOverlap($start->format('Y-m-d'), $end->format('Y-m-d'), $exclude_date, $exclude_date);
+                if ($is_overlap) {
+                    $include = false;
+                    break;
+                }
+            }
+
+            if ($include) {
+                $dates[] = ['start' => $start->format('Y-m-d H:i:s'), 'end' => $end->format('Y-m-d H:i:s')];
+            }
+
+            $start->modify($interval);
+            $end->modify($interval);
+        }
+
+        return $dates;
+    }
 }

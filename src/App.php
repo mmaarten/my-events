@@ -29,6 +29,8 @@ class App
             'OverlappingEvents',
             'SendEmail',
             'Calendar',
+            'iCal',
+            'EventsCreator',
         ]);
 
         add_action('init', [__CLASS__, 'loadTextdomain']);

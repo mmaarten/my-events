@@ -17,6 +17,9 @@ class Notifications
         add_action('init', [__CLASS__, 'maybeSendInvitationNotification']);
     }
 
+    /**
+     * Maybe send invitation notification
+     */
     public static function maybeSendInvitationNotification()
     {
         // Get all invitees with status 'pending' who has not received an email.

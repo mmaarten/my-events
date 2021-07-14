@@ -6,6 +6,12 @@ use My\Events\Posts\Event;
 
 class Model
 {
+    /**
+     * Get posts
+     *
+     * @param array $args
+     * @return array
+     */
     public static function getPosts($args = [])
     {
         return get_posts($args + [
@@ -15,6 +21,12 @@ class Model
         ]);
     }
 
+    /**
+     * Get events
+     *
+     * @param array $args
+     * @return array
+     */
     public static function getEvents($args = [])
     {
         return self::getPosts($args + [
@@ -22,6 +34,14 @@ class Model
         ]);
     }
 
+    /**
+     * Get user events
+     *
+     * @param int   $user_id
+     * @param mixed $status
+     * @param array $args
+     * @return array
+     */
     public static function getUserEvents($user_id, $status = null, $args = [])
     {
         if ($status) {
@@ -55,6 +75,14 @@ class Model
         ] + $args);
     }
 
+    /**
+     * Order events by start time
+     *
+     * @param array  $event_ids
+     * @param string $order
+     * @param array  $args
+     * @return array
+     */
     public static function orderEventsByStartTime($event_ids, $order = 'ASC', $args = [])
     {
         if (! $event_ids) {
@@ -70,6 +98,13 @@ class Model
         ]);
     }
 
+    /**
+     * Exclude events that are over
+     *
+     * @param array  $event_ids
+     * @param array  $args
+     * @return array
+     */
     public static function excludeEventsThatAreOver($event_ids, $args = [])
     {
         if (! $event_ids) {
@@ -136,6 +171,13 @@ class Model
         ]);
     }
 
+    /**
+     * Get overlapping events
+     *
+     * @param int    $event_id
+     * @param array  $args
+     * @return array
+     */
     public static function getOverlappingEvents($event_id, $args = [])
     {
         $event = new Event($event_id);
