@@ -7,6 +7,19 @@
 }
 
 #acf-my_events_event_group {
+
+  .acf-field[data-name="time"],
+  .acf-field[data-name="organizers"] {
+    padding-bottom: 0;
+  }
+
+  .acf-field[data-name="end"][data-width] {
+    border-left: 0;
+  }
+
+  .acf-field[data-name="start"],
+  .acf-field[data-name="end"],
+  .acf-field[data-name="all_day"],
   .acf-field[data-name="organizers_can_edit"],
   .acf-field[data-name="individual_invitees"],
   .acf-field[data-name="invitee_group"],
@@ -17,6 +30,8 @@
     padding-top: 0;
   }
 
+  .acf-field[data-name="start"],
+  .acf-field[data-name="end"],
   .acf-field[data-name="organizers_can_edit"],
   .acf-field[data-name="invitee_default_status"] {
     .acf-label {
@@ -26,6 +41,7 @@
     }
   }
 
+  .acf-field[data-name="all_day"],
   .acf-field[data-name="individual_invitees"],
   .acf-field[data-name="invitee_group"],
   .acf-field[data-name="custom_location"],

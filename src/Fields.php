@@ -49,22 +49,19 @@ class Fields
             'parent'        => 'my_events_event_group',
         ]);
 
-        // All day
+        // Time
         acf_add_local_field([
-            'key'           => 'my_events_event_all_day_field',
-            'label'         => __('All day', 'my-events'),
-            'instructions'  => __('This event takes one or more full days .', 'my-events'),
-            'name'          => 'all_day',
-            'type'          => 'true_false',
-            'default_value' => false,
-            'required'      => false,
-            'parent'        => 'my_events_event_group',
+            'key'    => 'my_events_event_time_field',
+            'type'   => 'message',
+            'name'   => 'time',
+            'label'  => __('Time', 'my-events'),
+            'parent' => 'my_events_event_group',
         ]);
 
         // Start time
         acf_add_local_field([
             'key'            => 'my_events_event_start_field',
-            'label'          => __('Start time', 'my-events'),
+            'label'          => __('Start', 'my-events'),
             'instructions'   => __('The time the event starts.', 'my-events'),
             'name'           => 'start',
             'type'           => 'date_time_picker',
@@ -80,7 +77,7 @@ class Fields
         // End time
         acf_add_local_field([
             'key'           => 'my_events_event_end_field',
-            'label'         => __('End time', 'my-events'),
+            'label'         => __('End', 'my-events'),
             'instructions'  => __('The time the event ends.', 'my-events'),
             'name'          => 'end',
             'type'           => 'date_time_picker',
@@ -91,6 +88,17 @@ class Fields
             'required'       => true,
             'wrapper'        => ['width' => 50],
             'parent'         => 'my_events_event_group',
+        ]);
+
+        // All day
+        acf_add_local_field([
+            'key'           => 'my_events_event_all_day_field',
+            'message'       => __('This event takes one or more full days.', 'my-events'),
+            'name'          => 'all_day',
+            'type'          => 'true_false',
+            'default_value' => false,
+            'required'      => false,
+            'parent'        => 'my_events_event_group',
         ]);
 
         // Organizers
