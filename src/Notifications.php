@@ -75,6 +75,10 @@ class Notifications
      */
     public static function sendInviteeAcceptedNotification($invitee, $user_id, $event)
     {
+        if ($event->isOver()) {
+            return false;
+        }
+
         $user = get_userdata($user_id);
 
         if (! $user) {
@@ -113,6 +117,10 @@ class Notifications
      */
     public static function sendInviteeDeclinedNotification($invitee, $user_id, $event)
     {
+        if ($event->isOver()) {
+            return false;
+        }
+
         $user = get_userdata($user_id);
 
         if (! $user) {
@@ -151,6 +159,10 @@ class Notifications
      */
     public static function sendInvitationNotification($invitee, $user_id, $event)
     {
+        if ($event->isOver()) {
+            return false;
+        }
+
         $user = get_userdata($user_id);
 
         if (! $user) {

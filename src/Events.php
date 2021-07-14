@@ -95,34 +95,26 @@ class Events
         }
 
         if (! $event->isOver()) {
-            $invitees = self::getInviteesFromSettingsFields($event_id);
+            $invitees = [];
+
+            $invitee_type = $event->getField('invitee_type');
+
+            if ($invitee_type == 'individual') {
+                $invitees = $event->getField('individual_invitees', false);
+            }
+
+            if ($invitee_type == 'group') {
+                $group_id = $event->getField('invitee_group', false);
+                if ($group_id && get_post_type($group_id)) {
+                    $group = new Post($group_id);
+                    $invitees = $group->getField('users', false);
+                }
+            }
+
             $event->setInvitees($invitees);
         }
 
         $event->deleteField('individual_invitees');
-    }
-
-    public static function getInviteesFromSettingsFields($event_id)
-    {
-        $event = new Event($event_id);
-
-        $invitees = [];
-
-        $invitee_type = $event->getField('invitee_type');
-
-        if ($invitee_type == 'individual') {
-            $invitees = $event->getField('individual_invitees', false);
-        }
-
-        if ($invitee_type == 'group') {
-            $group_id = $event->getField('invitee_group', false);
-            if ($group_id && get_post_type($group_id)) {
-                $group = new Post($group_id);
-                $invitees = $group->getField('users', false);
-            }
-        }
-
-        return $invitees;
     }
 
     /**
