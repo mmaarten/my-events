@@ -24,7 +24,7 @@ import './components/breakpoints';
     headerToolbar: { center: 'dayGridMonth,timeGridWeek,timeGridDay' },
     datesSet : function(info){
 
-      if (start == info.startStr && end == info.endStr) {
+      if (info.startStr == start && info.endStr == end) {
         return;
       }
 
