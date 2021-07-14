@@ -30,7 +30,7 @@ class Events
      */
     public static function getEventClasses($event_id)
     {
-        $event = new Event($post_id);
+        $event = new Event($event_id);
 
         $classes = [];
 
@@ -82,6 +82,40 @@ class Events
         return $event->getInviteesUsers(null, ['fields' => 'ID']);
     }
 
+    public static function applySettingsToEvent($event_id)
+    {
+        $event = new Event($event_id);
+
+        if ($event->isAllDay()) {
+            $start_date = $event->getStartTime('Y-m-d');
+            $end_date   = $event->getEndTime('Y-m-d');
+
+            $event->updateField('start', "$start_date 00:00:00");
+            $event->updateField('end', "$end_date 23:59:59");
+        }
+
+        if (! $event->isOver()) {
+            $invitee_type = $event->getField('invitee_type');
+            $invitees = [];
+
+            if ($invitee_type == 'individual') {
+                $invitees = $event->getField('individual_invitees', false);
+            }
+
+            if ($invitee_type == 'group') {
+                $group_id = $event->getField('invitee_group', false);
+                if ($group_id && get_post_type($group_id)) {
+                    $group = new Post($group_id);
+                    $invitees = $group->getField('users', false);
+                }
+            }
+
+            $event->setInvitees($invitees);
+        }
+
+        $event->deleteField('individual_invitees');
+    }
+
     /**
      * Save post
      *
@@ -91,33 +125,7 @@ class Events
     {
         switch (get_post_type($post_id)) {
             case 'event':
-                $event = new Event($post_id);
-
-                if ($event->isAllDay()) {
-                    $start_date = $event->getStartTime('Y-m-d');
-                    $end_date   = $event->getEndTime('Y-m-d');
-
-                    $event->updateField('start', "$start_date 00:00:00");
-                    $event->updateField('end', "$end_date 23:59:59");
-                }
-
-                $invitee_type = $event->getField('invitee_type');
-                $invitees = [];
-
-                if ($invitee_type == 'individual') {
-                    $invitees = $event->getField('individual_invitees', false);
-                }
-
-                if ($invitee_type == 'group') {
-                    $group_id = $event->getField('invitee_group', false);
-                    if ($group_id && get_post_type($group_id)) {
-                        $group = new Post($group_id);
-                        $invitees = $group->getField('users', false);
-                    }
-                }
-
-                $event->setInvitees($invitees);
-                $event->deleteField('individual_invitees');
+                self::applySettingsToEvent($post_id);
                 break;
             case 'invitee_group':
                 $group = new Post($post_id);

@@ -37,7 +37,7 @@ class PostTypes
             'public'             => false,
             'publicly_queryable' => false,
             'show_ui'            => true,
-            'show_in_menu'       => 'my-events',
+            'show_in_menu'       => current_user_can('administrator') ? 'my-events' : false,
             'query_var'          => false,
             'rewrite'            => false,
             'capability_type'    => 'post',
@@ -45,6 +45,16 @@ class PostTypes
             'hierarchical'       => false,
             'menu_position'      => null,
             'supports'           => ['title'],
+            'capabilities'       => [
+                'edit_post'          => 'update_core',
+                'read_post'          => 'update_core',
+                'delete_post'        => 'update_core',
+                'edit_posts'         => 'update_core',
+                'edit_others_posts'  => 'update_core',
+                'delete_posts'       => 'update_core',
+                'publish_posts'      => 'update_core',
+                'read_private_posts' => 'update_core'
+            ],
         ]);
 
         register_post_type('invitee_group', [

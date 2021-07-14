@@ -229,8 +229,6 @@ class EventsCreator
         $times = Helpers::getDatesRepeat($start, $end, $end_repeat, $repeat_interval, $repeat_exclude);
         $times = array_slice($times, 0, 100);
 
-        return;
-
         foreach ($times as $time) {
             $post_id = wp_insert_post([
                 'post_title'   => self::getField('post_title'),
@@ -254,7 +252,14 @@ class EventsCreator
             $event->updateField('location_id', self::getField('location_id', false));
             $event->updateField('private', self::getField('private', false));
 
-            // Events::applySetttingsToEvent($event->ID);
+            // Update post name.
+            wp_update_post([
+                'ID'        => $event->ID,
+                'post_name' => sanitize_title($event->post_title . '-' . $event->getStartTime()),
+            ]);
+
+            // Apply event settings
+            Events::applySettingsToEvent($event->ID);
         }
     }
 }

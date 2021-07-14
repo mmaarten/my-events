@@ -208,4 +208,24 @@ class Helpers
 
         return $dates;
     }
+
+    /**
+     * @link https://wordpress.stackexchange.com/a/10972
+     */
+    public static function unautop($value)
+    {
+        //remove any new lines already in there
+        $value = str_replace("\n", "", $value);
+
+        //remove all <p>
+        $value = str_replace("<p>", "", $value);
+
+        //replace <br /> with \n
+        $value = str_replace(array("<br />", "<br>", "<br/>"), "\n", $value);
+
+        //replace </p> with \n\n
+        $value = str_replace("</p>", "\n\n", $value);
+
+        return $value;
+    }
 }
