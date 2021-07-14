@@ -109,7 +109,7 @@ class Fields
         // Organizers can edit
         acf_add_local_field([
             'key'           => 'my_events_event_organizers_can_edit_field',
-            'message'         => __('Allow organizers to edit this event', 'my-events'),
+            'message'         => __('Allow organizers to edit this event.', 'my-events'),
             'instructions'  => __('', 'my-events'),
             'name'          => 'organizers_can_edit',
             'type'          => 'true_false',
