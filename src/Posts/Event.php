@@ -154,6 +154,22 @@ class Event extends Post
     }
 
     /**
+     * Get invitee by post
+     *
+     * @param int $invitee_id
+     * @return mixed
+     */
+    public function getInviteeByPost($invitee_id)
+    {
+        $invitee = current($this->getInvitees([
+            'include'     => [$invitee_id],
+            'numberposts' => 1,
+        ]));
+
+        return $invitee ? new Invitee($invitee) : null;
+    }
+
+    /**
      * Get invitees by status
      *
      * @param string $status
@@ -269,10 +285,7 @@ class Event extends Post
      */
     public function removeInviteeByPost($post_id)
     {
-        $invitee = current($this->getInvitees([
-            'include'     => $post_id,
-            'numberposts' => 1,
-        ]));
+        $invitee = $this->getInviteeByPost($post_id);
 
         if (! $invitee) {
             return false;
@@ -280,7 +293,7 @@ class Event extends Post
 
         do_action('my_events/invitee_removed', $invitee, $invitee->getUser(), $this);
 
-        return wp_delete_post($invitee->ID);
+        return wp_delete_post($invitee->ID, true);
     }
 
     /**
