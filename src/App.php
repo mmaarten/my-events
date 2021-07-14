@@ -30,7 +30,7 @@ class App
             'SendEmail',
             'Calendar',
             'iCal',
-            'EventsCreator',
+            'DuplicatePost',
         ]);
 
         add_action('init', [__CLASS__, 'loadTextdomain']);
