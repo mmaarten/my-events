@@ -12,6 +12,8 @@ import './components/breakpoints';
   "use strict";
 
   var $elem = jQuery('#calendar');
+  var loadedEvents = [];
+  var start, end;
 
   var calendar = new Calendar($elem.get(0), jQuery.extend({
     plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin, bootstrapPlugin, googleCalendarPlugin ],
@@ -21,19 +23,27 @@ import './components/breakpoints';
     eventTimeFormat: {hour: '2-digit', minute: '2-digit'},
     headerToolbar: { center: 'dayGridMonth,timeGridWeek,timeGridDay' },
     datesSet : function(info){
-      // Remove all events
-      this.getEvents().forEach(event => {
-        if (event.id && !event.source) {
-          this.getEventById(event.id).remove();
-        }
+
+      if (start == info.startStr && end == info.endStr) {
+        return;
+      }
+
+      start = info.startStr;
+      end   = info.endStr;
+
+      // Remove previously loaded events.
+      loadedEvents.forEach(event => {
+        this.getEventById(event.id).remove();
       });
 
       // Load events
       this.el.classList.add('is-loading');
-      var data = { action: 'my_events_get_events', start: info.startStr, end: info.endStr};
+      var data = { action: 'my_events_get_events', start: start, end: end};
       jQuery.post(MyEventsCalendarSettings.ajaxurl, data, function(response){
-        // Add loaded events.
-        response.events.forEach(event => calendar.addEvent(event));
+        // Save loaded events.
+        loadedEvents = response.events;
+        // Add events.
+        loadedEvents.forEach(event => calendar.addEvent(event));
         // Remove loading class.
         calendar.el.classList.remove('is-loading');
       });
@@ -73,4 +83,29 @@ import './components/breakpoints';
       restoreView = null;
     }
   });
+
+  function maybeGotoDate() {
+
+    // Retrieve date from window location.
+    var matches = window.location.hash.match(/#calendar\/date\/(\d{4}-\d{2}-\d{2})/);
+
+    // Stop when no date found.
+    if (! matches) {
+      return;
+    }
+
+    var date = matches[1];
+
+    // Go to date.
+    calendar.gotoDate(date);
+
+    // Add css class to highlight selected date.
+    jQuery(calendar.el).filter('.fc-day', function(){
+      return jQuery(this).data('date') == date;
+    }).addClass('highlight');
+  }
+
+  window.addEventListener('DOMContentLoaded', maybeGotoDate);
+  window.addEventListener('hashchange', maybeGotoDate, false);
+
 })();
