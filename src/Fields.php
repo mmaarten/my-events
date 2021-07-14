@@ -106,16 +106,27 @@ class Fields
             'parent'        => 'my_events_event_group',
         ]);
 
+        // Organizers can edit
+        acf_add_local_field([
+            'key'           => 'my_events_event_organizers_can_edit_field',
+            'message'         => __('Allow organizers to edit this event', 'my-events'),
+            'instructions'  => __('', 'my-events'),
+            'name'          => 'organizers_can_edit',
+            'type'          => 'true_false',
+            'default_value' => false,
+            'parent'        => 'my_events_event_group',
+        ]);
+
         // Invitee type
         acf_add_local_field([
             'key'           => 'my_events_event_invitee_type_field',
             'label'         => __('Invitees', 'my-events'),
-            'instructions'  => __('Invitees receive an invitation email.', 'my-events'),
+            'instructions'  => __('Select the people you would like to invite.', 'my-events'),
             'name'          => 'invitee_type',
             'type'          => 'select',
             'choices'       => [
                 'individual' => __('Individual', 'my-events'),
-                'group'      => __('Group', 'my-events'),
+                'group'      => __('Choose from a group', 'my-events'),
             ],
             'default_value' => 'individual',
             'required'      => false,
@@ -258,7 +269,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_private_field',
             'label'         => __('Private', 'my-events'),
-            'instructions'  => __('Only organizers and invitees of this event have access to this event.', 'my-events'),
+            'message'       => __('Only organizers and invitees of this event have access to this event.', 'my-events'),
             'name'          => 'private',
             'type'          => 'true_false',
             'default_value' => false,

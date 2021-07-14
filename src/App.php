@@ -31,6 +31,7 @@ class App
             'Calendar',
             'iCal',
             'DuplicatePost',
+            'Capabilities',
         ]);
 
         add_action('init', [__CLASS__, 'loadTextdomain']);

@@ -7,6 +7,7 @@
 }
 
 #acf-my_events_event_group {
+  .acf-field[data-name="organizers_can_edit"],
   .acf-field[data-name="individual_invitees"],
   .acf-field[data-name="invitee_group"],
   .acf-field[data-name="invitee_default_status"],
@@ -16,6 +17,7 @@
     padding-top: 0;
   }
 
+  .acf-field[data-name="organizers_can_edit"],
   .acf-field[data-name="invitee_default_status"] {
     .acf-label {
       label {
