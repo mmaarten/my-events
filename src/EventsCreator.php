@@ -33,6 +33,11 @@ class EventsCreator
                             'value'    => self::$options_page['menu_slug'],
                         ],
                     ];
+
+                    $screen = get_current_screen();
+
+                    error_log(var_export($screen->id, true));
+
                     break;
             }
             return $field_group;
@@ -55,23 +60,16 @@ class EventsCreator
     }
 
     /**
-     * Render menu page
-     */
-    public static function renderMenuPage()
-    {
-    }
-
-    /**
      * Add general fields
      */
     public static function addGeneralFields()
     {
         acf_add_local_field_group([
-            'key'      => 'my_events_events_creator_group',
-            'title'    => __('General', 'my-events'),
-            'fields'   => [],
+            'key'        => 'my_events_events_creator_group',
+            'title'      => __('General', 'my-events'),
+            'fields'     => [],
             'menu_order' => 0,
-            'location' => [
+            'location'   => [
                 [
                     [
                         'param'    => 'options_page',
@@ -102,19 +100,6 @@ class EventsCreator
             'type'          => 'select',
             'choices'       => get_post_statuses(),
             'default_value' => 'draft',
-            'required'      => true,
-            'parent'        => 'my_events_events_creator_group',
-        ]);
-
-        // Invitee status
-        acf_add_local_field([
-            'key'           => 'my_events_events_creator_invitee_status_field',
-            'label'         => __('Invitee status', 'my-events'),
-            'instructions'  => __('', 'my-events'),
-            'name'          => 'post_status',
-            'type'          => 'select',
-            'choices'       => Helpers::getInviteeStatuses(),
-            'default_value' => 'pending',
             'required'      => true,
             'parent'        => 'my_events_events_creator_group',
         ]);

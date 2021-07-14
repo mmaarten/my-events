@@ -180,7 +180,7 @@ class Event extends Post
      * @param array  $args
      * @return array
      */
-    public function getInviteesUsers($status = '', $args = [])
+    public function getInviteesUsers($status = null, $args = [])
     {
         if ($status) {
             $invitees = $this->getInviteesByStatus($status);

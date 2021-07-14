@@ -1,5 +1,11 @@
 @import "autoload";
 
+.my-ajax-form {
+  &.is-loading {
+    @include make-loader(2rem, 0, true);
+  }
+}
+
 #acf-my_events_event_group {
   .acf-field[data-name="individual_invitees"],
   .acf-field[data-name="invitee_group"],
