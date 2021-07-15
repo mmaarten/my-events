@@ -25,7 +25,7 @@ class Event extends Post
     public function getStartTime($format = '')
     {
         if (! $format) {
-            $format = get_option('date_format') . '' . get_option('time_format');
+            $format = get_option('date_format') . ' ' . get_option('time_format');
         }
 
         return date_i18n($format, strtotime($this->getField('start')));
@@ -40,7 +40,7 @@ class Event extends Post
     public function getEndTime($format = '')
     {
         if (! $format) {
-            $format = get_option('date_format') . '' . get_option('time_format');
+            $format = get_option('date_format') . ' ' . get_option('time_format');
         }
 
         return date_i18n($format, strtotime($this->getField('end')));
