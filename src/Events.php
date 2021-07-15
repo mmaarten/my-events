@@ -115,6 +115,11 @@ class Events
         }
 
         $event->deleteField('individual_invitees');
+
+        wp_update_post([
+            'ID'           => $event->ID,
+            'post_content' => $event->getField('description', false),
+        ]);
     }
 
     /**

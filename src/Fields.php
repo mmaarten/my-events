@@ -190,7 +190,7 @@ class Fields
         acf_add_local_field([
             'key'           => 'my_events_event_invitee_default_status_field',
             'label'         => __('Default status', 'my-events'),
-            'instructions'  => __('Invitees with a "pending" status reveive an invitation email about this event.', 'my-events'),
+            'instructions'  => __('Invitees with a "pending" status receive an invitation email about this event.', 'my-events'),
             'name'          => 'invitee_default_status',
             'type'          => 'select',
             'choices'       => Helpers::getInviteeStatuses(),
