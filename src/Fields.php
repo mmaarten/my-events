@@ -52,9 +52,9 @@ class Fields
         // Time
         acf_add_local_field([
             'key'    => 'my_events_event_time_field',
-            'type'   => 'message',
-            'name'   => 'time',
             'label'  => __('Time', 'my-events'),
+            'name'   => 'time',
+            'type'   => 'message',
             'parent' => 'my_events_event_group',
         ]);
 
