@@ -3,6 +3,7 @@
 namespace My\Events;
 
 use My\Events\Posts\Event;
+use My\Events\Posts\Invitee;
 
 class Model
 {
