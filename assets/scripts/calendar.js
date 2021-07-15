@@ -100,7 +100,7 @@ import './components/breakpoints';
     calendar.gotoDate(date);
 
     // Add css class to highlight selected date.
-    jQuery(calendar.el).filter('.fc-day', function(){
+    jQuery(calendar.el).find('.fc-day').filter(function(){
       return jQuery(this).data('date') == date;
     }).addClass('highlight');
   }
