@@ -21,7 +21,7 @@
   "scripts": {
     "phpcs": "./vendor/bin/phpcs",
     "phpcbf": "./vendor/bin/phpcbf",
-    "make-pot": "wp i18n make-pot . languages/my-events.pot --exclude='vendor/*,node_modules/*,.git/*'"
+    "make-pot": "wp i18n make-pot . languages/my-events.pot --exclude=build"
   },
   "autoload": {
     "psr-4": {

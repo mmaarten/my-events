@@ -13,6 +13,10 @@ class Fields
         add_action('acf/init', [__CLASS__, 'addInviteeFields']);
         add_action('acf/init', [__CLASS__, 'addInviteeGroupFields']);
         add_action('acf/init', [__CLASS__, 'addLocationFields']);
+
+        add_filter('acf/settings/l10n_textdomain', function () {
+            return 'my-events';
+        });
     }
 
     /**

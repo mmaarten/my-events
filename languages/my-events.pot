@@ -1,0 +1,522 @@
+# Copyright (C) 2021 Maarten Menten
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: My Events 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/my-events\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-07-15T14:06:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.5.0\n"
+"X-Domain: my-events\n"
+
+#. Plugin Name of the plugin
+#. translators: 1: plugin name. 2: Composer command. 3: theme directory
+#: plugin.php:23
+msgid "My Events"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/mmaarten/my-events"
+msgstr ""
+
+#. Author of the plugin
+msgid "Maarten Menten"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://profiles.wordpress.org/maartenm/"
+msgstr ""
+
+#. translators: 1: plugin name. 2: Composer command. 3: theme directory
+#: plugin.php:22
+msgid "%1$s installation is incomplete. Run %2$s within the %3$s directory."
+msgstr ""
+
+#: src/AdminColumns.php:42
+#: src/Fields.php:55
+msgid "Time"
+msgstr ""
+
+#: src/AdminColumns.php:43
+#: src/Fields.php:107
+msgid "Organizers"
+msgstr ""
+
+#: src/AdminColumns.php:44
+msgid "Participants"
+msgstr ""
+
+#: src/AdminColumns.php:45
+#: src/Fields.php:279
+msgid "Private"
+msgstr ""
+
+#: src/AdminColumns.php:46
+msgid "Over"
+msgstr ""
+
+#: src/AdminColumns.php:94
+#: src/Fields.php:312
+#: src/PostTypes.php:21
+msgid "Event"
+msgstr ""
+
+#: src/AdminColumns.php:95
+#: src/Fields.php:326
+msgid "User"
+msgstr ""
+
+#: src/AdminColumns.php:96
+#: src/Fields.php:339
+msgid "Status"
+msgstr ""
+
+#: src/AdminColumns.php:97
+#: src/Fields.php:353
+msgid "Email sent"
+msgstr ""
+
+#: src/AdminColumns.php:143
+#: src/Fields.php:386
+msgid "Users"
+msgstr ""
+
+#: src/AdminColumns.php:177
+#: src/Fields.php:420
+msgid "Address"
+msgstr ""
+
+#: src/AdminMenu.php:21
+#: src/AdminMenu.php:22
+#: src/PostTypes.php:21
+msgid "Events"
+msgstr ""
+
+#: src/AdminNotices.php:32
+msgid "This event is over."
+msgstr ""
+
+#: src/AdminNotices.php:36
+msgid "This event is private."
+msgstr ""
+
+#: src/Fields.php:25
+#: src/Fields.php:296
+#: src/Fields.php:370
+#: src/Fields.php:404
+msgid "General"
+msgstr ""
+
+#: src/Fields.php:41
+msgid "Description"
+msgstr ""
+
+#: src/Fields.php:42
+msgid "A brief description about this event."
+msgstr ""
+
+#: src/Fields.php:64
+msgid "Start"
+msgstr ""
+
+#: src/Fields.php:65
+msgid "The time the event starts."
+msgstr ""
+
+#: src/Fields.php:80
+msgid "End"
+msgstr ""
+
+#: src/Fields.php:81
+msgid "The time the event ends."
+msgstr ""
+
+#: src/Fields.php:96
+msgid "This event takes one or more full days."
+msgstr ""
+
+#: src/Fields.php:108
+msgid "Organisers recieve notifications by email when someone accepts or declines the invitation."
+msgstr ""
+
+#: src/Fields.php:120
+msgid "Allow organizers to edit this event."
+msgstr ""
+
+#: src/Fields.php:131
+#: src/Invitees.php:24
+#: src/PostTypes.php:36
+msgid "Invitees"
+msgstr ""
+
+#: src/Fields.php:132
+msgid "Select the people you would like to invite."
+msgstr ""
+
+#: src/Fields.php:136
+msgid "Individual"
+msgstr ""
+
+#: src/Fields.php:137
+msgid "Choose from a group"
+msgstr ""
+
+#: src/Fields.php:147
+msgid "Individual invitees"
+msgstr ""
+
+#: src/Fields.php:169
+#: src/PostTypes.php:61
+msgid "Invitee group"
+msgstr ""
+
+#: src/Fields.php:192
+msgid "Default status"
+msgstr ""
+
+#: src/Fields.php:193
+msgid "Invitees with a \"pending\" status receive an invitation email about this event."
+msgstr ""
+
+#: src/Fields.php:205
+msgid "Limit the amount of participants"
+msgstr ""
+
+#: src/Fields.php:206
+msgid "Leave empty for unlimited participants."
+msgstr ""
+
+#: src/Fields.php:217
+#: src/PostTypes.php:76
+msgid "Location"
+msgstr ""
+
+#: src/Fields.php:218
+msgid "The geographical location were the event takes place."
+msgstr ""
+
+#: src/Fields.php:222
+msgid "Custom"
+msgstr ""
+
+#: src/Fields.php:223
+msgid "Preset"
+msgstr ""
+
+#: src/Fields.php:233
+msgid "Custom location"
+msgstr ""
+
+#: src/Fields.php:254
+msgid "Preset location"
+msgstr ""
+
+#: src/Fields.php:280
+msgid "Only organizers and invitees of this event have access to this event."
+msgstr ""
+
+#: src/Fields.php:421
+msgid "The geographical location."
+msgstr ""
+
+#: src/Helpers.php:70
+msgid "Pending"
+msgstr ""
+
+#: src/Helpers.php:71
+msgid "Accepted"
+msgstr ""
+
+#: src/Helpers.php:72
+#: src/Subscriptions.php:112
+msgid "Declined"
+msgstr ""
+
+#: src/Helpers.php:149
+msgid "yes"
+msgstr ""
+
+#: src/Helpers.php:149
+msgid "no"
+msgstr ""
+
+#: src/ICal.php:122
+msgid "Invalid user"
+msgstr ""
+
+#: src/ICal.php:147
+msgid "It appears you don't have any accepted invitations."
+msgstr ""
+
+#: src/ICal.php:157
+msgid "calendar"
+msgstr ""
+
+#: src/Invitees.php:37
+#: src/SendEmail.php:29
+msgid "No invitees found."
+msgstr ""
+
+#. translators: %1$s: user name. %2$s: event name.
+#: src/Notifications.php:95
+msgid "%1$s accepted your invitation for: %2$s"
+msgstr ""
+
+#. translators: %1$s: user name. %2$s: event name.
+#: src/Notifications.php:133
+msgid "%1$s declined your invitation for: %2$s"
+msgstr ""
+
+#. translators: %s: event name.
+#: src/Notifications.php:167
+msgid "You are invited for event: %s"
+msgstr ""
+
+#: src/OverlappingEvents.php:30
+msgid "Overlapping events"
+msgstr ""
+
+#: src/OverlappingEvents.php:50
+msgid "Invalid start date."
+msgstr ""
+
+#: src/OverlappingEvents.php:54
+msgid "Invalid end date."
+msgstr ""
+
+#: src/OverlappingEvents.php:58
+#: src/SendEmail.php:100
+msgid "Invalid event."
+msgstr ""
+
+#: src/OverlappingEvents.php:76
+msgid "No events found."
+msgstr ""
+
+#: src/OverlappingEvents.php:112
+msgid "Start time"
+msgstr ""
+
+#: src/OverlappingEvents.php:131
+msgid "End time"
+msgstr ""
+
+#: src/OverlappingEvents.php:150
+msgid "Search"
+msgstr ""
+
+#: src/Posts/Event.php:61
+msgid "%1$s from %2$s until %3$s"
+msgstr ""
+
+#: src/Posts/Event.php:68
+msgid "from %1$s until %2$s"
+msgstr ""
+
+#: src/PostTypes.php:36
+msgid "Invitee"
+msgstr ""
+
+#: src/PostTypes.php:61
+msgid "Invitee groups"
+msgstr ""
+
+#: src/PostTypes.php:76
+msgid "Locations"
+msgstr ""
+
+#: src/PostTypes.php:105
+msgid "Add New"
+msgstr ""
+
+#: src/PostTypes.php:106
+msgctxt "%s: post type name"
+msgid "Add New %s"
+msgstr ""
+
+#: src/PostTypes.php:107
+msgctxt "%s: post type name"
+msgid "New %s"
+msgstr ""
+
+#: src/PostTypes.php:108
+msgctxt "%s: post type name"
+msgid "Edit %s"
+msgstr ""
+
+#: src/PostTypes.php:109
+msgctxt "%s: post type name"
+msgid "View %s"
+msgstr ""
+
+#: src/PostTypes.php:111
+msgctxt "%s: post type name"
+msgid "Search %s"
+msgstr ""
+
+#: src/PostTypes.php:112
+msgctxt "%s: post type name"
+msgid "Parent %s:"
+msgstr ""
+
+#: src/PostTypes.php:113
+msgctxt "%s: post type name"
+msgid "No %s found."
+msgstr ""
+
+#: src/PostTypes.php:114
+msgctxt "%s: post type name"
+msgid "No %s found in Trash."
+msgstr ""
+
+#: src/PostTypes.php:115
+msgctxt "%s: post type name"
+msgid "%s Cover Image"
+msgstr ""
+
+#: src/PostTypes.php:116
+msgid "Set cover image"
+msgstr ""
+
+#: src/PostTypes.php:117
+msgid "Remove cover image"
+msgstr ""
+
+#: src/PostTypes.php:118
+msgid "Use as cover image"
+msgstr ""
+
+#: src/PostTypes.php:119
+msgctxt "%s: post type name"
+msgid "%s archives"
+msgstr ""
+
+#: src/PostTypes.php:120
+msgctxt "%s: post type name"
+msgid "Insert into %s"
+msgstr ""
+
+#: src/PostTypes.php:121
+msgctxt "%s: post type name"
+msgid "Uploaded to this %s"
+msgstr ""
+
+#: src/PostTypes.php:122
+msgctxt "%s: post type name"
+msgid "Filter %s list"
+msgstr ""
+
+#: src/PostTypes.php:123
+msgctxt "%s: post type name"
+msgid "%s list navigation"
+msgstr ""
+
+#: src/PostTypes.php:124
+msgctxt "%s: post type name"
+msgid "%s list"
+msgstr ""
+
+#: src/SendEmail.php:19
+msgid "Send email"
+msgstr ""
+
+#: src/SendEmail.php:45
+msgid "Notify the invitees about any changes of this event."
+msgstr ""
+
+#: src/SendEmail.php:47
+msgid "Recipients"
+msgstr ""
+
+#: src/SendEmail.php:64
+msgid "Check all"
+msgstr ""
+
+#: src/SendEmail.php:65
+msgid "Uncheck all"
+msgstr ""
+
+#: src/SendEmail.php:69
+msgid "Message"
+msgstr ""
+
+#: src/SendEmail.php:74
+msgid "Send"
+msgstr ""
+
+#: src/SendEmail.php:79
+msgid "Be sure to save the event before sending."
+msgstr ""
+
+#: src/SendEmail.php:104
+msgid "Message is required."
+msgstr ""
+
+#: src/SendEmail.php:115
+msgid "At least one recipient is required."
+msgstr ""
+
+#: src/SendEmail.php:119
+msgid "Announcement for event \"%s\"."
+msgstr ""
+
+#: src/SendEmail.php:129
+msgid "Email send."
+msgstr ""
+
+#: src/Subscriptions.php:37
+msgid "You need to be logged in in order to subscribe."
+msgstr ""
+
+#: src/Subscriptions.php:44
+msgid "Event is over. It is no longer possible to subscribe."
+msgstr ""
+
+#: src/Subscriptions.php:49
+msgid "This event is private. You are not allowed to subscribe."
+msgstr ""
+
+#: src/Subscriptions.php:56
+msgid "You need an invitation in order to subscribe."
+msgstr ""
+
+#: src/Subscriptions.php:63
+msgid "Available places: %1$s out of %2$s."
+msgstr ""
+
+#: src/Subscriptions.php:74
+msgid "You have accepted the invitation."
+msgstr ""
+
+#: src/Subscriptions.php:78
+msgid "You have declined the invitation."
+msgstr ""
+
+#: src/Subscriptions.php:82
+msgid "We would like to know if you are comming to the event."
+msgstr ""
+
+#: src/Subscriptions.php:124
+msgid "Accept"
+msgstr ""
+
+#: templates/emails/event-meta.php:11
+msgid "Time: %s"
+msgstr ""
+
+#: templates/emails/invitation.php:7
+msgid "You are invited for following event:"
+msgstr ""
+
+#: templates/emails/invitee-accepted.php:7
+msgid "%1$s accepted your invitation for:"
+msgstr ""
+
+#: templates/emails/invitee-declined.php:7
+msgid "%1$s declined your invitation for:"
+msgstr ""
