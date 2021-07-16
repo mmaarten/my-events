@@ -6,18 +6,30 @@ use My\Events\Posts\Event;
 
 class SendEmail
 {
+    /**
+     * Init
+     */
     public static function init()
     {
         add_action('add_meta_boxes', [__CLASS__, 'addMetaBoxes']);
         add_action('wp_ajax_my_events_event_send_email', [__CLASS__, 'process']);
-        add_action('wp_ajax_nopriv_my_events_event_send_email', [__CLASS__, 'process']);
     }
 
+    /**
+     * Add meta boxes
+     *
+     * @param string $post_type
+     */
     public static function addMetaBoxes($post_type)
     {
         add_meta_box('my-events-send-email', __('Send email', 'my-events'), [__CLASS__, 'render'], 'event', 'side');
     }
 
+    /**
+     * Render
+     *
+     * @param WP_Post $post
+     */
     public static function render($post)
     {
         $event = new Event($post);
@@ -59,6 +71,9 @@ class SendEmail
         <?php
     }
 
+    /**
+     * Process
+     */
     public static function process()
     {
         if (! wp_doing_ajax()) {
@@ -71,6 +86,8 @@ class SendEmail
         $message  = isset($_POST['message']) ? $_POST['message'] : '';
         $message  = trim(stripcslashes($message));
 
+        // Check params
+
         if (! $event_id || get_post_type($event_id) != 'event') {
             wp_send_json_error(Helpers::getAdminNotice(__('Invalid event.', 'my-events'), 'error', true));
         }
@@ -79,6 +96,8 @@ class SendEmail
             wp_send_json_error(Helpers::getAdminNotice(__('Message is required.', 'my-events'), 'error', true));
         }
 
+        //
+
         $event = new Event($event_id);
         $recipients = wp_list_pluck($event->getInviteesUsers(), 'user_email');
         $message    = wpautop(esc_html($message));
@@ -86,6 +105,8 @@ class SendEmail
         if (! $recipients) {
             wp_send_json_error(Helpers::getAdminNotice(__('No recipients.', 'my-events'), 'error', true));
         }
+
+        // Send emails
 
         foreach ($recipients as $to) {
             $subject = sprintf(__('Announcement for event: %s.', 'my-events'), $event->post_title);
@@ -97,6 +118,8 @@ class SendEmail
 
             Notifications::sendNotification($to, $subject, $email_message, [], [], $event);
         }
+
+        // Response
 
         wp_send_json_success(Helpers::getAdminNotice(__('Email send.', 'my-events'), 'success', true));
     }

@@ -12,9 +12,7 @@ class OverlappingEvents
     public static function init()
     {
         add_action('add_meta_boxes', [__CLASS__, 'addMetaBoxes']);
-
         add_action('wp_ajax_my_events_get_overlapping_events', [__CLASS__, 'process']);
-        add_action('wp_ajax_nopriv_my_events_get_overlapping_events', [__CLASS__, 'process']);
     }
 
     /**
@@ -80,7 +78,9 @@ class OverlappingEvents
         <?php
     }
 
-
+    /**
+     * Process
+     */
     public static function process()
     {
         if (! wp_doing_ajax()) {
@@ -94,6 +94,8 @@ class OverlappingEvents
         $offset   = $_POST['offset'];
         $event_id = $_POST['event'];
 
+        // Check params
+
         if (! $start || ! strtotime($start)) {
             wp_send_json_error(Helpers::getAdminNotice(__('Invalid start date.', 'my-events'), 'error', true));
         }
@@ -106,6 +108,8 @@ class OverlappingEvents
             wp_send_json_error(Helpers::getAdminNotice(__('Invalid event.', 'my-events'), 'error', true));
         }
 
+        // Get events
+
         $events = Model::getEventsBetween($start, $end, $offset, [
             'exclude' => $event_id,
         ]);
@@ -113,6 +117,8 @@ class OverlappingEvents
         if (! $events) {
             wp_send_json_success(Helpers::getAdminNotice(__('No events found.', 'my-events'), 'error', true));
         }
+
+        // Response
 
         $response = '<ul>';
         foreach ($events as $event) {
