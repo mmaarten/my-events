@@ -30,6 +30,7 @@ class Capabilities
         if ($object_id && get_post_type($object_id) == 'event') {
             $event = new Event($object_id);
 
+            // Allow organisers to edit event.
             $organizers_can_edit = $event->getField('organizers_can_edit');
 
             if ($organizers_can_edit && $event->isOrganizer($user_id)) {
