@@ -233,9 +233,9 @@ class Event extends Post
      *
      * @return bool
      */
-    public function hasInvitees($args = [])
+    public function hasInvitees()
     {
-        return $this->getInvitees(['numberposts' => 1]) ? true : false;
+        return $this->getInvitees(['numberposts' => 1, 'fields' => 'ids']) ? true : false;
     }
 
     /**

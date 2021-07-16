@@ -42,9 +42,17 @@ class OverlappingEvents
     {
         $event = new Event($post);
 
+        $atts = [
+            'class'          => 'my-events-search-overlapping-events',
+            'data-action'    => 'my_events_get_overlapping_events',
+            'data-event'     => $event->ID,
+            'data-noncename' => MY_EVENTS_NONCE_NAME,
+            'data-nonce'     => wp_create_nonce('search_overlapping_events'),
+        ];
+
         ?>
 
-        <div class="my-events-search-overlapping-events" data-action="my_events_get_overlapping_events" data-event="<?php echo esc_attr($event->ID); ?>" data-noncename="<?php echo esc_attr(MY_EVENTS_NONCE_NAME); ?>" data-nonce="<?php echo esc_attr(wp_create_nonce('search_overlapping_events')); ?>">
+        <div <?php echo acf_esc_attr($atts); ?>>
 
             <p>
                 <label for="my-events-overlapping-start"><?php esc_html_e('Start', 'my-events'); ?></label><br>
@@ -62,7 +70,7 @@ class OverlappingEvents
             </p>
 
             <p>
-                <button type="button" class="button"><?php esc_html_e('Search', 'my-events'); ?></button>
+                <button type="button" class="button my-events-submit"><?php esc_html_e('Search', 'my-events'); ?></button>
             </p>
 
             <div class="my-events-output"></div>

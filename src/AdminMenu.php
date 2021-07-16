@@ -32,12 +32,7 @@ class AdminMenu
             __('Tags', 'my-events'),
             __('Tags', 'my-events'),
             'edit_posts',
-            'edit-tags.php?taxonomy=event_tag',
-            '',
-            'dashicons-admin-post',
-            0
+            'edit-tags.php?taxonomy=event_tag'
         );
-
-
     }
 }
