@@ -12,7 +12,6 @@ class OverlappingEvents
     public static function init()
     {
         add_action('add_meta_boxes', [__CLASS__, 'addMetaBoxes']);
-        add_action('admin_enqueue_scripts', [__CLASS__, 'enqueueAdminAssets']);
 
         add_action('wp_ajax_my_events_get_overlapping_events', [__CLASS__, 'process']);
         add_action('wp_ajax_nopriv_my_events_get_overlapping_events', [__CLASS__, 'process']);
@@ -34,6 +33,41 @@ class OverlappingEvents
         );
     }
 
+    /**
+     * Render
+     *
+     * @param WP_Post $post
+     */
+    public static function render($post)
+    {
+        $event = new Event($post);
+
+        ?>
+
+        <div class="my-events-search-overlapping-events" data-action="my_events_get_overlapping_events" data-event="<?php echo esc_attr($event->ID); ?>" data-noncename="<?php echo esc_attr(MY_EVENTS_NONCE_NAME); ?>" data-nonce="<?php echo esc_attr(wp_create_nonce('search_overlapping_events')); ?>">
+
+            <p>
+                <label for="my-events-overlapping-start"><?php esc_html_e('Start', 'my-events'); ?></label><br>
+                <input type="text" id="my-events-overlapping-start" class="large-text" value="<?php echo esc_attr($event->getStartTime('Y-m-d H:i:s')); ?>">
+            </p>
+
+            <p>
+                <label for="my-events-overlapping-end"><?php esc_html_e('End', 'my-events'); ?></label><br>
+                <input type="text" id="my-events-overlapping-end" class="large-text" value="<?php echo esc_attr($event->getEndTime('Y-m-d H:i:s')); ?>">
+            </p>
+
+            <p>
+                <button type="button" class="button"><?php esc_html_e('Search', 'my-events'); ?></button>
+            </p>
+
+            <div class="my-events-output"></div>
+
+        </div>
+
+        <?php
+    }
+
+
     public static function process()
     {
         if (! wp_doing_ajax()) {
@@ -42,8 +76,8 @@ class OverlappingEvents
 
         check_admin_referer('search_overlapping_events', MY_EVENTS_NONCE_NAME);
 
-        $start    = $_POST['overlapping_start'];
-        $end      = $_POST['overlapping_end'];
+        $start    = $_POST['start'];
+        $end      = $_POST['end'];
         $event_id = $_POST['event'];
 
         if (! $start || ! strtotime($start)) {
@@ -58,116 +92,26 @@ class OverlappingEvents
             wp_send_json_error(Helpers::getAdminNotice(__('Invalid event.', 'my-events'), 'error', true));
         }
 
-        $end = new \DateTime($end);
-        $end->modify('+1 day');
-
-        $events = Model::getEventsBetween($start, $end->format('Y-m-d'), [
+        $events = Model::getEventsBetween($start, $end, [
             'exclude' => $event_id,
         ]);
 
-        $response = self::renderEvents($events);
-
-        wp_send_json_success($response);
-    }
-
-    public static function renderEvents($events)
-    {
         if (! $events) {
-            return Helpers::getAdminNotice(__('No events found.', 'my-events'), 'error', true);
+            wp_send_json_success(Helpers::getAdminNotice(__('No events found.', 'my-events'), 'error', true));
         }
 
-        $return = '<ul>';
+        $response = '<ul>';
         foreach ($events as $event) {
             $event = new Event($event);
-            $return .= sprintf(
+            $response .= sprintf(
                 '<li><a href="%1$s">%2$s</a><br><small>%3$s</small></li>',
                 get_permalink($event->ID),
                 esc_html($event->post_title),
                 esc_html($event->getTimeFromUntil())
             );
         }
-        $return .= '</ul>';
+        $response .= '</ul>';
 
-        return $return;
-    }
-
-    /**
-     * Render
-     *
-     * @param WP_Post $post
-     */
-    public static function render($post)
-    {
-        $event = new Event($post);
-
-        $events = Model::getOverlappingEvents($event->ID);
-
-        ?>
-
-        <div class="my-ajax-form" data-action="my_events_get_overlapping_events" data-event="<?php echo esc_attr($event->ID); ?>">
-
-            <?php wp_nonce_field('search_overlapping_events', MY_EVENTS_NONCE_NAME); ?>
-
-            <p>
-                <label for="overlapping-events-start"><?php esc_html_e('Start time', 'my-events'); ?></label><br/>
-                <?php
-
-                printf('<input %s>', acf_esc_attr([
-                    'id'              => 'overlapping-events-start',
-                    'type'            => 'text',
-                    'class'           => 'large-text my-datepicker',
-                    'data-format'     => get_option('date_format'),
-                    'data-alt-field'  => '#overlapping-events-start-alt',
-                    'data-alt-format' => 'yy-mm-dd',
-                    'value'           => $event->getStartTime(get_option('date_format')),
-                    'readonly'        => 'readonly',
-                ]));
-
-                ?>
-                <input type="hidden" id="overlapping-events-start-alt" class="large-text" name="overlapping_start" value="<?php echo esc_attr($event->getStartTime('Y-m-d')); ?>">
-            </p>
-
-            <p>
-                <label for="overlapping-events-start"><?php esc_html_e('End time', 'my-events'); ?></label><br/>
-                <?php
-
-                printf('<input %s>', acf_esc_attr([
-                    'id'              => 'overlapping-events-end',
-                    'type'            => 'text',
-                    'class'           => 'large-text my-datepicker',
-                    'data-format'     => get_option('date_format'),
-                    'data-alt-field'  => '#overlapping-events-end-alt',
-                    'data-alt-format' => 'yy-mm-dd',
-                    'value'           => $event->getEndTime(get_option('date_format')),
-                    'readonly'        => 'readonly',
-                ]));
-
-                ?>
-                <input type="hidden" id="overlapping-events-end-alt" class="large-text" name="overlapping_end" value="<?php echo esc_attr($event->getEndTime('Y-m-d')); ?>">
-            </p>
-
-            <p>
-                <button type="button" class="button my-ajax-form-submit"><?php esc_html_e('Search', 'my-events'); ?></button>
-            </p>
-
-            <div class="my-ajax-form-output">
-                <?php echo self::renderEvents($events); ?>
-            </div>
-
-        </div>
-
-        <?php
-    }
-
-    /**
-     * Enqueue admin assets
-     */
-    public static function enqueueAdminAssets()
-    {
-        $screen = get_current_screen();
-
-        if ($screen->id != 'event') {
-            return;
-        }
+        wp_send_json_success($response);
     }
 }

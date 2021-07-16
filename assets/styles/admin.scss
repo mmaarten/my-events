@@ -1,6 +1,6 @@
 @import "autoload";
 
-.my-ajax-form {
+.my-events-search-overlapping-events {
   &.is-loading {
     @include make-loader(2rem, 0, true);
   }
