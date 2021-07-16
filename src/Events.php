@@ -42,12 +42,6 @@ class Events
             $classes[] = 'is-private-event';
         }
 
-        if ($event->hasMaxParticipants()) {
-            $classes[] = 'is-subscriptions-enabled';
-        } else {
-            $classes[] = 'is-subscriptions-disabled';
-        }
-
         if (is_user_logged_in()) {
             $invitee = $event->getInviteeByUser(get_current_user_id());
             if ($invitee) {
