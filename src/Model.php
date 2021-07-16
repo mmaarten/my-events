@@ -212,7 +212,7 @@ class Model
      * @param array  $args
      * @return array
      */
-    public static function getRelatedEvents($event_id, $offset = 0, $args = [])
+    public static function getRelatedEvents($event_id, $args = [])
     {
         $tags = wp_get_object_terms($event_id, 'event_tag', ['fields' => 'ids']);
 
