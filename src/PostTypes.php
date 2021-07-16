@@ -87,34 +87,6 @@ class PostTypes
             'menu_position'      => null,
             'supports'           => ['title'],
         ]);
-
-        register_taxonomy('event_tag', 'event', [
-            'hierarchical' => false,
-            'labels'                => [
-                'name'                       => _x('Tags', 'taxonomy general name', 'my-events'),
-                'singular_name'              => _x('Tag', 'taxonomy singular name', 'my-events'),
-                'search_items'               => __('Search Tags', 'my-events'),
-                'popular_items'              => __('Popular Tags', 'my-events'),
-                'all_items'                  => __('All Tags', 'my-events'),
-                'parent_item'                => null,
-                'parent_item_colon'          => null,
-                'edit_item'                  => __('Edit Tag', 'my-events'),
-                'update_item'                => __('Update Tag', 'my-events'),
-                'add_new_item'               => __('Add New Tag', 'my-events'),
-                'new_item_name'              => __('New Tag Name', 'my-events'),
-                'separate_items_with_commas' => __('Separate tags with commas', 'my-events'),
-                'add_or_remove_items'        => __('Add or remove tags', 'my-events'),
-                'choose_from_most_used'      => __('Choose from the most used tags', 'my-events'),
-                'not_found'                  => __('No tags found.', 'my-events'),
-                'menu_name'                  => __('Tags', 'my-events'),
-            ],
-            'show_ui'               => true,
-            'show_admin_column'     => true,
-            'show_in_nav_menus'     => true,
-            'update_count_callback' => '_update_post_term_count',
-            'query_var'             => true,
-            'rewrite'               => ['slug' => 'event-tag'],
-        ]);
     }
 
     /**
