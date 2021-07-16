@@ -10,6 +10,7 @@
         event  : dataset.event,
         start  : $elem.find('#my-events-overlapping-start').val(),
         end    : $elem.find('#my-events-overlapping-end').val(),
+        offset : $elem.find('#my-events-overlapping-offset').val(),
       };
 
       data[dataset.noncename] = dataset.nonce;

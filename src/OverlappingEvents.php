@@ -57,6 +57,11 @@ class OverlappingEvents
             </p>
 
             <p>
+                <label for="my-events-overlapping-offset"><?php esc_html_e('Hourly offset', 'my-events'); ?></label><br>
+                <input type="number" id="my-events-overlapping-offset" class="large-text" value="1">
+            </p>
+
+            <p>
                 <button type="button" class="button"><?php esc_html_e('Search', 'my-events'); ?></button>
             </p>
 
@@ -78,6 +83,7 @@ class OverlappingEvents
 
         $start    = $_POST['start'];
         $end      = $_POST['end'];
+        $offset   = $_POST['offset'];
         $event_id = $_POST['event'];
 
         if (! $start || ! strtotime($start)) {
@@ -92,7 +98,7 @@ class OverlappingEvents
             wp_send_json_error(Helpers::getAdminNotice(__('Invalid event.', 'my-events'), 'error', true));
         }
 
-        $events = Model::getEventsBetween($start, $end, [
+        $events = Model::getEventsBetween($start, $end, $offset, [
             'exclude' => $event_id,
         ]);
 

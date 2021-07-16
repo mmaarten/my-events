@@ -130,11 +130,20 @@ class Model
      *
      * @param string $start
      * @param string $end
+     * @param string $offset (hours)
      * @param array  $args
      * @return array
      */
-    public static function getEventsBetween($start, $end, $args = [])
+    public static function getEventsBetween($start, $end, $offset = 0, $args = [])
     {
+        if ($offset) {
+            $start = strtotime($start) - (60 * 60 * $offset);
+            $end   = strtotime($end) + (60 * 60 * $offset);
+
+            $start = date_i18n('Y-m-d H:i:s', $start);
+            $end   = date_i18n('Y-m-d H:i:s', $end);
+        }
+
         return self::getEvents($args + [
             'meta_query' => [
                 'relation' => 'OR',
@@ -176,16 +185,17 @@ class Model
      * Get overlapping events
      *
      * @param int    $event_id
+     * @param int    $offset
      * @param array  $args
      * @return array
      */
-    public static function getOverlappingEvents($event_id, $args = [])
+    public static function getOverlappingEvents($event_id, $offset = 0, $args = [])
     {
         $event = new Event($event_id);
         $start = $event->getStartTime('Y-m-d H:i:s');
         $end   = $event->getEndTime('Y-m-d H:i:s');
 
-        return self::getEventsBetween($start, $end, [
+        return self::getEventsBetween($start, $end, $offset, [
             'exclude'   => [$event->ID],
             'orderby'   => 'meta_value',
             'meta_key'  => 'start',
