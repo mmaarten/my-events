@@ -48,12 +48,12 @@ class OverlappingEvents
 
             <p>
                 <label for="my-events-overlapping-start"><?php esc_html_e('Start', 'my-events'); ?></label><br>
-                <input type="text" id="my-events-overlapping-start" class="large-text" value="<?php echo esc_attr($event->getStartTime('Y-m-d H:i:s')); ?>">
+                <input type="text" id="my-events-overlapping-start" class="large-text" value="<?php echo esc_attr($event->getStartTime('Y-m-d H:i')); ?>">
             </p>
 
             <p>
                 <label for="my-events-overlapping-end"><?php esc_html_e('End', 'my-events'); ?></label><br>
-                <input type="text" id="my-events-overlapping-end" class="large-text" value="<?php echo esc_attr($event->getEndTime('Y-m-d H:i:s')); ?>">
+                <input type="text" id="my-events-overlapping-end" class="large-text" value="<?php echo esc_attr($event->getEndTime('Y-m-d H:i')); ?>">
             </p>
 
             <p>
