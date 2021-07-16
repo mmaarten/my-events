@@ -136,6 +136,8 @@ class Model
      */
     public static function getEventsBetween($start, $end, $offset = 0, $args = [])
     {
+        $offset = floatval($offset);
+
         if ($offset) {
             $start = strtotime($start) - (60 * 60 * $offset);
             $end   = strtotime($end) + (60 * 60 * $offset);
