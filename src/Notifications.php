@@ -30,17 +30,17 @@ class Notifications
                 [
                     'relation' => 'OR',
                     [
-                        'key'     => 'email_sent',
+                        'key'     => 'invitation_sent',
                         'compare' => '=',
                         'value'   => false,
                     ],
                     [
-                        'key'     => 'email_sent',
+                        'key'     => 'invitation_sent',
                         'compare' => '!=',
                         'value'   => true,
                     ],
                     [
-                        'key'     => 'email_sent',
+                        'key'     => 'invitation_sent',
                         'compare' => 'NOT EXISTS',
                     ],
                 ],
@@ -62,7 +62,7 @@ class Notifications
                 if (! $event->isOver()) {
                     // Send email
                     self::sendInvitationNotification($invitee, $invitee->getUser(), $event);
-                    $invitee->setEmailSent(true);
+                    $invitee->setInvitationSent(true);
                 }
             }
         }

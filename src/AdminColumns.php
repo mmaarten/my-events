@@ -89,12 +89,12 @@ class AdminColumns
     public static function inviteeColumns($columns)
     {
         return [
-            'cb'         => $columns['cb'],
-            'title'      => $columns['title'],
-            'event'      => __('Event', 'my-events'),
-            'user'       => __('User', 'my-events'),
-            'status'     => __('Status', 'my-events'),
-            'email_sent' => __('Email sent', 'my-events'),
+            'cb'              => $columns['cb'],
+            'title'           => $columns['title'],
+            'event'           => __('Event', 'my-events'),
+            'user'            => __('User', 'my-events'),
+            'status'          => __('Status', 'my-events'),
+            'invitation_sent' => __('Invitation sent', 'my-events'),
         ] + $columns;
     }
 
@@ -123,8 +123,8 @@ class AdminColumns
                 $statuses = Helpers::getInviteeStatuses();
                 echo isset($statuses[$status]) ? esc_html($statuses[$status]) : esc_html(self::NO_VALUE);
                 break;
-            case 'email_sent':
-                echo Helpers::renderBoolean($invitee->getEmailSent());
+            case 'invitation_sent':
+                echo Helpers::renderBoolean($invitee->getInvitationSent());
                 break;
         }
     }

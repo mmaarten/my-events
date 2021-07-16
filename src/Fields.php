@@ -351,12 +351,12 @@ class Fields
             'parent'        => 'my_events_invitee_group',
         ]);
 
-        // Email sent
+        // Invitation sent
         acf_add_local_field([
-            'key'           => 'my_events_invitee_email_sent_field',
-            'label'         => __('Email sent', 'my-events'),
+            'key'           => 'my_events_invitee_invitation_sent_field',
+            'label'         => __('Invitation sent', 'my-events'),
             'instructions'  => __('', 'my-events'),
-            'name'          => 'email_sent',
+            'name'          => 'invitation_sent',
             'type'          => 'true_false',
             'default_value' => false,
             'required'      => false,

@@ -34,13 +34,13 @@ class Invitee extends Post
         return $this->updateField('status', $value);
     }
 
-    public function getEmailSent()
+    public function getInvitationSent()
     {
-        return $this->getField('email_sent');
+        return $this->getField('invitation_sent');
     }
 
-    public function setEmailSent($value)
+    public function setInvitationSent($value)
     {
-        return $this->updateField('email_sent', $value);
+        return $this->updateField('invitation_sent', $value);
     }
 }
