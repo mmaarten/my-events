@@ -9,9 +9,8 @@ class SendEmail
     public static function init()
     {
         add_action('add_meta_boxes', [__CLASS__, 'addMetaBoxes']);
-        add_action('admin_enqueue_scripts', [__CLASS__, 'enqueueAdminAssets']);
-        add_action('wp_ajax_my_events_event_send_email', [__CLASS__, 'sendEmail']);
-        add_action('wp_ajax_nopriv_my_events_event_send_email', [__CLASS__, 'sendEmail']);
+        add_action('wp_ajax_my_events_event_send_email', [__CLASS__, 'process']);
+        add_action('wp_ajax_nopriv_my_events_event_send_email', [__CLASS__, 'process']);
     }
 
     public static function addMetaBoxes($post_type)
@@ -83,7 +82,7 @@ class SendEmail
         <?php
     }
 
-    public static function sendEmail()
+    public static function process()
     {
         if (! wp_doing_ajax()) {
             return;
@@ -127,30 +126,5 @@ class SendEmail
         }
 
         wp_send_json_success(Helpers::getAdminNotice(__('Email send.', 'my-events'), 'success', true));
-    }
-
-    /**
-     * Enqueue admin assets
-     */
-    public static function enqueueAdminAssets()
-    {
-        $screen = get_current_screen();
-
-        if ($screen->id != 'event') {
-            return;
-        }
-
-        wp_enqueue_script(
-            'my-events-send-email-script',
-            plugins_url('build/send-email-script.js', MY_EVENTS_PLUGIN_FILE),
-            ['jquery'],
-            false,
-            true
-        );
-
-        wp_enqueue_style(
-            'my-events-send-email-style',
-            plugins_url('build/send-email-style.css', MY_EVENTS_PLUGIN_FILE),
-        );
     }
 }

@@ -1,5 +1,4 @@
 (function(){
-
   "use strict";
 
   jQuery('.my-events-send-email').each(function(){

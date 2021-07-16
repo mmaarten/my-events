@@ -9,10 +9,6 @@ module.exports = {
     'admin-script': './assets/scripts/admin.js',
     'admin-style': './assets/styles/admin.scss',
     'fontawesome': './assets/styles/fontawesome.scss',
-    'send-email-script': './assets/scripts/send-email.js',
-    'send-email-style': './assets/styles/send-email.scss',
-    'events-filter-script': './assets/scripts/events-filter.js',
-    'events-filter-style': './assets/styles/events-filter.scss',
   },
   plugins : [
     ...defaultConfig.plugins,
