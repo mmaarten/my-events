@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-07-15T14:06:00+00:00\n"
+"POT-Creation-Date: 2021-07-16T17:17:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: my-events\n"
@@ -38,12 +38,12 @@ msgid "%1$s installation is incomplete. Run %2$s within the %3$s directory."
 msgstr ""
 
 #: src/AdminColumns.php:42
-#: src/Fields.php:55
+#: src/Fields.php:59
 msgid "Time"
 msgstr ""
 
 #: src/AdminColumns.php:43
-#: src/Fields.php:107
+#: src/Fields.php:111
 msgid "Organizers"
 msgstr ""
 
@@ -52,7 +52,7 @@ msgid "Participants"
 msgstr ""
 
 #: src/AdminColumns.php:45
-#: src/Fields.php:279
+#: src/Fields.php:283
 msgid "Private"
 msgstr ""
 
@@ -61,39 +61,39 @@ msgid "Over"
 msgstr ""
 
 #: src/AdminColumns.php:94
-#: src/Fields.php:312
+#: src/Fields.php:316
 #: src/PostTypes.php:21
 msgid "Event"
 msgstr ""
 
 #: src/AdminColumns.php:95
-#: src/Fields.php:326
+#: src/Fields.php:330
 msgid "User"
 msgstr ""
 
 #: src/AdminColumns.php:96
-#: src/Fields.php:339
+#: src/Fields.php:343
 msgid "Status"
 msgstr ""
 
 #: src/AdminColumns.php:97
-#: src/Fields.php:353
+#: src/Fields.php:357
 msgid "Email sent"
 msgstr ""
 
 #: src/AdminColumns.php:143
-#: src/Fields.php:386
+#: src/Fields.php:390
 msgid "Users"
 msgstr ""
 
 #: src/AdminColumns.php:177
-#: src/Fields.php:420
+#: src/Fields.php:424
 msgid "Address"
 msgstr ""
 
 #: src/AdminMenu.php:21
 #: src/AdminMenu.php:22
-#: src/PostTypes.php:21
+#: src/PostTypes.php:20
 msgid "Events"
 msgstr ""
 
@@ -105,122 +105,124 @@ msgstr ""
 msgid "This event is private."
 msgstr ""
 
-#: src/Fields.php:25
-#: src/Fields.php:296
-#: src/Fields.php:370
-#: src/Fields.php:404
+#: src/Fields.php:29
+#: src/Fields.php:300
+#: src/Fields.php:374
+#: src/Fields.php:408
 msgid "General"
 msgstr ""
 
-#: src/Fields.php:41
+#: src/Fields.php:45
 msgid "Description"
 msgstr ""
 
-#: src/Fields.php:42
+#: src/Fields.php:46
 msgid "A brief description about this event."
 msgstr ""
 
-#: src/Fields.php:64
+#: src/Fields.php:68
+#: src/OverlappingEvents.php:50
 msgid "Start"
 msgstr ""
 
-#: src/Fields.php:65
+#: src/Fields.php:69
 msgid "The time the event starts."
 msgstr ""
 
-#: src/Fields.php:80
+#: src/Fields.php:84
+#: src/OverlappingEvents.php:55
 msgid "End"
 msgstr ""
 
-#: src/Fields.php:81
+#: src/Fields.php:85
 msgid "The time the event ends."
 msgstr ""
 
-#: src/Fields.php:96
+#: src/Fields.php:100
 msgid "This event takes one or more full days."
 msgstr ""
 
-#: src/Fields.php:108
+#: src/Fields.php:112
 msgid "Organisers recieve notifications by email when someone accepts or declines the invitation."
 msgstr ""
 
-#: src/Fields.php:120
+#: src/Fields.php:124
 msgid "Allow organizers to edit this event."
 msgstr ""
 
-#: src/Fields.php:131
+#: src/Fields.php:135
 #: src/Invitees.php:24
-#: src/PostTypes.php:36
+#: src/PostTypes.php:39
 msgid "Invitees"
 msgstr ""
 
-#: src/Fields.php:132
+#: src/Fields.php:136
 msgid "Select the people you would like to invite."
 msgstr ""
 
-#: src/Fields.php:136
+#: src/Fields.php:140
 msgid "Individual"
 msgstr ""
 
-#: src/Fields.php:137
+#: src/Fields.php:141
 msgid "Choose from a group"
 msgstr ""
 
-#: src/Fields.php:147
+#: src/Fields.php:151
 msgid "Individual invitees"
 msgstr ""
 
-#: src/Fields.php:169
-#: src/PostTypes.php:61
+#: src/Fields.php:173
+#: src/PostTypes.php:68
 msgid "Invitee group"
 msgstr ""
 
-#: src/Fields.php:192
+#: src/Fields.php:196
 msgid "Default status"
 msgstr ""
 
-#: src/Fields.php:193
+#: src/Fields.php:197
 msgid "Invitees with a \"pending\" status receive an invitation email about this event."
 msgstr ""
 
-#: src/Fields.php:205
+#: src/Fields.php:209
 msgid "Limit the amount of participants"
 msgstr ""
 
-#: src/Fields.php:206
+#: src/Fields.php:210
 msgid "Leave empty for unlimited participants."
 msgstr ""
 
-#: src/Fields.php:217
-#: src/PostTypes.php:76
+#: src/Fields.php:221
+#: src/PostTypes.php:86
 msgid "Location"
 msgstr ""
 
-#: src/Fields.php:218
+#: src/Fields.php:222
 msgid "The geographical location were the event takes place."
 msgstr ""
 
-#: src/Fields.php:222
+#: src/Fields.php:226
 msgid "Custom"
 msgstr ""
 
-#: src/Fields.php:223
+#: src/Fields.php:227
 msgid "Preset"
 msgstr ""
 
-#: src/Fields.php:233
+#: src/Fields.php:237
 msgid "Custom location"
 msgstr ""
 
-#: src/Fields.php:254
+#: src/Fields.php:258
 msgid "Preset location"
 msgstr ""
 
-#: src/Fields.php:280
+#: src/Fields.php:284
 msgid "Only organizers and invitees of this event have access to this event."
 msgstr ""
 
-#: src/Fields.php:421
+#: src/Fields.php:425
 msgid "The geographical location."
 msgstr ""
 
@@ -258,7 +260,7 @@ msgid "calendar"
 msgstr ""
 
 #: src/Invitees.php:37
-#: src/SendEmail.php:29
+#: src/SendEmail.php:28
 msgid "No invitees found."
 msgstr ""
 
@@ -277,37 +279,33 @@ msgstr ""
 msgid "You are invited for event: %s"
 msgstr ""
 
-#: src/OverlappingEvents.php:30
+#: src/OverlappingEvents.php:29
 msgid "Overlapping events"
 msgstr ""
 
-#: src/OverlappingEvents.php:50
+#: src/OverlappingEvents.php:60
+msgid "Hourly offset"
+msgstr ""
+
+#: src/OverlappingEvents.php:65
+msgid "Search"
+msgstr ""
+
+#: src/OverlappingEvents.php:90
 msgid "Invalid start date."
 msgstr ""
 
-#: src/OverlappingEvents.php:54
+#: src/OverlappingEvents.php:94
 msgid "Invalid end date."
 msgstr ""
 
-#: src/OverlappingEvents.php:58
-#: src/SendEmail.php:100
+#: src/OverlappingEvents.php:98
+#: src/SendEmail.php:99
 msgid "Invalid event."
 msgstr ""
 
-#: src/OverlappingEvents.php:76
+#: src/OverlappingEvents.php:106
 msgid "No events found."
-msgstr ""
-
-#: src/OverlappingEvents.php:112
-msgid "Start time"
-msgstr ""
-
-#: src/OverlappingEvents.php:131
-msgid "End time"
-msgstr ""
-
-#: src/OverlappingEvents.php:150
-msgid "Search"
 msgstr ""
 
 #: src/Posts/Event.php:61
@@ -318,154 +316,212 @@ msgstr ""
 msgid "from %1$s until %2$s"
 msgstr ""
 
-#: src/PostTypes.php:36
+#: src/PostTypes.php:40
 msgid "Invitee"
 msgstr ""
 
-#: src/PostTypes.php:61
+#: src/PostTypes.php:67
 msgid "Invitee groups"
 msgstr ""
 
-#: src/PostTypes.php:76
+#: src/PostTypes.php:85
 msgid "Locations"
 msgstr ""
 
-#: src/PostTypes.php:105
+#: src/PostTypes.php:106
+msgctxt "taxonomy general name"
+msgid "Tags"
+msgstr ""
+
+#: src/PostTypes.php:107
+msgctxt "taxonomy singular name"
+msgid "Tag"
+msgstr ""
+
+#: src/PostTypes.php:108
+msgid "Search Tags"
+msgstr ""
+
+#: src/PostTypes.php:109
+msgid "Popular Tags"
+msgstr ""
+
+#: src/PostTypes.php:110
+msgid "All Tags"
+msgstr ""
+
+#: src/PostTypes.php:113
+msgid "Edit Tag"
+msgstr ""
+
+#: src/PostTypes.php:114
+msgid "Update Tag"
+msgstr ""
+
+#: src/PostTypes.php:115
+msgid "Add New Tag"
+msgstr ""
+
+#: src/PostTypes.php:116
+msgid "New Tag Name"
+msgstr ""
+
+#: src/PostTypes.php:117
+msgid "Separate tags with commas"
+msgstr ""
+
+#: src/PostTypes.php:118
+msgid "Add or remove tags"
+msgstr ""
+
+#: src/PostTypes.php:119
+msgid "Choose from the most used tags"
+msgstr ""
+
+#: src/PostTypes.php:120
+msgid "No tags found."
+msgstr ""
+
+#: src/PostTypes.php:121
+msgid "Tags"
+msgstr ""
+
+#: src/PostTypes.php:146
 msgid "Add New"
 msgstr ""
 
-#: src/PostTypes.php:106
+#: src/PostTypes.php:147
 msgctxt "%s: post type name"
 msgid "Add New %s"
 msgstr ""
 
-#: src/PostTypes.php:107
+#: src/PostTypes.php:148
 msgctxt "%s: post type name"
 msgid "New %s"
 msgstr ""
 
-#: src/PostTypes.php:108
+#: src/PostTypes.php:149
 msgctxt "%s: post type name"
 msgid "Edit %s"
 msgstr ""
 
-#: src/PostTypes.php:109
+#: src/PostTypes.php:150
 msgctxt "%s: post type name"
 msgid "View %s"
 msgstr ""
 
-#: src/PostTypes.php:111
+#: src/PostTypes.php:152
 msgctxt "%s: post type name"
 msgid "Search %s"
 msgstr ""
 
-#: src/PostTypes.php:112
+#: src/PostTypes.php:153
 msgctxt "%s: post type name"
 msgid "Parent %s:"
 msgstr ""
 
-#: src/PostTypes.php:113
+#: src/PostTypes.php:154
 msgctxt "%s: post type name"
 msgid "No %s found."
 msgstr ""
 
-#: src/PostTypes.php:114
+#: src/PostTypes.php:155
 msgctxt "%s: post type name"
 msgid "No %s found in Trash."
 msgstr ""
 
-#: src/PostTypes.php:115
+#: src/PostTypes.php:156
 msgctxt "%s: post type name"
 msgid "%s Cover Image"
 msgstr ""
 
-#: src/PostTypes.php:116
+#: src/PostTypes.php:157
 msgid "Set cover image"
 msgstr ""
 
-#: src/PostTypes.php:117
+#: src/PostTypes.php:158
 msgid "Remove cover image"
 msgstr ""
 
-#: src/PostTypes.php:118
+#: src/PostTypes.php:159
 msgid "Use as cover image"
 msgstr ""
 
-#: src/PostTypes.php:119
+#: src/PostTypes.php:160
 msgctxt "%s: post type name"
 msgid "%s archives"
 msgstr ""
 
-#: src/PostTypes.php:120
+#: src/PostTypes.php:161
 msgctxt "%s: post type name"
 msgid "Insert into %s"
 msgstr ""
 
-#: src/PostTypes.php:121
+#: src/PostTypes.php:162
 msgctxt "%s: post type name"
 msgid "Uploaded to this %s"
 msgstr ""
 
-#: src/PostTypes.php:122
+#: src/PostTypes.php:163
 msgctxt "%s: post type name"
 msgid "Filter %s list"
 msgstr ""
 
-#: src/PostTypes.php:123
+#: src/PostTypes.php:164
 msgctxt "%s: post type name"
 msgid "%s list navigation"
 msgstr ""
 
-#: src/PostTypes.php:124
+#: src/PostTypes.php:165
 msgctxt "%s: post type name"
 msgid "%s list"
 msgstr ""
 
-#: src/SendEmail.php:19
+#: src/SendEmail.php:18
 msgid "Send email"
 msgstr ""
 
-#: src/SendEmail.php:45
+#: src/SendEmail.php:44
 msgid "Notify the invitees about any changes of this event."
 msgstr ""
 
-#: src/SendEmail.php:47
+#: src/SendEmail.php:46
 msgid "Recipients"
 msgstr ""
 
-#: src/SendEmail.php:64
+#: src/SendEmail.php:63
 msgid "Check all"
 msgstr ""
 
-#: src/SendEmail.php:65
+#: src/SendEmail.php:64
 msgid "Uncheck all"
 msgstr ""
 
-#: src/SendEmail.php:69
+#: src/SendEmail.php:68
 msgid "Message"
 msgstr ""
 
-#: src/SendEmail.php:74
+#: src/SendEmail.php:73
 msgid "Send"
 msgstr ""
 
-#: src/SendEmail.php:79
+#: src/SendEmail.php:78
 msgid "Be sure to save the event before sending."
 msgstr ""
 
-#: src/SendEmail.php:104
+#: src/SendEmail.php:103
 msgid "Message is required."
 msgstr ""
 
-#: src/SendEmail.php:115
+#: src/SendEmail.php:114
 msgid "At least one recipient is required."
 msgstr ""
 
-#: src/SendEmail.php:119
+#: src/SendEmail.php:118
 msgid "Announcement for event \"%s\"."
 msgstr ""
 
-#: src/SendEmail.php:129
+#: src/SendEmail.php:128
 msgid "Email send."
 msgstr ""
 

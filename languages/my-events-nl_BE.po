@@ -8,8 +8,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-07-15 16:07+0200\n"
-"PO-Revision-Date: 2021-07-15 16:18+0200\n"
+"POT-Creation-Date: 2021-07-16 19:17+0200\n"
+"PO-Revision-Date: 2021-07-16 19:20+0200\n"
 "X-Generator: Poedit 1.8.7\n"
 "X-Domain: my-events\n"
 "Last-Translator: \n"
@@ -39,11 +39,11 @@ msgstr "https://profiles.wordpress.org/maartenm/"
 msgid "%1$s installation is incomplete. Run %2$s within the %3$s directory."
 msgstr "%1$s installatie is niet volledig. Run %2$s binnenin de %3$s folder."
 
-#: src/AdminColumns.php:42 src/Fields.php:55
+#: src/AdminColumns.php:42 src/Fields.php:59
 msgid "Time"
 msgstr "Tijdstip"
 
-#: src/AdminColumns.php:43 src/Fields.php:107
+#: src/AdminColumns.php:43 src/Fields.php:111
 msgid "Organizers"
 msgstr "Organisatoren"
 
@@ -51,7 +51,7 @@ msgstr "Organisatoren"
 msgid "Participants"
 msgstr "Deelnemers"
 
-#: src/AdminColumns.php:45 src/Fields.php:279
+#: src/AdminColumns.php:45 src/Fields.php:283
 msgid "Private"
 msgstr "Privé"
 
@@ -59,31 +59,31 @@ msgstr "Privé"
 msgid "Over"
 msgstr "Voorbij"
 
-#: src/AdminColumns.php:94 src/Fields.php:312 src/PostTypes.php:21
+#: src/AdminColumns.php:94 src/Fields.php:316 src/PostTypes.php:21
 msgid "Event"
 msgstr "Evenement"
 
-#: src/AdminColumns.php:95 src/Fields.php:326
+#: src/AdminColumns.php:95 src/Fields.php:330
 msgid "User"
 msgstr "Gebruiker"
 
-#: src/AdminColumns.php:96 src/Fields.php:339
+#: src/AdminColumns.php:96 src/Fields.php:343
 msgid "Status"
 msgstr "Status"
 
-#: src/AdminColumns.php:97 src/Fields.php:353
+#: src/AdminColumns.php:97 src/Fields.php:357
 msgid "Email sent"
 msgstr "E-mail verzonden"
 
-#: src/AdminColumns.php:143 src/Fields.php:386
+#: src/AdminColumns.php:143 src/Fields.php:390
 msgid "Users"
 msgstr "Gebruikers"
 
-#: src/AdminColumns.php:177 src/Fields.php:420
+#: src/AdminColumns.php:177 src/Fields.php:424
 msgid "Address"
 msgstr "Adres"
 
-#: src/AdminMenu.php:21 src/AdminMenu.php:22 src/PostTypes.php:21
+#: src/AdminMenu.php:21 src/AdminMenu.php:22 src/PostTypes.php:20
 msgid "Events"
 msgstr "Evenementen"
 
@@ -95,39 +95,39 @@ msgstr "Dit evenement is voorbij."
 msgid "This event is private."
 msgstr "Dit evenement is privé."
 
-#: src/Fields.php:25 src/Fields.php:296 src/Fields.php:370 src/Fields.php:404
+#: src/Fields.php:29 src/Fields.php:300 src/Fields.php:374 src/Fields.php:408
 msgid "General"
 msgstr "Algemeen"
 
-#: src/Fields.php:41
+#: src/Fields.php:45
 msgid "Description"
 msgstr "Omschrijving"
 
-#: src/Fields.php:42
+#: src/Fields.php:46
 msgid "A brief description about this event."
 msgstr "Een korte beschrijving over dit evenement."
 
-#: src/Fields.php:64
+#: src/Fields.php:68 src/OverlappingEvents.php:50
 msgid "Start"
 msgstr "Starttijd"
 
-#: src/Fields.php:65
+#: src/Fields.php:69
 msgid "The time the event starts."
 msgstr "Het tijdstip waarop het evenement begint."
 
-#: src/Fields.php:80
+#: src/Fields.php:84 src/OverlappingEvents.php:55
 msgid "End"
 msgstr "Eindtijd"
 
-#: src/Fields.php:81
+#: src/Fields.php:85
 msgid "The time the event ends."
 msgstr "Het tijdstip waarop het evenement eindigt."
 
-#: src/Fields.php:96
+#: src/Fields.php:100
 msgid "This event takes one or more full days."
 msgstr "Dit evenement duurt één of meerdere volledige dagen."
 
-#: src/Fields.php:108
+#: src/Fields.php:112
 msgid ""
 "Organisers recieve notifications by email when someone accepts or declines "
 "the invitation."
@@ -135,39 +135,39 @@ msgstr ""
 "Organisatoren ontvangen meldingen per e-mail wanneer iemand de uitnodiging "
 "accepteert of weigert."
 
-#: src/Fields.php:120
+#: src/Fields.php:124
 msgid "Allow organizers to edit this event."
 msgstr "Organisatoren toestaan dit evenement te bewerken."
 
-#: src/Fields.php:131 src/Invitees.php:24 src/PostTypes.php:36
+#: src/Fields.php:135 src/Invitees.php:24 src/PostTypes.php:39
 msgid "Invitees"
 msgstr "Genodigden"
 
-#: src/Fields.php:132
+#: src/Fields.php:136
 msgid "Select the people you would like to invite."
 msgstr "Selecteer de mensen die je wilt uitnodigen."
 
-#: src/Fields.php:136
+#: src/Fields.php:140
 msgid "Individual"
 msgstr "Individueel"
 
-#: src/Fields.php:137
+#: src/Fields.php:141
 msgid "Choose from a group"
 msgstr "Kies uit een groep"
 
-#: src/Fields.php:147
+#: src/Fields.php:151
 msgid "Individual invitees"
 msgstr "Individuele genodigden"
 
-#: src/Fields.php:169 src/PostTypes.php:61
+#: src/Fields.php:173 src/PostTypes.php:68
 msgid "Invitee group"
 msgstr "Genodigdengroep"
 
-#: src/Fields.php:192
+#: src/Fields.php:196
 msgid "Default status"
 msgstr "Standaard status"
 
-#: src/Fields.php:193
+#: src/Fields.php:197
 msgid ""
 "Invitees with a \"pending\" status receive an invitation email about this "
 "event."
@@ -175,45 +175,45 @@ msgstr ""
 "Genodigden met de status ‘in afwachting’ ontvangen een e-mailuitnodiging "
 "over dit evenement."
 
-#: src/Fields.php:205
+#: src/Fields.php:209
 msgid "Limit the amount of participants"
 msgstr "Beperk het aantal deelnemers"
 
-#: src/Fields.php:206
+#: src/Fields.php:210
 msgid "Leave empty for unlimited participants."
 msgstr "Laat leeg voor onbeperkte deelnemers."
 
-#: src/Fields.php:217 src/PostTypes.php:76
+#: src/Fields.php:221 src/PostTypes.php:86
 msgid "Location"
 msgstr "Locatie"
 
-#: src/Fields.php:218
+#: src/Fields.php:222
 msgid "The geographical location were the event takes place."
 msgstr "De geografische locatie waar het evenement plaatsvindt."
 
-#: src/Fields.php:222
+#: src/Fields.php:226
 msgid "Custom"
 msgstr "Aangepast"
 
-#: src/Fields.php:223
+#: src/Fields.php:227
 msgid "Preset"
 msgstr "Vooraf ingesteld"
 
-#: src/Fields.php:233
+#: src/Fields.php:237
 msgid "Custom location"
 msgstr "Aangepaste locatie"
 
-#: src/Fields.php:254
+#: src/Fields.php:258
 msgid "Preset location"
 msgstr "Vooraf ingestelde locatie"
 
-#: src/Fields.php:280
+#: src/Fields.php:284
 msgid "Only organizers and invitees of this event have access to this event."
 msgstr ""
 "Alleen organisatoren en genodigden van dit evenement hebben toegang tot "
 "dit evenement."
 
-#: src/Fields.php:421
+#: src/Fields.php:425
 msgid "The geographical location."
 msgstr "De geografische ligging."
 
@@ -249,7 +249,7 @@ msgstr "Het lijkt erop dat u geen geaccepteerde uitnodigingen heeft."
 msgid "calendar"
 msgstr "kalender"
 
-#: src/Invitees.php:37 src/SendEmail.php:29
+#: src/Invitees.php:37 src/SendEmail.php:28
 msgid "No invitees found."
 msgstr "Geen genodigden gevonden."
 
@@ -268,37 +268,33 @@ msgstr "%1$s heeft uw uitnodiging afgewezen voor: %2$s."
 msgid "You are invited for event: %s"
 msgstr "Je bent uitgenodigd voor het evenement: %s"
 
-#: src/OverlappingEvents.php:30
+#: src/OverlappingEvents.php:29
 msgid "Overlapping events"
-msgstr "Evenementen"
+msgstr "Overlappende evenementen"
 
-#: src/OverlappingEvents.php:50
+#: src/OverlappingEvents.php:60
+msgid "Hourly offset"
+msgstr "Offset uur"
+
+#: src/OverlappingEvents.php:65
+msgid "Search"
+msgstr "Zoeken"
+
+#: src/OverlappingEvents.php:90
 msgid "Invalid start date."
 msgstr "Ongeldige startdatum."
 
-#: src/OverlappingEvents.php:54
+#: src/OverlappingEvents.php:94
 msgid "Invalid end date."
 msgstr "Ongeldige einddatum."
 
-#: src/OverlappingEvents.php:58 src/SendEmail.php:100
+#: src/OverlappingEvents.php:98 src/SendEmail.php:99
 msgid "Invalid event."
 msgstr "Ongeldig evenement."
 
-#: src/OverlappingEvents.php:76
+#: src/OverlappingEvents.php:106
 msgid "No events found."
 msgstr "Geen evenementen gevonden."
-
-#: src/OverlappingEvents.php:112
-msgid "Start time"
-msgstr "Starttijd"
-
-#: src/OverlappingEvents.php:131
-msgid "End time"
-msgstr "Eindtijd"
-
-#: src/OverlappingEvents.php:150
-msgid "Search"
-msgstr "Zoeken"
 
 #: src/Posts/Event.php:61
 msgid "%1$s from %2$s until %3$s"
@@ -308,156 +304,214 @@ msgstr "%1$s van %2$s tot %3$s"
 msgid "from %1$s until %2$s"
 msgstr "van %1$s tot %2$s"
 
-#: src/PostTypes.php:36
+#: src/PostTypes.php:40
 msgid "Invitee"
 msgstr "Genodigde"
 
-#: src/PostTypes.php:61
+#: src/PostTypes.php:67
 msgid "Invitee groups"
 msgstr "Genodigden groepen"
 
-#: src/PostTypes.php:76
+#: src/PostTypes.php:85
 msgid "Locations"
 msgstr "Locaties"
 
-#: src/PostTypes.php:105
+#: src/PostTypes.php:106
+msgctxt "taxonomy general name"
+msgid "Tags"
+msgstr "Tags"
+
+#: src/PostTypes.php:107
+msgctxt "taxonomy singular name"
+msgid "Tag"
+msgstr "Tag"
+
+#: src/PostTypes.php:108
+msgid "Search Tags"
+msgstr "Zoek Tags"
+
+#: src/PostTypes.php:109
+msgid "Popular Tags"
+msgstr "Populaire tags"
+
+#: src/PostTypes.php:110
+msgid "All Tags"
+msgstr "Alle Tags"
+
+#: src/PostTypes.php:113
+msgid "Edit Tag"
+msgstr "Tag Bewerken"
+
+#: src/PostTypes.php:114
+msgid "Update Tag"
+msgstr "Update Tag"
+
+#: src/PostTypes.php:115
+msgid "Add New Tag"
+msgstr "Nieuwe tag toevoegen"
+
+#: src/PostTypes.php:116
+msgid "New Tag Name"
+msgstr "Nieuwe tagnaam"
+
+#: src/PostTypes.php:117
+msgid "Separate tags with commas"
+msgstr "Meerdere tags scheiden met komma&#39;s"
+
+#: src/PostTypes.php:118
+msgid "Add or remove tags"
+msgstr "Toevoegen of verwijderen van tags"
+
+#: src/PostTypes.php:119
+msgid "Choose from the most used tags"
+msgstr "Kies tussen de meest gebruikte tags"
+
+#: src/PostTypes.php:120
+msgid "No tags found."
+msgstr "Geen tags gevonden."
+
+#: src/PostTypes.php:121
+msgid "Tags"
+msgstr "Tags"
+
+#: src/PostTypes.php:146
 msgid "Add New"
 msgstr "Nieuwe Toevoegen"
 
-#: src/PostTypes.php:106
+#: src/PostTypes.php:147
 msgctxt "%s: post type name"
 msgid "Add New %s"
 msgstr "Toevoegen nieuwe %s"
 
-#: src/PostTypes.php:107
+#: src/PostTypes.php:148
 msgctxt "%s: post type name"
 msgid "New %s"
 msgstr "Nieuw %s"
 
-#: src/PostTypes.php:108
+#: src/PostTypes.php:149
 msgctxt "%s: post type name"
 msgid "Edit %s"
 msgstr "Bewerk %s"
 
-#: src/PostTypes.php:109
+#: src/PostTypes.php:150
 msgctxt "%s: post type name"
 msgid "View %s"
 msgstr "Bekijk %s"
 
-#: src/PostTypes.php:111
+#: src/PostTypes.php:152
 msgctxt "%s: post type name"
 msgid "Search %s"
 msgstr "Zoek %s"
 
-#: src/PostTypes.php:112
+#: src/PostTypes.php:153
 msgctxt "%s: post type name"
 msgid "Parent %s:"
 msgstr "Ouder %s:"
 
-#: src/PostTypes.php:113
+#: src/PostTypes.php:154
 msgctxt "%s: post type name"
 msgid "No %s found."
 msgstr "Geen %s gevonden."
 
-#: src/PostTypes.php:114
+#: src/PostTypes.php:155
 msgctxt "%s: post type name"
 msgid "No %s found in Trash."
 msgstr "Geen %s gevonden in prullenbak."
 
-#: src/PostTypes.php:115
+#: src/PostTypes.php:156
 msgctxt "%s: post type name"
 msgid "%s Cover Image"
 msgstr "%s Omslagafbeelding"
 
-#: src/PostTypes.php:116
+#: src/PostTypes.php:157
 msgid "Set cover image"
 msgstr "Omslagafbeelding instellen"
 
-#: src/PostTypes.php:117
+#: src/PostTypes.php:158
 msgid "Remove cover image"
 msgstr "Omslagafbeelding verwijderen"
 
-#: src/PostTypes.php:118
+#: src/PostTypes.php:159
 msgid "Use as cover image"
 msgstr "Gebruik als omslagafbeelding"
 
-#: src/PostTypes.php:119
+#: src/PostTypes.php:160
 msgctxt "%s: post type name"
 msgid "%s archives"
 msgstr "%s archieven"
 
-#: src/PostTypes.php:120
+#: src/PostTypes.php:161
 msgctxt "%s: post type name"
 msgid "Insert into %s"
 msgstr "Invoegen in %s"
 
-#: src/PostTypes.php:121
+#: src/PostTypes.php:162
 msgctxt "%s: post type name"
 msgid "Uploaded to this %s"
 msgstr "Geüpload naar dit %s"
 
-#: src/PostTypes.php:122
+#: src/PostTypes.php:163
 msgctxt "%s: post type name"
 msgid "Filter %s list"
 msgstr "Filter %s lijst"
 
-#: src/PostTypes.php:123
+#: src/PostTypes.php:164
 msgctxt "%s: post type name"
 msgid "%s list navigation"
 msgstr "Lijst navigatie %s"
 
-#: src/PostTypes.php:124
+#: src/PostTypes.php:165
 msgctxt "%s: post type name"
 msgid "%s list"
 msgstr "%s lijst"
 
-#: src/SendEmail.php:19
+#: src/SendEmail.php:18
 msgid "Send email"
 msgstr "E-mail versturen"
 
-#: src/SendEmail.php:45
+#: src/SendEmail.php:44
 msgid "Notify the invitees about any changes of this event."
 msgstr ""
 "Breng de genodigden op de hoogte van eventuele wijzigingen van dit "
 "evenement."
 
-#: src/SendEmail.php:47
+#: src/SendEmail.php:46
 msgid "Recipients"
 msgstr "Ontvangers"
 
-#: src/SendEmail.php:64
+#: src/SendEmail.php:63
 msgid "Check all"
 msgstr "Alles aanvinken"
 
-#: src/SendEmail.php:65
+#: src/SendEmail.php:64
 msgid "Uncheck all"
 msgstr "Alles uitvinken"
 
-#: src/SendEmail.php:69
+#: src/SendEmail.php:68
 msgid "Message"
 msgstr "Bericht"
 
-#: src/SendEmail.php:74
+#: src/SendEmail.php:73
 msgid "Send"
 msgstr "Verstuur"
 
-#: src/SendEmail.php:79
+#: src/SendEmail.php:78
 msgid "Be sure to save the event before sending."
 msgstr "Zorg ervoor dat u het evenement opslaat voordat u verzendt."
 
-#: src/SendEmail.php:104
+#: src/SendEmail.php:103
 msgid "Message is required."
 msgstr "Bericht is verplicht."
 
-#: src/SendEmail.php:115
+#: src/SendEmail.php:114
 msgid "At least one recipient is required."
 msgstr "Er is minimaal één ontvanger vereist."
 
-#: src/SendEmail.php:119
+#: src/SendEmail.php:118
 msgid "Announcement for event \"%s\"."
 msgstr "Aankondiging voor evenement “%s”."
 
-#: src/SendEmail.php:129
+#: src/SendEmail.php:128
 msgid "Email send."
 msgstr "E-mail verzonden."
 

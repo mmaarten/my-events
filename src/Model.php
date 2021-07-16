@@ -51,7 +51,6 @@ class Model
             if ($invitees) {
                 $invitees = self::getInviteesByStatus($status, ['include' => $invitees, 'fields' => 'ids']);
             }
-
         } else {
             $invitees = self::getInviteesByUser($user_id, ['fields' => 'ids']);
         }
@@ -203,6 +202,38 @@ class Model
             'meta_key'  => 'start',
             'meta_type' => 'DATETIME',
             'order'     => 'DESC',
+        ] + $args);
+    }
+
+    /**
+     * Get related events
+     *
+     * @param int    $event_id
+     * @param array  $args
+     * @return array
+     */
+    public static function getRelatedEvents($event_id, $offset = 0, $args = [])
+    {
+        $tags = wp_get_object_terms($event_id, 'event_tag', ['fields' => 'ids']);
+
+        if (! $tags) {
+            return [];
+        }
+
+        return self::getEvents([
+            'exclude'   => [$event_id],
+            'orderby'   => 'meta_value',
+            'meta_key'  => 'start',
+            'meta_type' => 'DATETIME',
+            'order'     => 'DESC',
+            'tax_query' => [
+                [
+                    'taxonomy' => 'event_tag',
+                    'field'    => 'term_id',
+                    'terms'    => $tags,
+                    'operator' => 'IN',
+                ],
+            ],
         ] + $args);
     }
 

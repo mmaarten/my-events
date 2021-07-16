@@ -26,5 +26,18 @@ class AdminMenu
             'dashicons-admin-post',
             40
         );
+
+        add_submenu_page(
+            'my-events',
+            __('Tags', 'my-events'),
+            __('Tags', 'my-events'),
+            'edit_posts',
+            'edit-tags.php?taxonomy=event_tag',
+            '',
+            'dashicons-admin-post',
+            0
+        );
+
+
     }
 }

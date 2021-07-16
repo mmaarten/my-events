@@ -6,4 +6,4 @@ namespace My\Events;
 
 <?php echo $args['message']; ?>
 
-<?php Helpers::loadTemplate('emails/event-meta', $args); ?>
+<?php Helpers::loadTemplate('emails/event-meta', $args);
