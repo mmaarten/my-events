@@ -186,7 +186,11 @@ class Model
         $end   = $event->getEndTime('Y-m-d H:i:s');
 
         return self::getEventsBetween($start, $end, [
-            'exclude' => [$event->ID],
+            'exclude'   => [$event->ID],
+            'orderby'   => 'meta_value',
+            'meta_key'  => 'start',
+            'meta_type' => 'DATETIME',
+            'order'     => 'DESC',
         ] + $args);
     }
 
