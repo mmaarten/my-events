@@ -98,7 +98,7 @@ class Events
             }
 
             if ($invitee_type == 'group') {
-                $group_id = $event->getField('event_invitee_group', false);
+                $group_id = $event->getField('invitee_group', false);
                 if ($group_id && get_post_type($group_id)) {
                     $group = new Post($group_id);
                     $invitees = $group->getField('users', false);
@@ -139,6 +139,8 @@ class Events
                 $group->updateField('_prev_users', $curr_users);
 
                 if ($prev_users !== $curr_users) {
+                    do_action('my_events/invitee_group_change', $group, $curr_users, $prev_users);
+
                     $events = self::getEventsByInviteeGroup($group->ID);
                     foreach ($events as $event) {
                         $event = new Event($event);

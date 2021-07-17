@@ -215,7 +215,7 @@ class Model
                     'value'   => 'group',
                 ],
                 [
-                    'key'     => 'event_invitee_group',
+                    'key'     => 'invitee_group',
                     'compare' => '=',
                     'value'   => $post_id,
                 ],

@@ -48,18 +48,30 @@ class OverlappingEvents
             'data-nonce'     => wp_create_nonce('search_overlapping_events'),
         ];
 
+        $start = $event->getStartTime('Y-m-d H:i');
+
+        if (! $start) {
+            $start = date_i18n('Y-m-d H:i');
+        }
+
+        $end = $event->getEndTime('Y-m-d H:i');
+
+        if (! $end) {
+            $end = date_i18n('Y-m-d H:i');
+        }
+
         ?>
 
         <div <?php echo acf_esc_attr($atts); ?>>
 
             <p>
                 <label for="my-events-overlapping-start"><?php esc_html_e('Start', 'my-events'); ?></label><br>
-                <input type="text" id="my-events-overlapping-start" class="large-text" value="<?php echo esc_attr($event->getStartTime('Y-m-d H:i')); ?>">
+                <input type="text" id="my-events-overlapping-start" class="large-text" value="<?php echo esc_attr($start); ?>">
             </p>
 
             <p>
                 <label for="my-events-overlapping-end"><?php esc_html_e('End', 'my-events'); ?></label><br>
-                <input type="text" id="my-events-overlapping-end" class="large-text" value="<?php echo esc_attr($event->getEndTime('Y-m-d H:i')); ?>">
+                <input type="text" id="my-events-overlapping-end" class="large-text" value="<?php echo esc_attr($end); ?>">
             </p>
 
             <p>

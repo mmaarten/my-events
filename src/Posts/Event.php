@@ -28,7 +28,13 @@ class Event extends Post
             $format = get_option('date_format') . ' ' . get_option('time_format');
         }
 
-        return date_i18n($format, strtotime($this->getField('start')));
+        $time = $this->getField('start');
+
+        if (! $time) {
+            return false;
+        }
+
+        return date_i18n($format, strtotime($time));
     }
 
     /**
@@ -43,7 +49,13 @@ class Event extends Post
             $format = get_option('date_format') . ' ' . get_option('time_format');
         }
 
-        return date_i18n($format, strtotime($this->getField('end')));
+        $time = $this->getField('end');
+
+        if (! $time) {
+            return false;
+        }
+
+        return date_i18n($format, strtotime($time));
     }
 
     /**
@@ -55,6 +67,10 @@ class Event extends Post
     {
         $start_date = $this->getStartTime(get_option('date_format'));
         $end_date   = $this->getEndTime(get_option('date_format'));
+
+        if (! $start_date || ! $end_date) {
+            return false;
+        }
 
         if ($start_date == $end_date) {
             return sprintf(
