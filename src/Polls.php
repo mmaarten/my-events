@@ -15,7 +15,25 @@ class Polls
         add_action('init', [__CLASS__, 'registerPostTypes']);
         add_action('admin_menu', [__CLASS__, 'addMenuPage']);
         add_action('acf/init', [__CLASS__, 'addFields']);
-        add_action('template_redirect', [__CLASS__, 'process']);
+        add_action('template_redirect', [__CLASS__, 'processForm']);
+        add_action('wp_trash_post', [__CLASS__, 'trashPost']);
+        add_action('before_delete_post', [__CLASS__, 'deletePost']);
+
+        add_action('my_events/invitee_group_change', function ($group, $curr_users, $prev_users) {
+            $polls = get_posts([
+                'post_type'    => 'poll',
+                'post_status'  => 'any',
+                'numberposts'  => 999,
+                'meta_key'     => 'invitee_group',
+                'meta_compare' => '=',
+                'meta_value'   => $group->ID,
+            ]);
+
+            foreach ($polls as $poll) {
+                $poll = new Poll($poll);
+                $poll->setInvitees($curr_users);
+            }
+        }, 10, 3);
 
         add_filter('the_content', function ($return) {
             if (is_singular('poll')) {
@@ -25,6 +43,48 @@ class Polls
             }
             return $return;
         });
+    }
+
+    /**
+     * Trash post
+     *
+     * @param int $post_id
+     */
+    public static function trashPost($post_id)
+    {
+        switch (get_post_type($post_id)) {
+            case 'event_invitee_group':
+                // Switch polls invitee type setting.
+                $polls = get_posts([
+                    'post_type'    => 'poll',
+                    'post_status'  => 'any',
+                    'numberposts'  => 999,
+                    'meta_key'     => 'invitee_group',
+                    'meta_compare' => '=',
+                    'meta_value'   => $group->ID,
+                ]);
+                foreach ($polls as $poll) {
+                    $poll = new Poll($poll);
+                    $event->updateField('invitee_type', 'individual');
+                }
+                break;
+        }
+    }
+
+    /**
+     * Delete post
+     *
+     * @param int $post_id
+     */
+    public static function deletePost($post_id)
+    {
+        switch (get_post_type($post_id)) {
+            case 'poll':
+                // Remove all event related invitees.
+                $poll = new Poll($post_id);
+                $poll->setInvitees([]);
+                break;
+        }
     }
 
     public static function form($post = null)
@@ -56,7 +116,7 @@ class Polls
                 <?php
 
                 foreach ($times as $index => $time) {
-                    $users = $poll->getTimeUsers($index);
+                    $users = $poll->getTimeUsers($time['start'], $time['end']);
                     $users = wp_list_pluck($users, 'display_name', 'ID');
 
                     printf(
@@ -81,7 +141,7 @@ class Polls
         <?php
     }
 
-    public static function process()
+    public static function processForm()
     {
         if (empty($_POST[MY_EVENTS_NONCE_NAME])) {
             return;
@@ -97,7 +157,7 @@ class Polls
 
         $poll_id = $_POST['_poll'];
         $user_id = $_POST['_user'];
-        $selected_times   = isset($_POST['times']) && is_array($_POST['times']) ? $_POST['times'] : [];
+        $selected_times = isset($_POST['times']) && is_array($_POST['times']) ? $_POST['times'] : [];
 
         if (! $user_id || $user_id != get_current_user_id()) {
             return;
@@ -112,9 +172,9 @@ class Polls
 
         foreach ($times as $index => $time) {
             if (in_array($index, $selected_times)) {
-                $poll->addTimeUser($user_id, $index);
+                $poll->addTimeUser($user_id, $time['start'], $time['end']);
             } else {
-                $poll->removeTimeUser($user_id, $index);
+                $poll->removeTimeUser($user_id, $time['start'], $time['end']);
             }
         }
     }
@@ -304,31 +364,6 @@ class Polls
             'menu_position'      => null,
             'supports'           => ['title', 'thumbnail', 'comments'],
             'taxonomies'         => ['event_tag'],
-        ]);
-
-        register_post_type('poll_time', [
-            'labels'             => PostTypes::getLabels(__('Times', 'my-events'), __('Time', 'my-events')),
-            'public'             => false,
-            'publicly_queryable' => false,
-            'show_ui'            => true,
-            'show_in_menu'       => current_user_can('administrator') ? 'my-events-polls' : false,
-            'query_var'          => false,
-            'rewrite'            => false,
-            'capability_type'    => 'post',
-            'has_archive'        => false,
-            'hierarchical'       => false,
-            'menu_position'      => null,
-            'supports'           => ['title'],
-            'capabilities'       => [
-                'edit_post'          => 'update_core',
-                'read_post'          => 'update_core',
-                'delete_post'        => 'update_core',
-                'edit_posts'         => 'update_core',
-                'edit_others_posts'  => 'update_core',
-                'delete_posts'       => 'update_core',
-                'publish_posts'      => 'update_core',
-                'read_private_posts' => 'update_core'
-            ],
         ]);
 
         register_post_type('poll_invitee', [

@@ -267,57 +267,68 @@ class Poll extends Post
         return date_i18n($format, strtotime($time['end']));
     }
 
-    public function getTimeUsers($index, $args = [])
+    public function getTimeKey($start, $end)
     {
+        return sprintf('%1$s|%2$s', $start, $end);
+    }
+
+    public function getTimeUsers($start, $end, $args = [])
+    {
+        $key = $this->getTimeKey($start, $end);
+
         $data = get_post_meta($this->ID, 'users', true);
 
         if (! is_array($data)) {
             $data = [];
         }
 
-        if (empty($data[$index]) || ! is_array($data[$index])) {
+        if (empty($data[$key]) || ! is_array($data[$key])) {
             return [];
         }
 
-        return get_users(['include' => $data[$index]] + $args);
+        return get_users(['include' => $data[$key]] + $args);
     }
 
-    public function addTimeUser($user_id, $index)
+    public function addTimeUser($user_id, $start, $end)
     {
+        $key = $this->getTimeKey($start, $end);
+
         $data = get_post_meta($this->ID, 'users', true);
 
         if (! is_array($data)) {
             $data = [];
         }
 
-        if (! isset($data[$index]) || ! is_array($data[$index])) {
-            $data[$index] = [];
+        if (! isset($data[$key]) || ! is_array($data[$key])) {
+            $data[$key] = [];
         }
 
-        if (in_array($user_id, $data[$index])) {
+        if (in_array($user_id, $data[$key])) {
             return true;
         }
 
-        $data[$index][] = $user_id;
+        $data[$key][] = $user_id;
 
         update_post_meta($this->ID, 'users', $data);
     }
 
-    public function removeTimeUser($user_id, $index)
+    public function removeTimeUser($user_id, $start, $end)
     {
+        $key = $this->getTimeKey($start, $end);
+
         $data = get_post_meta($this->ID, 'users', true);
 
         if (! is_array($data)) {
             $data = [];
         }
 
-        if (! isset($data[$index]) || ! is_array($data[$index])) {
+        if (! isset($data[$key]) || ! is_array($data[$key])) {
             return false;
         }
 
-        $offset = array_search($user_id, $data[$index]);
+        $offset = array_search($user_id, $data[$key]);
 
-        array_splice($data[$index], $offset, 1);
+        array_splice($data[$key], $offset, 1);
 
         return update_post_meta($this->ID, 'users', $data);
     }
