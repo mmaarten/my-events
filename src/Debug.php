@@ -16,7 +16,7 @@ class Debug
      */
     public static function init()
     {
-        self::$post_types = ['event', 'invitee', 'invitee_group', 'event_location'];
+        self::$post_types = ['event', 'event_invitee', 'event_invitee_group', 'event_location'];
 
         if (! self::isActive()) {
             return;

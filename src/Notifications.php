@@ -98,7 +98,7 @@ class Notifications
         );
 
         $message = Helpers::loadTemplate('emails/invitee-accepted', [
-            'invitee' => $invitee,
+            'event_invitee' => $invitee,
             'user'    => $user,
             'event'   => $event,
         ], true);
@@ -136,7 +136,7 @@ class Notifications
         );
 
         $message = Helpers::loadTemplate('emails/invitee-accepted', [
-            'invitee' => $invitee,
+            'event_invitee' => $invitee,
             'user'    => $user,
             'event'   => $event,
         ], true);
@@ -170,7 +170,7 @@ class Notifications
         );
 
         $message = Helpers::loadTemplate('emails/invitation', [
-            'invitee' => $invitee,
+            'event_invitee' => $invitee,
             'user'    => $user,
             'event'   => $event,
         ], true);

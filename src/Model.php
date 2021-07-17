@@ -215,7 +215,7 @@ class Model
                     'value'   => 'group',
                 ],
                 [
-                    'key'     => 'invitee_group',
+                    'key'     => 'event_invitee_group',
                     'compare' => '=',
                     'value'   => $post_id,
                 ],
@@ -253,7 +253,7 @@ class Model
     public static function getInvitees($args = [])
     {
         return self::getPosts($args + [
-            'post_type' => 'invitee',
+            'post_type' => 'event_invitee',
         ]);
     }
 

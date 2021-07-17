@@ -98,7 +98,7 @@ class Events
             }
 
             if ($invitee_type == 'group') {
-                $group_id = $event->getField('invitee_group', false);
+                $group_id = $event->getField('event_invitee_group', false);
                 if ($group_id && get_post_type($group_id)) {
                     $group = new Post($group_id);
                     $invitees = $group->getField('users', false);
@@ -127,7 +127,7 @@ class Events
             case 'event':
                 self::applySettingsToEvent($post_id);
                 break;
-            case 'invitee_group':
+            case 'event_invitee_group':
                 $group = new Post($post_id);
                 $prev_users = $group->getField('_prev_users');
                 $curr_users = $group->getField('users', false);
@@ -159,7 +159,7 @@ class Events
     public static function trashPost($post_id)
     {
         switch (get_post_type($post_id)) {
-            case 'invitee_group':
+            case 'event_invitee_group':
                 // Switch events invitee type setting.
                 $events = Model::getEventsByInviteeGroup($post_id, ['post_status' => 'any']);
                 foreach ($events as $event) {

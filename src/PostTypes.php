@@ -33,7 +33,7 @@ class PostTypes
             'taxonomies'         => ['event_tag'],
         ]);
 
-        register_post_type('invitee', [
+        register_post_type('event_invitee', [
             'labels'             => self::getLabels(__('Invitees', 'my-events'), __('Invitee', 'my-events')),
             'public'             => false,
             'publicly_queryable' => false,
@@ -58,7 +58,7 @@ class PostTypes
             ],
         ]);
 
-        register_post_type('invitee_group', [
+        register_post_type('event_invitee_group', [
             'labels'             => self::getLabels(__('Invitee groups', 'my-events'), __('Invitee group', 'my-events')),
             'public'             => false,
             'publicly_queryable' => false,
