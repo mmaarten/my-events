@@ -18,11 +18,11 @@ class AdminColumns
         add_filter('manage_event_posts_columns', [__CLASS__, 'eventColumns']);
         add_action('manage_event_posts_custom_column', [__CLASS__, 'eventColumnContent'], 10, 2);
 
-        add_filter('manage_event_invitee_posts_columns', [__CLASS__, 'inviteeColumns']);
-        add_action('manage_event_invitee_posts_custom_column', [__CLASS__, 'inviteeColumnContent'], 10, 2);
+        add_filter('manage_invitee_posts_columns', [__CLASS__, 'inviteeColumns']);
+        add_action('manage_invitee_posts_custom_column', [__CLASS__, 'inviteeColumnContent'], 10, 2);
 
-        add_filter('manage_event_invitee_group_posts_columns', [__CLASS__, 'inviteeGroupColumns']);
-        add_action('manage_event_invitee_group_posts_custom_column', [__CLASS__, 'inviteeGroupColumnContent'], 10, 2);
+        add_filter('manage_invitee_group_posts_columns', [__CLASS__, 'inviteeGroupColumns']);
+        add_action('manage_invitee_group_posts_custom_column', [__CLASS__, 'inviteeGroupColumnContent'], 10, 2);
 
         add_filter('manage_event_location_posts_columns', [__CLASS__, 'locationColumns']);
         add_action('manage_event_location_posts_custom_column', [__CLASS__, 'locationColumnContent'], 10, 2);

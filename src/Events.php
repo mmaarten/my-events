@@ -127,7 +127,7 @@ class Events
             case 'event':
                 self::applySettingsToEvent($post_id);
                 break;
-            case 'event_invitee_group':
+            case 'invitee_group':
                 $group = new Post($post_id);
                 $prev_users = $group->getField('_prev_users');
                 $curr_users = $group->getField('users', false);
@@ -161,7 +161,7 @@ class Events
     public static function trashPost($post_id)
     {
         switch (get_post_type($post_id)) {
-            case 'event_invitee_group':
+            case 'invitee_group':
                 // Switch events invitee type setting.
                 $events = Model::getEventsByInviteeGroup($post_id, ['post_status' => 'any']);
                 foreach ($events as $event) {

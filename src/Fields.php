@@ -131,7 +131,7 @@ class Fields
 
         // Invitee type
         acf_add_local_field([
-            'key'           => 'my_events_event_invitee_type_field',
+            'key'           => 'my_events_invitee_type_field',
             'label'         => __('Invitees', 'my-events'),
             'instructions'  => __('Select the people you would like to invite.', 'my-events'),
             'name'          => 'invitee_type',
@@ -159,7 +159,7 @@ class Fields
             'conditional_logic' => [
                 [
                     [
-                        'field'    => 'my_events_event_invitee_type_field',
+                        'field'    => 'my_events_invitee_type_field',
                         'operator' => '==',
                         'value'    => 'individual',
                     ],
@@ -169,7 +169,7 @@ class Fields
 
         // Invitee group
         acf_add_local_field([
-            'key'               => 'my_events_event_invitee_group_field',
+            'key'               => 'my_events_invitee_group_field',
             'label'             => __('Invitee group', 'my-events'),
             'instructions'      => __('', 'my-events'),
             'name'              => 'invitee_group',
@@ -182,7 +182,7 @@ class Fields
             'conditional_logic' => [
                 [
                     [
-                        'field'    => 'my_events_event_invitee_type_field',
+                        'field'    => 'my_events_invitee_type_field',
                         'operator' => '==',
                         'value'    => 'group',
                     ],
@@ -192,7 +192,7 @@ class Fields
 
         // Default invitee status
         acf_add_local_field([
-            'key'           => 'my_events_event_invitee_default_status_field',
+            'key'           => 'my_events_invitee_default_status_field',
             'label'         => __('Default status', 'my-events'),
             'instructions'  => __('Invitees with a "pending" status receive an invitation email about this event.', 'my-events'),
             'name'          => 'invitee_default_status',
@@ -304,7 +304,7 @@ class Fields
                     [
                         'param'    => 'post_type',
                         'operator' => '==',
-                        'value'    => 'event_invitee',
+                        'value'    => 'invitee',
                     ],
                 ],
             ],
@@ -378,7 +378,7 @@ class Fields
                     [
                         'param'    => 'post_type',
                         'operator' => '==',
-                        'value'    => 'event_invitee_group',
+                        'value'    => 'invitee_group',
                     ],
                 ],
             ],

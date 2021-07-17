@@ -276,7 +276,7 @@ class Event extends Post
         $post_id = wp_insert_post([
             'post_title'   => '',
             'post_content' => '',
-            'post_type'    => 'event_invitee',
+            'post_type'    => 'invitee',
             'post_status'  => 'publish',
         ]);
 

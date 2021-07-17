@@ -150,7 +150,7 @@ class Subscriptions
             return;
         }
 
-        $invitee_id = isset($_POST['event_invitee']) ? $_POST['event_invitee'] : 0;
+        $invitee_id = isset($_POST['invitee']) ? $_POST['invitee'] : 0;
         $action     = isset($_POST['action']) ? $_POST['action'] : '';
 
         // Validation
@@ -161,7 +161,7 @@ class Subscriptions
 
         $user_id = get_current_user_id();
 
-        if (! $invitee_id || get_post_type($invitee_id) != 'event_invitee') {
+        if (! $invitee_id || get_post_type($invitee_id) != 'invitee') {
             return;
         }
 

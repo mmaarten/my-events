@@ -44,20 +44,3 @@
     }
   }
 }
-
-#acf-my_events_poll_group {
-
-  .acf-field[data-name="individual_invitees"],
-  .acf-field[data-name="invitee_group"],
-  .acf-field[data-name="invitee_default_status"] {
-    border-top: none;
-    padding-top: 0;
-  }
-
-  .acf-field[data-name="individual_invitees"],
-  .acf-field[data-name="invitee_group"] {
-    .acf-label {
-      display: none;
-    }
-  }
-}

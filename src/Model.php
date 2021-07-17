@@ -253,7 +253,7 @@ class Model
     public static function getInvitees($args = [])
     {
         return self::getPosts($args + [
-            'post_type' => 'event_invitee',
+            'post_type' => 'invitee',
         ]);
     }
 
