@@ -73,12 +73,20 @@ class Event extends Post
         }
 
         if ($start_date == $end_date) {
+            if ($this->isAllDay()) {
+                return $start_date;
+            }
+
             return sprintf(
                 __('%1$s from %2$s until %3$s', 'my-events'),
                 $start_date,
                 $this->getStartTime(get_option('time_format')),
                 $this->getEndTime(get_option('time_format'))
             );
+        }
+
+        if ($this->isAllDay()) {
+            return sprintf(__('from %1$s until %2$s', 'my-events'), $start_date, $end_date);
         }
 
         return sprintf(__('from %1$s until %2$s', 'my-events'), $this->getStartTime(), $this->getEndTime());
