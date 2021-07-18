@@ -109,13 +109,23 @@ class Event extends Post
     }
 
     /**
+     * Are subscriptions enabled
+     *
+     * @return bool
+     */
+    public function areSubscriptionsEnabled()
+    {
+        return $this->getField('enable_subscriptions') ? true : false;
+    }
+
+    /**
      * Get invitee default status
      *
      * @return string
      */
     public function getInviteeDefaultStatus()
     {
-        return $this->getField('invitee_default_status');
+        return $this->getField('default_invitee_status');
     }
 
     /**

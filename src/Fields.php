@@ -105,6 +105,17 @@ class Fields
             'parent'        => 'my_events_event_group',
         ]);
 
+        // Enable subscriptions
+        acf_add_local_field([
+            'key'           => 'my_events_event_enable_subscriptions_field',
+            'label'         => __('Enable subscriptions', 'my-events'),
+            'name'          => 'enable_subscriptions',
+            'type'          => 'true_false',
+            'default_value' => false,
+            'required'      => false,
+            'parent'        => 'my_events_event_group',
+        ]);
+
         // Organizers
         acf_add_local_field([
             'key'           => 'my_events_event_organizers_field',
@@ -116,6 +127,15 @@ class Fields
             'return_format' => 'id',
             'required'      => false,
             'parent'        => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_enable_subscriptions_field',
+                        'operator' => '!=',
+                        'value'    => false,
+                    ],
+                ],
+            ],
         ]);
 
         // Organizers can edit
@@ -127,6 +147,15 @@ class Fields
             'type'          => 'true_false',
             'default_value' => false,
             'parent'        => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_enable_subscriptions_field',
+                        'operator' => '!=',
+                        'value'    => false,
+                    ],
+                ],
+            ],
         ]);
 
         // Invitee type
@@ -143,6 +172,15 @@ class Fields
             'default_value' => 'individual',
             'required'      => false,
             'parent'        => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_enable_subscriptions_field',
+                        'operator' => '!=',
+                        'value'    => false,
+                    ],
+                ],
+            ],
         ]);
 
         // Individual invitees
@@ -192,15 +230,24 @@ class Fields
 
         // Default invitee status
         acf_add_local_field([
-            'key'           => 'my_events_invitee_default_status_field',
+            'key'           => 'my_events_default_invitee_status_field',
             'label'         => __('Default status', 'my-events'),
             'instructions'  => __('Invitees with a "pending" status receive an invitation email about this event.', 'my-events'),
-            'name'          => 'invitee_default_status',
+            'name'          => 'default_invitee_status',
             'type'          => 'select',
             'choices'       => Helpers::getInviteeStatuses(),
             'default_value' => 'pending',
             'required'      => false,
             'parent'        => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_enable_subscriptions_field',
+                        'operator' => '!=',
+                        'value'    => false,
+                    ],
+                ],
+            ],
         ]);
 
         // Max participants
@@ -213,6 +260,15 @@ class Fields
             'min'          => 2,
             'required'     => false,
             'parent'       => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_enable_subscriptions_field',
+                        'operator' => '!=',
+                        'value'    => false,
+                    ],
+                ],
+            ],
         ]);
 
         // Location type
@@ -229,6 +285,15 @@ class Fields
             'default_value' => 'custom',
             'required'      => false,
             'parent'        => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_enable_subscriptions_field',
+                        'operator' => '!=',
+                        'value'    => false,
+                    ],
+                ],
+            ],
         ]);
 
         // Custom location
@@ -287,6 +352,15 @@ class Fields
             'default_value' => false,
             'required'      => false,
             'parent'        => 'my_events_event_group',
+            'conditional_logic' => [
+                [
+                    [
+                        'field'    => 'my_events_event_enable_subscriptions_field',
+                        'operator' => '!=',
+                        'value'    => false,
+                    ],
+                ],
+            ],
         ]);
     }
 

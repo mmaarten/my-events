@@ -88,27 +88,43 @@ class Events
             $event->updateField('end', "$end_date 23:59:59");
         }
 
-        if (! $event->isOver()) {
-            $invitees = [];
+        if ($event->areSubscriptionsEnabled()) {
+            if (! $event->isOver()) {
+                $invitees = [];
 
-            $invitee_type = $event->getField('invitee_type');
+                $invitee_type = $event->getField('invitee_type');
 
-            if ($invitee_type == 'individual') {
-                $invitees = $event->getField('individual_invitees', false);
-            }
-
-            if ($invitee_type == 'group') {
-                $group_id = $event->getField('invitee_group', false);
-                if ($group_id && get_post_type($group_id)) {
-                    $group = new Post($group_id);
-                    $invitees = $group->getField('users', false);
+                if ($invitee_type == 'individual') {
+                    $invitees = $event->getField('individual_invitees', false);
                 }
+
+                if ($invitee_type == 'group') {
+                    $group_id = $event->getField('invitee_group', false);
+                    if ($group_id && get_post_type($group_id)) {
+                        $group = new Post($group_id);
+                        $invitees = $group->getField('users', false);
+                    }
+                }
+
+                $event->setInvitees($invitees);
+                $event->deleteField('individual_invitees');
             }
-
-            $event->setInvitees($invitees);
+        } else {
+            // Delete all subscription related settings.
+            $event->deleteField('organizers');
+            $event->deleteField('organizers_can_edit');
+            $event->deleteField('invitee_type');
+            $event->deleteField('individual_invitees');
+            $event->deleteField('invitee_group');
+            $event->deleteField('default_invitee_status');
+            $event->deleteField('max_participants');
+            $event->deleteField('location_type');
+            $event->deleteField('custom_location');
+            $event->deleteField('location_id');
+            $event->deleteField('private');
+            // Remove all invitees.
+            $event->setInvitees([]);
         }
-
-        $event->deleteField('individual_invitees');
 
         wp_update_post([
             'ID'           => $event->ID,

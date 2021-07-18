@@ -45,6 +45,11 @@ class Subscriptions
             return;
         }
 
+        if (! $event->areSubscriptionsEnabled()) {
+            Helpers::alert(__('Subscriptions are disabled.', 'my-events'), 'danger');
+            return;
+        }
+
         if ($event->isPrivate() && ! $event->isMember($user_id)) {
             Helpers::alert(__('This event is private. You are not allowed to subscribe.', 'my-events'), 'danger');
             return;
@@ -180,6 +185,10 @@ class Subscriptions
         $event = new Event($event_id);
 
         if ($event->isOver()) {
+            return;
+        }
+
+        if (! $event->areSubscriptionsEnabled()) {
             return;
         }
 

@@ -16,7 +16,7 @@
   .acf-field[data-name="organizers_can_edit"],
   .acf-field[data-name="individual_invitees"],
   .acf-field[data-name="invitee_group"],
-  .acf-field[data-name="invitee_default_status"],
+  .acf-field[data-name="default_invitee_status"],
   .acf-field[data-name="custom_location"],
   .acf-field[data-name="location_id"] {
     border-top: none;
@@ -26,7 +26,7 @@
   .acf-field[data-name="start"],
   .acf-field[data-name="end"],
   .acf-field[data-name="organizers_can_edit"],
-  .acf-field[data-name="invitee_default_status"] {
+  .acf-field[data-name="default_invitee_status"] {
     .acf-label {
       label {
         font-weight: normal;
