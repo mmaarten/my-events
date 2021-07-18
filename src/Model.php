@@ -75,6 +75,19 @@ class Model
         ] + $args);
     }
 
+    public static function getOrganizerEvents($user_id, $args = [])
+    {
+        return self::getEvents([
+            'meta_query' => [
+                [
+                    'key'     => 'organizers',
+                    'compare' => 'LIKE',
+                    'value'   => $user_id,
+                ],
+            ],
+        ] + $args);
+    }
+
     /**
      * Order events by start time
      *
