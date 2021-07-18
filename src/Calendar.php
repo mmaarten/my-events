@@ -36,6 +36,104 @@ class Calendar
         );
     }
 
+    public static function getSubscriptionsDisabledEvents($start, $end, $args = [])
+    {
+        return Model::getEvents([
+            'meta_query' => [
+                'relation' => 'AND',
+                [
+                    'relation' => 'OR',
+                    [
+                        'relation' => 'AND',
+                        [
+                            'key'     => 'start',
+                            'compare' => '>=',
+                            'value'   => $start,
+                            'type'    => 'DATETIME',
+                        ],
+                        [
+                            'key'     => 'start',
+                            'compare' => '<=',
+                            'value'   => $end,
+                            'type'    => 'DATETIME',
+                        ],
+                    ],
+                    [
+                        'relation' => 'AND',
+                        [
+                            'key'     => 'end',
+                            'compare' => '>=',
+                            'value'   => $start,
+                            'type'    => 'DATETIME',
+                        ],
+                        [
+                            'key'     => 'end',
+                            'compare' => '<=',
+                            'value'   => $end,
+                            'type'    => 'DATETIME',
+                        ],
+                    ],
+                ],
+                [
+                    'relation' => 'OR',
+                    [
+                        'key'     => 'subscriptions_enabled',
+                        'compare' => '=',
+                        'value'   => false,
+                    ],
+                    [
+                        'key'     => 'subscriptions_enabled',
+                        'compare' => '!=',
+                        'value'   => true,
+                    ],
+                    [
+                        'key'     => 'subscriptions_enabled',
+                        'compare' => 'NOT EXISTS',
+                    ],
+                ],
+            ],
+        ] + $args);
+    }
+
+    public static function getUserEvents($user_id, $start, $end, $status = null)
+    {
+        return Model::getUserEvents($user_id, $status, [
+            'meta_query' => [
+                'relation' => 'OR',
+                [
+                    'relation' => 'AND',
+                    [
+                        'key'     => 'start',
+                        'compare' => '>=',
+                        'value'   => $start,
+                        'type'    => 'DATETIME',
+                    ],
+                    [
+                        'key'     => 'start',
+                        'compare' => '<=',
+                        'value'   => $end,
+                        'type'    => 'DATETIME',
+                    ],
+                ],
+                [
+                    'relation' => 'AND',
+                    [
+                        'key'     => 'end',
+                        'compare' => '>=',
+                        'value'   => $start,
+                        'type'    => 'DATETIME',
+                    ],
+                    [
+                        'key'     => 'end',
+                        'compare' => '<=',
+                        'value'   => $end,
+                        'type'    => 'DATETIME',
+                    ],
+                ],
+            ],
+        ]);
+    }
+
     /**
      * Get events
      */
@@ -51,7 +149,15 @@ class Calendar
         $posts = apply_filters('my_events/calendar_posts', null, $start, $end);
 
         if (! is_array($posts)) {
-            $posts = Model::getEventsBetween($start, $end);
+            if (is_user_logged_in()) {
+                $posts = self::getUserEvents(get_current_user_id(), $start, $end);
+                $subscriptions_disabled = self::getSubscriptionsDisabledEvents($start, $end, [
+                    'exclude' => wp_list_pluck($posts, 'ID'),
+                ]);
+                $posts = array_merge($posts, $subscriptions_disabled);
+            } else {
+                $posts = Model::getEventsBetween($start, $end);
+            }
         }
 
         $events = [];
@@ -114,12 +220,12 @@ class Calendar
 
         wp_register_style(
             'my-events-calendar-style',
-            plugins_url('build/calendar-style.css', MY_EVENTS_PLUGIN_FILE),
+            plugins_url('build/calendar-style.css', MY_EVENTS_PLUGIN_FILE)
         );
 
         wp_register_style(
             'fontawesome',
-            plugins_url('build/fontawesome.css', MY_EVENTS_PLUGIN_FILE),
+            plugins_url('build/fontawesome.css', MY_EVENTS_PLUGIN_FILE)
         );
     }
 
