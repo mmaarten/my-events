@@ -32,7 +32,6 @@ class App
             'iCal',
             'DuplicatePost',
             'Capabilities',
-            'Polls',
         ]);
 
         add_action('init', [__CLASS__, 'loadTextdomain']);
