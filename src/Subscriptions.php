@@ -12,14 +12,14 @@ class Subscriptions
      */
     public static function init()
     {
-        add_filter('the_content', function ($return) {
-            if (is_singular('event')) {
-                ob_start();
-                self::form();
-                $return .= ob_get_clean();
-            }
-            return $return;
-        });
+        // add_filter('the_content', function ($return) {
+        //     if (is_singular('event')) {
+        //         ob_start();
+        //         self::form();
+        //         $return .= ob_get_clean();
+        //     }
+        //     return $return;
+        // });
 
         add_action('template_redirect', [__CLASS__, 'process']);
     }
