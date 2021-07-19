@@ -39,40 +39,50 @@ class Model
      * Get user events
      *
      * @param int   $user_id
-     * @param mixed $status
-     * @param array $args
+     * @param string $start
+     * @param string $end
      * @return array
      */
-    public static function getUserEvents($user_id, $status = null, $args = [])
+    public static function getUserEvents($user_id, $start, $end)
     {
-        if ($status) {
-            $invitees = self::getInviteesByUser($user_id, ['fields' => 'ids']);
+        remove_action('pre_get_posts', [__NAMESPACE__ . '\PrivateEvents', 'excludePrivateEvents']);
 
-            if ($invitees) {
-                $invitees = self::getInviteesByStatus($status, ['include' => $invitees, 'fields' => 'ids']);
+        $events = self::getEventsBetween($start, $end);
+
+        add_action('pre_get_posts', [__NAMESPACE__ . '\PrivateEvents', 'excludePrivateEvents']);
+
+        $return = [];
+
+        foreach ($events as $event) {
+            $event = new Event($event);
+
+            if ($event->isMember($user_id) || ! $event->areSubscriptionsEnabled()) {
+                $return[] = $event;
             }
+        }
+
+        return $return;
+    }
+
+    public static function getCalendarEvents($start, $end, $user_id = 0)
+    {
+        if ($user_id) {
+            if (! is_user_logged_in()) {
+                return new WP_Error(__FUNCTION__, __('You need to be logged in in order to access user events.', 'my-events'));
+            }
+
+            $current_user_id = get_current_user_id();
+
+            if ($current_user_id != $user_id && ! current_user_can('administrator')) {
+                return new WP_Error(__FUNCTION__, __('You are not allowed to access events of another user.', 'my-events'));
+            }
+
+            $events = self::getUserEvents($user_id, $start, $end);
         } else {
-            $invitees = self::getInviteesByUser($user_id, ['fields' => 'ids']);
+            $events = self::getEventsBetween($start, $end);
         }
 
-        if (! $invitees) {
-            return [];
-        }
-
-        $events = [];
-
-        foreach ($invitees as $invitee) {
-            $invitee = new Invitee($invitee);
-            $events[] = $invitee->getEvent();
-        }
-
-        if (! $events) {
-            return;
-        }
-
-        return self::getEvents([
-            'include' => $events,
-        ] + $args);
+        return $events;
     }
 
     public static function getOrganizerEvents($user_id, $args = [])

@@ -11,29 +11,28 @@ class ICal
 {
     public static function init()
     {
-        add_action('acf/save_post', [__CLASS__, 'savePost']);
         add_action('template_redirect', [__CLASS__, 'maybeOutputUserCalendar']);
-        add_action('before_delete_post', [__CLASS__, 'beforeDeletePost']);
         add_filter('my_events/notification_args', [__CLASS__, 'notificationArgs'], 10, 2);
 
         add_shortcode('my-events-download-user-calendar-file-url', function () {
-            return self::getDownloadUserCalendarFileURL();
+
+            if (! is_user_logged_in()) {
+                return false;
+            }
+
+            $user_id = get_current_user_id();
+
+            return self::getDownloadURL($user_id);
         });
     }
 
-    public static function getEventFile($event_id, $url = false)
-    {
-        $upload_dir = wp_get_upload_dir();
-
-        return $upload_dir[$url ? 'baseurl' : 'basedir'] . '/calendar-' . get_post_field('post_name', $event_id) . '.ics';
-    }
-
-    public static function getDownloadUserCalendarFileURL()
+    public static function getDownloadURL($user_id = 0)
     {
         global $wp;
 
         return add_query_arg([
             MY_EVENTS_NONCE_NAME => wp_create_nonce('user_ical_file'),
+            'user' => $user_id,
         ], home_url($wp->request));
     }
 
@@ -118,36 +117,23 @@ class ICal
             return;
         }
 
-        if (! is_user_logged_in()) {
-            wp_die(__('Invalid user', 'my-events'));
+        $user_id = isset($_GET['user']) ? $_GET['user'] : 0;
+
+        $start = new \DateTime(date('Y-m-d'), new \DateTimeZone(wp_timezone_string()));
+        $end   = $start;
+        $end->modify('+1 year');
+
+        $posts = Model::getCalendarEvents($start->format('Y-m-d'), $end->format('Y-m-d'), $user_id);
+
+        if (is_wp_error($posts)) {
+            wp_die($posts->get_error_message());
         }
 
-        $user_id = get_current_user_id();
-
-        $user_events = Model::getUserEvents($user_id, 'accepted', ['fields' => 'ids']);
-
-        $extra_events = Model::getAllDayEvents([
-            'meta_query' => [
-                [
-                    'key'     => 'enable_subscriptions',
-                    'compare' => '!=',
-                    'value'   => true,
-                ],
-            ],
-            'fields' => 'ids',
-        ]);
-
-        $events = array_merge($user_events, $extra_events);
-
-        if ($events) {
-            $events = Model::excludeEventsThatAreOver($events, ['fields' => 'ids']);
+        if (! $posts) {
+            wp_die(__('No events found.', 'my-events'));
         }
 
-        if (! $events) {
-            wp_die(__("It appears you don't have any accepted invitations.", 'my-events'));
-        }
-
-        $calendar = self::createCalendar($events, $user_id);
+        $calendar = self::createCalendar($posts, $user_id);
 
         //
 
@@ -160,46 +146,6 @@ class ICal
         echo $calendar->get();
 
         exit;
-    }
-
-    public static function savePost($post_id)
-    {
-        if (get_post_type($post_id) == 'event') {
-            self::createCalendarFile($post_id);
-        }
-    }
-
-    public static function beforeDeletePost($post_id)
-    {
-        if (get_post_type($post_id) == 'event') {
-            self::removeCalendarFile($post_id);
-        }
-    }
-
-    public static function createCalendarFile($post_id)
-    {
-        if (get_post_type($post_id) != 'event') {
-            return false;
-        }
-
-        $calendar = self::createCalendar($post_id);
-
-        return file_put_contents(self::getEventFile($post_id), $calendar->get());
-    }
-
-    public static function removeCalendarFile($post_id)
-    {
-        if (get_post_type($post_id) != 'event') {
-            return false;
-        }
-
-        $file = self::getEventFile($post_id);
-
-        if (file_exists($file)) {
-            return unlink($file);
-        }
-
-        return false;
     }
 
     public static function notificationArgs($args, $event)
