@@ -11,6 +11,9 @@ class ICal
 {
     public static function init()
     {
+        add_action('acf/save_post', [__CLASS__, 'savePost']);
+        add_action('before_delete_post', [__CLASS__, 'deletePost']);
+
         add_action('template_redirect', [__CLASS__, 'maybeOutputUserCalendar']);
         add_filter('my_events/notification_args', [__CLASS__, 'notificationArgs'], 10, 2);
 
@@ -24,6 +27,51 @@ class ICal
 
             return self::getDownloadURL($user_id);
         });
+    }
+
+    public static function getFilePath($event_id, $url = false)
+    {
+        $upload_dir = wp_get_upload_dir();
+
+        $base = trailingslashit($upload_dir[$url ? 'baseurl' : 'basedir']);
+
+        return $base . sanitize_title(__('calendar', 'my-events')) . '/' . get_post_field('post_name', $event_id) . '.ics';
+    }
+
+    public static function savePost($post_id)
+    {
+        if (get_post_type($post_id) != 'event') {
+            return;
+        }
+
+        self::createFile($post_id);
+    }
+
+    public static function deletePost($post_id)
+    {
+        if (get_post_type($post_id) != 'event') {
+            return;
+        }
+
+        self::removeFile($post_id);
+    }
+
+    public static function createFile($event_id)
+    {
+        $calendar = self::createCalendar($event_id);
+
+        return file_put_contents(self::getFilePath($post_id), $calendar->render());
+    }
+
+    public static function removeFile($event_id)
+    {
+        $file = self::getFilePath($event_id);
+
+        if (file_exists($file)) {
+            return unlink($file);
+        }
+
+        return false;
     }
 
     public static function getDownloadURL($user_id = 0)
@@ -150,7 +198,7 @@ class ICal
 
     public static function notificationArgs($args, $event)
     {
-        $file = self::getEventFile($event->ID);
+        $file = self::getFileURL($event->ID, true);
 
         if (file_exists($file)) {
             $args['attachments'][] = $file;
