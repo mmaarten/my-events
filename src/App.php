@@ -34,7 +34,7 @@ class App
             'Capabilities',
         ]);
 
-        add_action('init', [__CLASS__, 'loadTextdomain']);
+        add_action('init', [__CLASS__, 'loadTextdomain'], 0);
     }
 
     /**
