@@ -29,7 +29,7 @@ class ICal
         });
     }
 
-    public static function getFilePath($event_id, $url = false)
+    public static function getFile($event_id, $url = false)
     {
         $upload_dir = wp_get_upload_dir();
 
@@ -60,12 +60,12 @@ class ICal
     {
         $calendar = self::createCalendar($event_id);
 
-        return file_put_contents(self::getFilePath($post_id), $calendar->render());
+        return file_put_contents(self::getFile($post_id), $calendar->render());
     }
 
     public static function removeFile($event_id)
     {
-        $file = self::getFilePath($event_id);
+        $file = self::getFile($event_id);
 
         if (file_exists($file)) {
             return unlink($file);
@@ -198,7 +198,7 @@ class ICal
 
     public static function notificationArgs($args, $event)
     {
-        $file = self::getFileURL($event->ID, true);
+        $file = self::getFile($event->ID, false);
 
         if (file_exists($file)) {
             $args['attachments'][] = $file;
