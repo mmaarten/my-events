@@ -35,7 +35,7 @@ class ICal
 
         $base = trailingslashit($upload_dir[$url ? 'baseurl' : 'basedir']);
 
-        return $base . sanitize_title(__('calendar', 'my-events')) . '/' . get_post_field('post_name', $event_id) . '.ics';
+        return $base . get_post_field('post_name', $event_id) . '.ics';
     }
 
     public static function savePost($post_id)
