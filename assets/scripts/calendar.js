@@ -22,33 +22,6 @@ import './components/breakpoints';
     initialView: 'dayGridMonth',
     eventTimeFormat: {hour: '2-digit', minute: '2-digit'},
     headerToolbar: { center: 'dayGridMonth,timeGridWeek,timeGridDay' },
-    datesSet : function(info){
-
-      if (info.startStr == start && info.endStr == end) {
-        return;
-      }
-
-      start = info.startStr;
-      end   = info.endStr;
-
-      // Remove previously loaded events.
-      loadedEvents.forEach(event => {
-        this.getEventById(event.id).remove();
-      });
-
-      // Load events
-      this.el.classList.add('is-loading');
-      var data = { action: 'my_events_get_events', start: start, end: end};
-      jQuery.post(MyEventsCalendarSettings.ajaxurl, data, function(response){
-        // Save loaded events.
-        loadedEvents = response.events;
-        // Add events.
-        loadedEvents.forEach(event => calendar.addEvent(event));
-        // Remove loading class.
-        calendar.el.classList.remove('is-loading');
-      });
-
-    },
     // dayGridMonth date click
     dateClick : function(info){
       this.changeView('timeGridDay');
