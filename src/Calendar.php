@@ -3,10 +3,12 @@
 namespace My\Events;
 
 use My\Events\Posts\Event;
+use My\Events\Posts\Invitee;
 
 class Calendar
 {
     const SHORTCODE = 'calendar';
+    const TRANSIENT = 'my_events_calendar';
 
     /**
      * Init
@@ -19,6 +21,89 @@ class Calendar
         add_action('wp_ajax_nopriv_my_events_get_events', [__CLASS__, 'getEvents']);
 
         add_shortcode(self::SHORTCODE, [__CLASS__, 'shortcode']);
+
+        add_action('acf/save_post', function ($post_id) {
+            if (get_post_type($post_id) == 'event') {
+                self::sanitizeTransient($post_id);
+            }
+        });
+
+        add_action('before_delete_post', function ($post_id) {
+            if (get_post_type($post_id) == 'event') {
+                self::sanitizeTransient($post_id);
+            }
+        });
+
+        add_action('transition_post_status', function ($new_status, $old_status, $post) {
+            if (get_post_type($object_id) == 'event') {
+                if (($old_status == 'publish' || $new_status == 'publish') && $old_status != $new_status) {
+                    self::sanitizeTransient($object_id);
+                }
+            }
+        }, 10, 3);
+
+        add_action('my_events/invitee_added', function ($invitee, $user_id, $event) {
+            self::sanitizeTransient($event);
+        }, 10, 3);
+
+        add_action('my_events/invitee_removed', function ($invitee, $user_id, $event) {
+            self::sanitizeTransient($event);
+        }, 10, 3);
+
+        add_action('added_post_meta', function ($object_id, $meta_key) {
+            if (get_post_type($object_id) == 'invitee') {
+                $invitee = new Invitee($object_id);
+                if (in_array($meta_key, ['status'])) {
+                    self::sanitizeTransient($invitee->getEvent());
+                }
+            }
+        }, 10, 2);
+
+        add_action('updated_post_meta', function ($meta_id, $object_id, $meta_key) {
+            if (get_post_type($object_id) == 'invitee') {
+                $invitee = new Invitee($object_id);
+                if (in_array($meta_key, ['status'])) {
+                    self::sanitizeTransient($invitee->getEvent());
+                }
+            }
+        }, 10, 3);
+    }
+
+    public static function sanitizeTransient($event_id)
+    {
+        if (! $event_id || get_post_type($event_id) != 'event') {
+            return;
+        }
+
+        error_log(__FUNCTION__);
+
+        $event = new Event($event_id);
+
+        $event_start = $event->getStartTime('U');
+        $event_end  = $event->getEndTime('U');
+
+        $transient = get_transient(self::TRANSIENT);
+
+        if (! is_array($transient)) {
+            $transient = [];
+        }
+
+        $sanitized = [];
+        foreach ($transient as $key => $events) {
+            list($user_id, $start, $end) = explode('|', $key);
+
+            $start = date('U', strtotime($start));
+            $end   = date('U', strtotime($end));
+
+            if (Helpers::doDatesOverlap($event_start, $event_end, $start, $end)) {
+                error_log("Removed from transient: $key");
+                continue;
+            }
+
+            $sanitized[$key] = $events;
+        }
+
+        set_transient(self::TRANSIENT, $sanitized);
     }
 
     /**
@@ -48,7 +133,26 @@ class Calendar
         $start = $_POST['start'];
         $end   = $_POST['end'];
 
+        // Check cache.
+
+        $key = sprintf('%1$s|%2$s|%3$s', get_current_user_id(), $start, $end);
+
+        $transient = get_transient(self::TRANSIENT);
+
+        if (! is_array($transient)) {
+            $transient = [];
+        }
+
+        if (isset($transient[$key])) {
+            error_log("found in transient: $key");
+            wp_send_json(['events' => $transient[$key]]);
+        }
+
+        // Get posts.
+
         $posts = \My\Events\Model::getCalendarEvents($start, $end, get_current_user_id());
+
+        // Create events.
 
         $events = [];
 
@@ -57,6 +161,10 @@ class Calendar
                 $events[] = self::createCalendarEvent($post);
             }
         }
+
+        $transient[$key] = $events;
+
+        set_transient(self::TRANSIENT, $transient);
 
         wp_send_json([
             'events' => $events,

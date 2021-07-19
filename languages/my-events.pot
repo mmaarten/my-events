@@ -14,6 +14,9 @@ msgstr ""
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: my-events\n"
 
+msgid "Decline"
+msgstr ""
+
 #. Plugin Name of the plugin
 #. translators: 1: plugin name. 2: Composer command. 3: theme directory
 #: plugin.php:23

@@ -9,12 +9,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2021-07-19 11:15+0200\n"
-"PO-Revision-Date: 2021-07-19 11:18+0200\n"
+"PO-Revision-Date: 2021-07-19 22:57+0200\n"
 "X-Generator: Poedit 1.8.7\n"
 "X-Domain: my-events\n"
 "Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: nl_BE\n"
+
+msgid "Decline"
+msgstr "Afwijzen"
 
 #. Plugin Name of the plugin
 #. translators: 1: plugin name. 2: Composer command. 3: theme directory
@@ -137,7 +140,7 @@ msgid ""
 "the invitation."
 msgstr ""
 "Organisatoren ontvangen meldingen per e-mail wanneer iemand de uitnodiging "
-"accepteert of weigert."
+"accepteert of afwijst."
 
 #: src/Fields.php:144
 msgid "Allow organizers to edit this event."
@@ -826,4 +829,4 @@ msgstr "%1$s heeft je uitnodiging geaccepteerd voor:"
 
 #: templates/emails/invitee-declined.php:7
 msgid "%1$s declined your invitation for:"
-msgstr "%1$s heeft uw uitnodiging geweigerd voor:"
+msgstr "%1$s heeft uw uitnodiging afgewezen voor:"

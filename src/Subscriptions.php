@@ -114,7 +114,7 @@ class Subscriptions
 
                 printf(
                     '<label class="btn btn-danger"><input type="radio" class="d-none" name="action" value="decline" onchange="%2$s"> %1$s</label>',
-                    esc_html__('Declined', 'my-events'),
+                    esc_html__('Decline', 'my-events'),
                     esc_attr($onchange)
                 );
 
