@@ -168,7 +168,7 @@ class ICal
         $user_id = isset($_GET['user']) ? $_GET['user'] : 0;
 
         $start = new \DateTime(date('Y-m-d'), new \DateTimeZone(wp_timezone_string()));
-        $end   = $start;
+        $end   = clone $start;
         $end->modify('+1 year');
 
         $posts = Model::getCalendarEvents($start->format('Y-m-d'), $end->format('Y-m-d'), $user_id);
