@@ -60,7 +60,7 @@ class ICal
     {
         $calendar = self::createCalendar($event_id);
 
-        return file_put_contents(self::getFile($post_id), $calendar->render());
+        return file_put_contents(self::getFile($post_id), $calendar->get());
     }
 
     public static function removeFile($event_id)
