@@ -54,9 +54,9 @@ class Model
         $return = [];
 
         foreach ($events as $event) {
-            $event = new Event($event);
+            $e = new Event($event);
 
-            if ($event->isMember($user_id) || ! $event->areSubscriptionsEnabled()) {
+            if ($e->isMember($user_id) || ! $e->areSubscriptionsEnabled()) {
                 $return[] = $event;
             }
         }
