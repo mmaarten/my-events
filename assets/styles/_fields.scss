@@ -44,3 +44,19 @@
     }
   }
 }
+
+#acf-my_events_invitee_group {
+  .acf-field[data-name="event"],
+  .acf-field[data-name="user"],
+  .acf-field[data-name="invitation_sent"] {
+    @include disable-field();
+  }
+}
+
+body.post-php.post-type-invitee {
+  .page-title-action,
+  #post-body-content,
+  #submitdiv #minor-publishing {
+    display: none;
+  }
+}

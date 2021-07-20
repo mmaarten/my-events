@@ -96,16 +96,6 @@ class PostTypes
             'hierarchical'       => false,
             'menu_position'      => null,
             'supports'           => ['title'],
-            'capabilities'       => [
-                'edit_post'          => 'update_core',
-                'read_post'          => 'update_core',
-                'delete_post'        => 'update_core',
-                'edit_posts'         => 'update_core',
-                'edit_others_posts'  => 'update_core',
-                'delete_posts'       => 'update_core',
-                'publish_posts'      => 'update_core',
-                'read_private_posts' => 'update_core'
-            ],
         ]);
 
         register_post_type('invitee_group', [

@@ -22,7 +22,7 @@
       });
     });
 
-    //$elem.find('.my-events-submit').trigger('click');
+    $elem.find('.my-events-submit').trigger('click');
   });
 
 })();
