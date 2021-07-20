@@ -82,7 +82,7 @@ class OverlappingEvents
                     ],
                     [
                         'key'            => 'my_events_overlapping_end_field',
-                        'label'          => __('Start', 'my-events'),
+                        'label'          => __('End', 'my-events'),
                         'instructions'   => __('', 'my-events'),
                         'name'           => 'overlapping_end',
                         'value'          => $end,
