@@ -8,9 +8,9 @@
       var data = {
         action : $elem.data('action'),
         event  : $elem.data('event'),
-        start  : $elem.find('#my-events-overlapping-start').val(),
-        end    : $elem.find('#my-events-overlapping-end').val(),
-        offset : $elem.find('#my-events-overlapping-offset').val(),
+        start  : $elem.find('#my_events_overlapping_start_field').val(),
+        end    : $elem.find('#my_events_overlapping_end_field').val(),
+        offset : $elem.find('#my_events_overlapping_offset_field').val(),
       };
 
       data[$elem.data('noncename')] = $elem.data('nonce');
@@ -22,7 +22,7 @@
       });
     });
 
-    $elem.find('.my-events-submit').trigger('click');
+    //$elem.find('.my-events-submit').trigger('click');
   });
 
 })();

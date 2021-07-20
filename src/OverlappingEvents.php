@@ -64,20 +64,49 @@ class OverlappingEvents
 
         <div <?php echo acf_esc_attr($atts); ?>>
 
-            <p>
-                <label for="my-events-overlapping-start"><?php esc_html_e('Start', 'my-events'); ?></label><br>
-                <input type="text" id="my-events-overlapping-start" class="large-text" value="<?php echo esc_attr($start); ?>">
-            </p>
+            <?php
 
-            <p>
-                <label for="my-events-overlapping-end"><?php esc_html_e('End', 'my-events'); ?></label><br>
-                <input type="text" id="my-events-overlapping-end" class="large-text" value="<?php echo esc_attr($end); ?>">
-            </p>
+                acf_render_fields([
+                    [
+                        'key'            => 'my_events_overlapping_start_field',
+                        'label'          => __('Start', 'my-events'),
+                        'instructions'   => __('', 'my-events'),
+                        'name'           => 'overlapping_start',
+                        'value'          => $start,
+                        'type'           => 'date_time_picker',
+                        'display_format' => get_option('date_format') . ' ' . get_option('time_format'),
+                        'return_format'  => 'Y-m-d H:i:s',
+                        'first_day'      => get_option('start_of_week', 0),
+                        'default_value'  => date_i18n('Y-m-d H:00:00'),
+                        'required'       => false,
+                    ],
+                    [
+                        'key'            => 'my_events_overlapping_end_field',
+                        'label'          => __('Start', 'my-events'),
+                        'instructions'   => __('', 'my-events'),
+                        'name'           => 'overlapping_end',
+                        'value'          => $end,
+                        'type'           => 'date_time_picker',
+                        'display_format' => get_option('date_format') . ' ' . get_option('time_format'),
+                        'return_format'  => 'Y-m-d H:i:s',
+                        'first_day'      => get_option('start_of_week', 0),
+                        'default_value'  => date_i18n('Y-m-d H:00:00'),
+                        'required'       => false,
+                    ],
+                    [
+                        'key'            => 'my_events_overlapping_offset_field',
+                        'label'          => __('Precision', 'my-events'),
+                        'instructions'   => __('The amount of hours surrounding the start and end date.', 'my-events'),
+                        'name'           => 'overlapping_offset',
+                        'type'           => 'number',
+                        'min'            => 0,
+                        'value'          => 1,
+                        'default_value'  => 1,
+                        'required'       => false,
+                    ]
+                ]);
 
-            <p>
-                <label for="my-events-overlapping-offset"><?php esc_html_e('Hourly offset', 'my-events'); ?></label><br>
-                <input type="number" id="my-events-overlapping-offset" class="large-text" value="1">
-            </p>
+            ?>
 
             <p>
                 <button type="button" class="button my-events-submit"><?php esc_html_e('Search', 'my-events'); ?></button>

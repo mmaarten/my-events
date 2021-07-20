@@ -8,7 +8,7 @@
       var data = {
         action  : $elem.data('action'),
         event   : $elem.data('event'),
-        message : $elem.find('#my-events-send-email-message').val(),
+        message : $elem.find('#my_events_send_email_message_field').val(),
       };
 
       data[$elem.data('noncename')] = $elem.data('nonce');

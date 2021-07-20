@@ -53,10 +53,23 @@ class SendEmail
 
             <p><?php esc_html_e('Notify the invitees about any changes of this event.', 'my-events'); ?></p>
 
-            <p>
-                <label for="my-events-send-email-message"><strong><?php esc_html_e('Message', 'my-events'); ?></strong></label><br>
-                <textarea id="my-events-send-email-message" class="large-text" rows="5"></textarea>
-            </p>
+            <?php
+
+                acf_render_fields([
+                    [
+                        'key'           => 'my_events_send_email_message_field',
+                        'label'         => __('Message', 'my-events'),
+                        'instructions'  => __('', 'my-events'),
+                        'name'          => 'send_email_message',
+                        'value'         => '',
+                        'type'          => 'textarea',
+                        'rows'          => 4,
+                        'default_value' => '',
+                        'required'      => false,
+                    ],
+                ]);
+
+            ?>
 
             <p>
                 <button type="button" class="button my-events-submit"><?php esc_html_e('Send', 'my-events'); ?></button>
