@@ -9,13 +9,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-07-19T09:14:43+00:00\n"
+"POT-Creation-Date: 2021-07-20T16:50:24+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: my-events\n"
-
-msgid "Decline"
-msgstr ""
 
 #. Plugin Name of the plugin
 #. translators: 1: plugin name. 2: Composer command. 3: theme directory
@@ -123,7 +120,7 @@ msgid "A brief description about this event."
 msgstr ""
 
 #: src/Fields.php:68
-#: src/OverlappingEvents.php:68
+#: src/OverlappingEvents.php:72
 msgid "Start"
 msgstr ""
 
@@ -132,7 +129,7 @@ msgid "The time the event starts."
 msgstr ""
 
 #: src/Fields.php:84
-#: src/OverlappingEvents.php:73
+#: src/OverlappingEvents.php:85
 msgid "End"
 msgstr ""
 
@@ -239,7 +236,6 @@ msgid "Accepted"
 msgstr ""
 
 #: src/Helpers.php:72
-#: src/Subscriptions.php:117
 msgid "Declined"
 msgstr ""
 
@@ -252,7 +248,7 @@ msgid "no"
 msgstr ""
 
 #: src/ICal.php:181
-#: src/OverlappingEvents.php:130
+#: src/OverlappingEvents.php:159
 #: src/PostTypes.php:34
 msgid "No events found."
 msgstr ""
@@ -294,24 +290,28 @@ msgstr ""
 msgid "Overlapping events"
 msgstr ""
 
-#: src/OverlappingEvents.php:78
-msgid "Hourly offset"
+#: src/OverlappingEvents.php:98
+msgid "Precision"
 msgstr ""
 
-#: src/OverlappingEvents.php:83
-msgid "Search"
+#: src/OverlappingEvents.php:99
+msgid "The amount of hours surrounding the start and end date."
 msgstr ""
 
 #: src/OverlappingEvents.php:112
+msgid "Search"
+msgstr ""
+
+#: src/OverlappingEvents.php:141
 msgid "Invalid start date."
 msgstr ""
 
-#: src/OverlappingEvents.php:116
+#: src/OverlappingEvents.php:145
 msgid "Invalid end date."
 msgstr ""
 
-#: src/OverlappingEvents.php:120
-#: src/SendEmail.php:92
+#: src/OverlappingEvents.php:149
+#: src/SendEmail.php:105
 msgid "Invalid event."
 msgstr ""
 
@@ -346,8 +346,8 @@ msgstr ""
 
 #: src/PostTypes.php:26
 #: src/PostTypes.php:67
-#: src/PostTypes.php:117
-#: src/PostTypes.php:157
+#: src/PostTypes.php:107
+#: src/PostTypes.php:147
 msgid "Add New"
 msgstr ""
 
@@ -386,24 +386,24 @@ msgstr ""
 
 #: src/PostTypes.php:37
 #: src/PostTypes.php:78
-#: src/PostTypes.php:128
-#: src/PostTypes.php:168
+#: src/PostTypes.php:118
+#: src/PostTypes.php:158
 msgctxt "Overrides the “Set featured image” phrase for this post type. Added in 4.3"
 msgid "Set cover image"
 msgstr ""
 
 #: src/PostTypes.php:38
 #: src/PostTypes.php:79
-#: src/PostTypes.php:129
-#: src/PostTypes.php:169
+#: src/PostTypes.php:119
+#: src/PostTypes.php:159
 msgctxt "Overrides the “Remove featured image” phrase for this post type. Added in 4.3"
 msgid "Remove cover image"
 msgstr ""
 
 #: src/PostTypes.php:39
 #: src/PostTypes.php:80
-#: src/PostTypes.php:130
-#: src/PostTypes.php:170
+#: src/PostTypes.php:120
+#: src/PostTypes.php:160
 msgctxt "Overrides the “Use as featured image” phrase for this post type. Added in 4.3"
 msgid "Use as cover image"
 msgstr ""
@@ -521,184 +521,184 @@ msgctxt "Screen reader text for the items list heading on the post type listing 
 msgid "Invitees list"
 msgstr ""
 
-#: src/PostTypes.php:113
+#: src/PostTypes.php:103
 msgctxt "Post type general name"
 msgid "Invitee groups"
 msgstr ""
 
-#: src/PostTypes.php:114
+#: src/PostTypes.php:104
 msgctxt "Post type singular name"
 msgid "Invitee group"
 msgstr ""
 
-#: src/PostTypes.php:115
+#: src/PostTypes.php:105
 msgctxt "Admin Menu text"
 msgid "Invitee groups"
 msgstr ""
 
-#: src/PostTypes.php:116
+#: src/PostTypes.php:106
 msgctxt "Add New on Toolbar"
 msgid "Invitee group"
 msgstr ""
 
-#: src/PostTypes.php:118
+#: src/PostTypes.php:108
 msgid "Add New Group"
 msgstr ""
 
-#: src/PostTypes.php:119
+#: src/PostTypes.php:109
 msgid "New Group"
 msgstr ""
 
-#: src/PostTypes.php:120
+#: src/PostTypes.php:110
 msgid "Edit Group"
 msgstr ""
 
-#: src/PostTypes.php:121
+#: src/PostTypes.php:111
 msgid "View Group"
 msgstr ""
 
-#: src/PostTypes.php:122
+#: src/PostTypes.php:112
 msgid "Invitee groups"
 msgstr ""
 
-#: src/PostTypes.php:123
+#: src/PostTypes.php:113
 msgid "Search Groups"
 msgstr ""
 
-#: src/PostTypes.php:124
+#: src/PostTypes.php:114
 msgid "Parent Groups:"
 msgstr ""
 
-#: src/PostTypes.php:125
+#: src/PostTypes.php:115
 msgid "No groups found."
 msgstr ""
 
-#: src/PostTypes.php:126
+#: src/PostTypes.php:116
 msgid "No groups found in Trash."
 msgstr ""
 
-#: src/PostTypes.php:127
+#: src/PostTypes.php:117
 msgctxt "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
 msgid "Group Cover Image"
 msgstr ""
 
-#: src/PostTypes.php:131
+#: src/PostTypes.php:121
 msgctxt "The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4"
 msgid "Group archives"
 msgstr ""
 
-#: src/PostTypes.php:132
+#: src/PostTypes.php:122
 msgctxt "Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4"
 msgid "Insert into group"
 msgstr ""
 
-#: src/PostTypes.php:133
+#: src/PostTypes.php:123
 msgctxt "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4"
 msgid "Uploaded to this group"
 msgstr ""
 
-#: src/PostTypes.php:134
+#: src/PostTypes.php:124
 msgctxt "Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
 msgid "Filter groups list"
 msgstr ""
 
-#: src/PostTypes.php:135
+#: src/PostTypes.php:125
 msgctxt "Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
 msgid "Groups list navigation"
 msgstr ""
 
-#: src/PostTypes.php:136
+#: src/PostTypes.php:126
 msgctxt "Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4"
 msgid "Groups list"
 msgstr ""
 
-#: src/PostTypes.php:153
+#: src/PostTypes.php:143
 msgctxt "Post type general name"
 msgid "Locations"
 msgstr ""
 
-#: src/PostTypes.php:154
+#: src/PostTypes.php:144
 msgctxt "Post type singular name"
 msgid "Location"
 msgstr ""
 
-#: src/PostTypes.php:155
+#: src/PostTypes.php:145
 msgctxt "Admin Menu text"
 msgid "Locations"
 msgstr ""
 
-#: src/PostTypes.php:156
+#: src/PostTypes.php:146
 msgctxt "Add New on Toolbar"
 msgid "Location"
 msgstr ""
 
-#: src/PostTypes.php:158
+#: src/PostTypes.php:148
 msgid "Add New Location"
 msgstr ""
 
-#: src/PostTypes.php:159
+#: src/PostTypes.php:149
 msgid "New Location"
 msgstr ""
 
-#: src/PostTypes.php:160
+#: src/PostTypes.php:150
 msgid "Edit Location"
 msgstr ""
 
-#: src/PostTypes.php:161
+#: src/PostTypes.php:151
 msgid "View Location"
 msgstr ""
 
-#: src/PostTypes.php:162
+#: src/PostTypes.php:152
 msgid "Locations"
 msgstr ""
 
-#: src/PostTypes.php:163
+#: src/PostTypes.php:153
 msgid "Search Locations"
 msgstr ""
 
-#: src/PostTypes.php:164
+#: src/PostTypes.php:154
 msgid "Parent Locations:"
 msgstr ""
 
-#: src/PostTypes.php:165
+#: src/PostTypes.php:155
 msgid "No locations found."
 msgstr ""
 
-#: src/PostTypes.php:166
+#: src/PostTypes.php:156
 msgid "No locations found in Trash."
 msgstr ""
 
-#: src/PostTypes.php:167
+#: src/PostTypes.php:157
 msgctxt "Overrides the “Featured Image” phrase for this post type. Added in 4.3"
 msgid "Location Cover Image"
 msgstr ""
 
-#: src/PostTypes.php:171
+#: src/PostTypes.php:161
 msgctxt "The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4"
 msgid "Location archives"
 msgstr ""
 
-#: src/PostTypes.php:172
+#: src/PostTypes.php:162
 msgctxt "Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4"
 msgid "Insert into location"
 msgstr ""
 
-#: src/PostTypes.php:173
+#: src/PostTypes.php:163
 msgctxt "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4"
 msgid "Uploaded to this location"
 msgstr ""
 
-#: src/PostTypes.php:174
+#: src/PostTypes.php:164
 msgctxt "Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
 msgid "Filter locations list"
 msgstr ""
 
-#: src/PostTypes.php:175
+#: src/PostTypes.php:165
 msgctxt "Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
 msgid "Locations list navigation"
 msgstr ""
 
-#: src/PostTypes.php:176
+#: src/PostTypes.php:166
 msgctxt "Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4"
 msgid "Locations list"
 msgstr ""
@@ -711,31 +711,31 @@ msgstr ""
 msgid "Notify the invitees about any changes of this event."
 msgstr ""
 
-#: src/SendEmail.php:57
+#: src/SendEmail.php:61
 msgid "Message"
 msgstr ""
 
-#: src/SendEmail.php:62
+#: src/SendEmail.php:75
 msgid "Send"
 msgstr ""
 
-#: src/SendEmail.php:67
+#: src/SendEmail.php:80
 msgid "Be sure to save the event before sending."
 msgstr ""
 
-#: src/SendEmail.php:96
+#: src/SendEmail.php:109
 msgid "Message is required."
 msgstr ""
 
-#: src/SendEmail.php:106
+#: src/SendEmail.php:119
 msgid "No recipients."
 msgstr ""
 
-#: src/SendEmail.php:112
+#: src/SendEmail.php:125
 msgid "Announcement for event: %s."
 msgstr ""
 
-#: src/SendEmail.php:124
+#: src/SendEmail.php:137
 msgid "Email send."
 msgstr ""
 
@@ -773,6 +773,10 @@ msgstr ""
 
 #: src/Subscriptions.php:87
 msgid "We would like to know if you are comming to the event."
+msgstr ""
+
+#: src/Subscriptions.php:117
+msgid "Decline"
 msgstr ""
 
 #: src/Subscriptions.php:129
