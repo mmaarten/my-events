@@ -22,11 +22,11 @@ class Calendar
 
         add_shortcode(self::SHORTCODE, [__CLASS__, 'shortcode']);
 
-        add_action('acf/save_post', function ($post_id) {
-            if (get_post_type($post_id) == 'event') {
-                self::sanitizeTransient($post_id);
-            }
-        });
+        // add_action('acf/save_post', function ($post_id) {
+        //     if (get_post_type($post_id) == 'event') {
+        //         self::sanitizeTransient($post_id);
+        //     }
+        // });
 
         add_action('before_delete_post', function ($post_id) {
             if (get_post_type($post_id) == 'event') {
@@ -35,10 +35,55 @@ class Calendar
         });
 
         add_action('transition_post_status', function ($new_status, $old_status, $post) {
-            if (get_post_type($object_id) == 'event') {
+            if (get_post_type($post) == 'event') {
                 if (($old_status == 'publish' || $new_status == 'publish') && $old_status != $new_status) {
-                    self::sanitizeTransient($object_id);
+                    self::sanitizeTransient($post);
                 }
+            }
+        }, 10, 3);
+
+        add_action('post_updated', function ($post_id, $post_after, $post_before) {
+            switch (get_post_type($post_id)) {
+                case 'event':
+                    foreach (['post_title', 'post_name'] as $field) {
+                        if ($post_after->$field !== $post_before->$field) {
+                            self::sanitizeTransient($post_id);
+                            break;
+                        }
+                    }
+                    break;
+            }
+        }, 10, 3);
+
+        add_action('added_post_meta', function ($post_id, $meta_key) {
+            switch (get_post_type($post_id)) {
+                case 'event':
+                    if (in_array($meta_key, ['start', 'end', 'all_day', 'private'])) {
+                        self::sanitizeTransient($post_id);
+                    }
+                    break;
+                case 'invitee':
+                    $invitee = new Invitee($post_id);
+                    if (in_array($meta_key, ['status'])) {
+                        self::sanitizeTransient($invitee->getEvent());
+                    }
+                    break;
+            }
+        }, 10, 2);
+
+        add_action('updated_post_meta', function ($meta_id, $post_id, $meta_key) {
+            switch (get_post_type($post_id)) {
+                case 'event':
+                    if (in_array($meta_key, ['start', 'end', 'all_day', 'private'])) {
+                        self::sanitizeTransient($post_id);
+                    }
+                    break;
+                case 'invitee':
+                    $invitee = new Invitee($post_id);
+                    if (in_array($meta_key, ['status'])) {
+                        self::sanitizeTransient($invitee->getEvent());
+                    }
+                    break;
             }
         }, 10, 3);
 
@@ -49,24 +94,6 @@ class Calendar
         add_action('my_events/invitee_removed', function ($invitee, $user_id, $event) {
             self::sanitizeTransient($event);
         }, 10, 3);
-
-        add_action('added_post_meta', function ($object_id, $meta_key) {
-            if (get_post_type($object_id) == 'invitee') {
-                $invitee = new Invitee($object_id);
-                if (in_array($meta_key, ['status'])) {
-                    self::sanitizeTransient($invitee->getEvent());
-                }
-            }
-        }, 10, 2);
-
-        add_action('updated_post_meta', function ($meta_id, $object_id, $meta_key) {
-            if (get_post_type($object_id) == 'invitee') {
-                $invitee = new Invitee($object_id);
-                if (in_array($meta_key, ['status'])) {
-                    self::sanitizeTransient($invitee->getEvent());
-                }
-            }
-        }, 10, 3);
     }
 
     public static function sanitizeTransient($event_id)
@@ -74,8 +101,6 @@ class Calendar
         if (! $event_id || get_post_type($event_id) != 'event') {
             return;
         }
-
-        error_log(__FUNCTION__);
 
         $event = new Event($event_id);
 
@@ -96,7 +121,6 @@ class Calendar
             $end   = date('U', strtotime($end));
 
             if (Helpers::doDatesOverlap($event_start, $event_end, $start, $end)) {
-                error_log("Removed from transient: $key");
                 continue;
             }
 
@@ -144,7 +168,6 @@ class Calendar
         }
 
         if (isset($transient[$key])) {
-            error_log("found in transient: $key");
             wp_send_json(['events' => $transient[$key]]);
         }
 
