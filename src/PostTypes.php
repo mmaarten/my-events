@@ -55,7 +55,6 @@ class PostTypes
             'hierarchical'       => false,
             'menu_position'      => null,
             'supports'           => ['title', 'thumbnail', 'comments'],
-            'taxonomies'         => ['event_tag'],
         ]);
 
         register_post_type('invitee', [
