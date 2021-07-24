@@ -230,7 +230,7 @@ class Events
                 $event = new Event($event_id);
                 $event->removeInvitee($user_id);
             } else {
-                wp_delete_post($invitee, true);
+                wp_delete_post($invitee->ID, true);
             }
         }
 
