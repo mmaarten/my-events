@@ -16,6 +16,7 @@ class Events
         add_action('acf/save_post', [__CLASS__, 'savePost']);
         add_action('wp_trash_post', [__CLASS__, 'trashPost']);
         add_action('before_delete_post', [__CLASS__, 'deletePost']);
+        add_action('user_register', [__CLASS__, 'userRegister']);
         add_action('delete_user', [__CLASS__, 'deleteUser']);
 
         add_filter('post_class', [__CLASS__, 'postClass'], 10, 3);
@@ -104,6 +105,10 @@ class Events
                         $group = new Post($group_id);
                         $invitees = $group->getField('users', false);
                     }
+                }
+
+                if ($invitee_type == 'anybody') {
+                    $invitees = get_users(['fields' => 'ID']);
                 }
 
                 $event->setInvitees($invitees);
@@ -211,6 +216,28 @@ class Events
                 $event = new Event($post_id);
                 $event->setInvitees([]);
                 break;
+        }
+    }
+
+    /**
+     * User register
+     *
+     * @param int $user_id
+     */
+    public static function userRegister($user_id)
+    {
+        $events = Model::getEvents([
+            'post_status'  => 'any',
+            'meta_key'     => 'invitee_type',
+            'meta_compare' => '=',
+            'meta_value'   => 'anybody',
+        ]);
+
+        foreach ($events as $event) {
+            $event = new Event($event);
+            if (! $event->isOver()) {
+                $event->addInvitee($user_id);
+            }
         }
     }
 

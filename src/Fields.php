@@ -166,7 +166,8 @@ class Fields
             'name'          => 'invitee_type',
             'type'          => 'select',
             'choices'       => [
-                'individual' => __('Individual', 'my-events'),
+                'anybody'    => __('Anybody is invited', 'my-events'),
+                'individual' => __('Specific users are invited', 'my-events'),
                 'group'      => __('Choose from a group', 'my-events'),
             ],
             'default_value' => 'individual',
