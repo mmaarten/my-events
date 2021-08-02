@@ -29,7 +29,7 @@ class App
             'OverlappingEvents',
             'SendEmail',
             'Calendar',
-            'iCal',
+            'ICal',
             'DuplicatePost',
             'Capabilities',
         ]);
