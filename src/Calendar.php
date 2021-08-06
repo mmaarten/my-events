@@ -88,11 +88,11 @@ class Calendar
         }, 10, 3);
 
         add_action('my_events/invitee_added', function ($invitee, $user_id, $event) {
-            self::sanitizeTransient($event);
+            self::sanitizeTransient($event->ID);
         }, 10, 3);
 
         add_action('my_events/invitee_removed', function ($invitee, $user_id, $event) {
-            self::sanitizeTransient($event);
+            self::sanitizeTransient($event->ID);
         }, 10, 3);
     }
 

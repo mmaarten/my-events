@@ -111,6 +111,10 @@ class Events
                     $invitees = get_users(['fields' => 'ID']);
                 }
 
+                if (! is_array($invitees)) {
+                    $invitees = [];
+                }
+
                 $event->setInvitees($invitees);
                 $event->deleteField('individual_invitees');
             }
@@ -131,10 +135,10 @@ class Events
             $event->setInvitees([]);
         }
 
-        wp_update_post([
-            'ID'           => $event->ID,
-            'post_content' => $event->getField('description', false),
-        ]);
+        // wp_update_post([
+        //     'ID'           => $event->ID,
+        //     'post_content' => $event->getField('description', false),
+        // ]);
     }
 
     /**
