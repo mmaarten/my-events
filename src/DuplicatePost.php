@@ -36,6 +36,6 @@ class DuplicatePost
         $invitees = $event->getInviteesUsers(null, ['fields' => 'ID']);
 
         $new_event = new Event($new_post_id);
-        $new_event->setInvitees($invitees);
+        $new_event->setInvitees($invitees, $event->getInviteeDefaultStatus());
     }
 }
