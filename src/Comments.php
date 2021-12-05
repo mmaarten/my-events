@@ -11,7 +11,6 @@ class Comments
      */
     public static function init()
     {
-        //add_filter('comment_moderation_recipients', [__CLASS__, 'recipients'], 10, 2);
         add_filter('comment_notification_recipients', [__CLASS__, 'notificationRecipients'], 10, 2);
     }
 
