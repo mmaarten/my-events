@@ -165,7 +165,6 @@ class Notifications
         $subject = sprintf(
             // translators: %s: event name.
             __('You are invited for event: %s', 'my-events'),
-            $user->display_name,
             $event->post_title
         );
 
