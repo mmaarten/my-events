@@ -19,7 +19,7 @@ import './components/breakpoints';
     plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin, bootstrapPlugin, googleCalendarPlugin ],
     themeSystem: 'bootstrap',
     locales: allLocales,
-    initialView: 'dayGridMonth',
+    initialView: 'timeGridWeek',
     eventTimeFormat: {hour: '2-digit', minute: '2-digit'},
     headerToolbar: { center: 'dayGridMonth,timeGridWeek,timeGridDay' },
     datesSet : function(info){
