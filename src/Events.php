@@ -164,8 +164,6 @@ class Events
                 $group->updateField('_prev_users', $curr_users);
 
                 if ($prev_users !== $curr_users) {
-                    do_action('my_events/invitee_group_change', $group, $curr_users, $prev_users);
-
                     $events = self::getEventsByInviteeGroup($group->ID);
                     foreach ($events as $event) {
                         $event = new Event($event);
