@@ -77,70 +77,6 @@ class Events
         return $event->getInviteesUsers(null, ['fields' => 'ID']);
     }
 
-    public static function applySettingsToEvent($event_id)
-    {
-        $event = new Event($event_id);
-
-        if ($event->isAllDay()) {
-            $start_date = $event->getStartTime('Y-m-d');
-            $end_date   = $event->getEndTime('Y-m-d');
-
-            $event->updateField('start', "$start_date 00:00:00");
-            $event->updateField('end', "$end_date 23:59:59");
-        }
-
-        if ($event->areSubscriptionsEnabled()) {
-            if (! $event->isOver()) {
-                $invitees = [];
-
-                $invitee_type = $event->getField('invitee_type');
-
-                if ($invitee_type == 'individual') {
-                    $invitees = $event->getField('individual_invitees', false);
-                }
-
-                if ($invitee_type == 'group') {
-                    $group_id = $event->getField('invitee_group', false);
-                    if ($group_id && get_post_type($group_id)) {
-                        $group = new Post($group_id);
-                        $invitees = $group->getField('users', false);
-                    }
-                }
-
-                if ($invitee_type == 'anybody') {
-                    $invitees = get_users(['fields' => 'ID']);
-                }
-
-                if (! is_array($invitees)) {
-                    $invitees = [];
-                }
-
-                $event->setInvitees($invitees);
-                $event->deleteField('individual_invitees');
-            }
-        } else {
-            // Delete all subscription related settings.
-            $event->deleteField('organizers');
-            $event->deleteField('organizers_can_edit');
-            $event->deleteField('invitee_type');
-            $event->deleteField('individual_invitees');
-            $event->deleteField('invitee_group');
-            $event->deleteField('default_invitee_status');
-            $event->deleteField('max_participants');
-            $event->deleteField('location_type');
-            $event->deleteField('custom_location');
-            $event->deleteField('location_id');
-            $event->deleteField('private');
-            // Remove all invitees.
-            $event->setInvitees([]);
-        }
-
-        // wp_update_post([
-        //     'ID'           => $event->ID,
-        //     'post_content' => $event->getField('description', false),
-        // ]);
-    }
-
     /**
      * Save post
      *
@@ -150,7 +86,56 @@ class Events
     {
         switch (get_post_type($post_id)) {
             case 'event':
-                self::applySettingsToEvent($post_id);
+                $event = new Event($post_id);
+
+                if ($event->isAllDay()) {
+                    $start_date = $event->getStartTime('Y-m-d');
+                    $end_date   = $event->getEndTime('Y-m-d');
+
+                    $event->updateField('start', "$start_date 00:00:00");
+                    $event->updateField('end', "$end_date 23:59:59");
+                }
+
+                if ($event->areSubscriptionsEnabled()) {
+                    if (! $event->isOver()) {
+                        $invitees = [];
+                        $invitee_type = $event->getField('invitee_type');
+
+                        if ($invitee_type == 'individual') {
+                            $invitees = $event->getField('individual_invitees', false);
+                        } elseif ($invitee_type == 'group') {
+                            $group_id = $event->getField('invitee_group', false);
+                            if ($group_id && get_post_type($group_id)) {
+                                $group = new Post($group_id);
+                                $invitees = $group->getField('users', false);
+                            }
+                        } elseif ($invitee_type == 'anybody') {
+                            $invitees = get_users(['fields' => 'ID']);
+                        }
+
+                        if (! is_array($invitees)) {
+                            $invitees = [];
+                        }
+
+                        $event->setInvitees($invitees);
+                        $event->deleteField('individual_invitees');
+                    }
+                } else {
+                    // Delete all subscription related settings.
+                    $event->deleteField('organizers');
+                    $event->deleteField('organizers_can_edit');
+                    $event->deleteField('invitee_type');
+                    $event->deleteField('individual_invitees');
+                    $event->deleteField('invitee_group');
+                    $event->deleteField('default_invitee_status');
+                    $event->deleteField('max_participants');
+                    $event->deleteField('location_type');
+                    $event->deleteField('custom_location');
+                    $event->deleteField('location_id');
+                    $event->deleteField('private');
+                    // Remove all invitees.
+                    $event->setInvitees([]);
+                }
                 break;
             case 'invitee_group':
                 $group = new Post($post_id);
