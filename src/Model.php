@@ -18,7 +18,7 @@ class Model
         return get_posts($args + [
             'post_type'   => 'post',
             'post_status' => 'publish',
-            'numberposts' => 999,
+            'numberposts' => apply_filters('my_events/numberposts', 999),
         ]);
     }
 
@@ -62,27 +62,6 @@ class Model
         }
 
         return $return;
-    }
-
-    public static function getCalendarEvents($start, $end, $user_id = 0)
-    {
-        if ($user_id) {
-            if (! is_user_logged_in()) {
-                return new WP_Error(__FUNCTION__, __('You need to be logged in in order to access user events.', 'my-events'));
-            }
-
-            $current_user_id = get_current_user_id();
-
-            if ($current_user_id != $user_id && ! current_user_can('administrator')) {
-                return new WP_Error(__FUNCTION__, __('You are not allowed to access events of another user.', 'my-events'));
-            }
-
-            $events = self::getUserEvents($user_id, $start, $end);
-        } else {
-            $events = self::getEventsBetween($start, $end);
-        }
-
-        return $events;
     }
 
     public static function getOrganizerEvents($user_id, $args = [])
