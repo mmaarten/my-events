@@ -51,7 +51,7 @@ class Calendar
 
         // Get posts.
 
-        $posts = \My\Events\Model::getCalendarEvents($start, $end, get_current_user_id());
+        $posts = \My\Events\Model::getEventsBetween($start, $end);
 
         // Create events.
 
